@@ -121,13 +121,16 @@ def get_rewrites(gold: list[GoldQuery], model: str) -> dict[str, str]:
 
 
 def title_leaks(gold: list[GoldQuery], rewrites: dict[str, str]) -> list[str]:
-    """Rewrites that name the gold movie (would make the comparison unfair). Multi-word titles only:
-    one-word titles like 'Up' or 'It' appear in ordinary sentences."""
+    """Rewrites that name the gold movie when the user's own query did not (that would make the
+    comparison unfair). A title the user already wrote -- "left home alone" -- is not a leak.
+    One-word titles ('Up', 'It', 'Speed') are ordinary words, so they are left to manual review."""
     leaks = []
     for g in gold:
-        if g.answerable and len(norm_title(g.title).split()) >= 2:
-            if norm_title(g.title) in norm_title(rewrites[g.query]):
-                leaks.append(g.qid)
+        if not g.answerable or len(norm_title(g.title).split()) < 2:
+            continue
+        t = f" {norm_title(g.title)} "
+        if t in f" {norm_title(rewrites[g.query])} " and t not in f" {norm_title(g.query)} ":
+            leaks.append(g.qid)
     return leaks
 
 

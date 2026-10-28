@@ -18,8 +18,10 @@ def test_rewrite_query_parses_and_repairs(fake_client):
 
 
 def test_title_leak_check():
-    gold = [GoldQuery("q1", "orig", "The Truman Show", 1998, []),
-            GoldQuery("q2", "orig2", "Up", 2009, [])]
-    rewrites = {"orig": "This is The Truman Show: a man's life is a TV show.",
-                "orig2": "An old man ties balloons to his house and floats up."}
-    assert run_eval.title_leaks(gold, rewrites) == ["q1"]           # one-word titles ignored
+    gold = [GoldQuery("q1", "a man's whole life is a tv show", "The Truman Show", 1998, []),
+            GoldQuery("q2", "a boy left home alone fights burglars", "Home Alone", 1990, []),
+            GoldQuery("q3", "old man floats his house with balloons", "Up", 2009, [])]
+    rewrites = {gold[0].query: "This is The Truman Show: a man's life is a TV show.",
+                gold[1].query: "A boy is left home alone and fights two burglars.",   # user's words
+                gold[2].query: "An old man ties balloons to his house and it floats up."}
+    assert run_eval.title_leaks(gold, rewrites) == ["q1"]          # q2: user's own words; q3: one-word title
