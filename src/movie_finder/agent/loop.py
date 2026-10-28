@@ -69,12 +69,13 @@ def run_agent(
     retriever: Retriever,
     *,
     history: list[str] | None = None,
-    mode: Mode = "dense",
+    mode: Mode | None = None,
     max_steps: int | None = None,
     client=None,
     on_event: EventFn | None = None,
 ) -> AgentResult:
     max_steps = max_steps or get_settings().agent_max_steps
+    mode = mode or get_settings().retrieval_mode
     emit = on_event or (lambda e: None)
     box = ToolBox(retriever, mode=mode)
     trace: list[dict[str, Any]] = []

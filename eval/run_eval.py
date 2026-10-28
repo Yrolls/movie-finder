@@ -2,6 +2,7 @@
 
     python eval/run_eval.py                                  # retrieval: bm25 vs dense vs hybrid
     python eval/run_eval.py --index data/index data/index_c100 data/index_c400   # chunk sizes
+    python eval/run_eval.py --rewrite                        # + same queries after LLM rewriting
     python eval/run_eval.py --agent                          # + end-to-end agent vs LLM-only
 
 Parts
@@ -9,7 +10,9 @@ Parts
                (BM25 is the named baseline).
 2. min_score   sweep of the dense floor: recall@5 kept on answerable queries vs. share of
                unanswerable queries correctly answered with nothing.
-3. Agent       (--agent, calls the LLM) top-1 accuracy of the full app vs. a no-retrieval
+3. Rewrite     (--rewrite, calls the LLM once per query, cached in eval/results/rewrites.json)
+               every mode again on the LLM-rewritten English plot-style query.
+4. Agent       (--agent, calls the LLM) top-1 accuracy of the full app vs. a no-retrieval
                baseline where the model guesses the title from its own memory.
 """
 from __future__ import annotations
@@ -46,14 +49,17 @@ RESULTS_DIR = ROOT / "eval" / "results"
 
 
 # ---------------------------------------------------------------- retrieval
-def eval_retrieval(retriever, gold: list[GoldQuery], modes: list[str]) -> dict:
+def eval_retrieval(retriever, gold: list[GoldQuery], modes: list[str],
+                   rewrites: dict[str, str] | None = None, suffix: str = "") -> dict:
+    """`rewrites` maps original query -> text actually searched (None = search the raw query)."""
     out = {}
     answerable = [g for g in gold if g.answerable]
     for mode in modes:
         ranks, per_tag = [], defaultdict(list)
         misses = []
         for g in answerable:
-            hits = retriever.search(g.query, k=max(KS), mode=mode, min_score=0.0)
+            text = rewrites[g.query] if rewrites else g.query
+            hits = retriever.search(text, k=max(KS), mode=mode, min_score=0.0)
             r = rank_of(g.accepted, [h.movie_id for h in hits])
             ranks.append(r)
             for t in g.tags:
@@ -61,7 +67,7 @@ def eval_retrieval(retriever, gold: list[GoldQuery], modes: list[str]) -> dict:
             if r != 1:
                 misses.append({"id": g.qid, "query": g.query, "gold": g.title, "rank": r,
                                "top1": f"{hits[0].title} ({hits[0].year})" if hits else None})
-        out[mode] = {
+        out[mode + suffix] = {
             "overall": retrieval_metrics(ranks, KS),
             "per_tag": {t: {"n": len(rs), **retrieval_metrics(rs, KS)} for t, rs in sorted(per_tag.items())},
             "misses": misses,
@@ -69,11 +75,12 @@ def eval_retrieval(retriever, gold: list[GoldQuery], modes: list[str]) -> dict:
     return out
 
 
-def sweep_min_score(retriever, gold: list[GoldQuery]) -> list[dict]:
+def sweep_min_score(retriever, gold: list[GoldQuery], rewrites: dict[str, str] | None = None) -> list[dict]:
     """Score every query once (no floor), then apply each threshold offline."""
     scored = []
     for g in gold:
-        hits = retriever.search(g.query, k=5, mode="dense", min_score=0.0)
+        text = rewrites[g.query] if rewrites else g.query
+        hits = retriever.search(text, k=5, mode="dense", min_score=0.0)
         scored.append((g, [(h.movie_id, h.score) for h in hits]))
 
     rows = []
@@ -89,6 +96,39 @@ def sweep_min_score(retriever, gold: list[GoldQuery]) -> list[dict]:
                      "recall@5_answerable": retrieval_metrics(ranks, (5,))["recall@5"],
                      "abstain_unanswerable": abstain_rate(empties)})
     return rows
+
+
+# ---------------------------------------------------------------- query rewriting
+REWRITES_PATH = RESULTS_DIR / "rewrites.json"
+
+
+def get_rewrites(gold: list[GoldQuery], model: str) -> dict[str, str]:
+    """LLM rewrites, cached on disk so the numbers are reproducible without re-calling the model."""
+    from movie_finder.retrieval.rewrite import rewrite_query
+
+    cache = json.loads(REWRITES_PATH.read_text(encoding="utf-8")) if REWRITES_PATH.exists() else {}
+    changed = False
+    for g in gold:
+        hit = cache.get(g.query)
+        if hit is None or hit.get("model") != model:
+            cache[g.query] = {"model": model, "plot": rewrite_query(g.query)}
+            changed = True
+            print(f"  rewrote {g.qid}")
+    if changed:
+        RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+        REWRITES_PATH.write_text(json.dumps(cache, indent=2, ensure_ascii=False), encoding="utf-8")
+    return {g.query: cache[g.query]["plot"] for g in gold}
+
+
+def title_leaks(gold: list[GoldQuery], rewrites: dict[str, str]) -> list[str]:
+    """Rewrites that name the gold movie (would make the comparison unfair). Multi-word titles only:
+    one-word titles like 'Up' or 'It' appear in ordinary sentences."""
+    leaks = []
+    for g in gold:
+        if g.answerable and len(norm_title(g.title).split()) >= 2:
+            if norm_title(g.title) in norm_title(rewrites[g.query]):
+                leaks.append(g.qid)
+    return leaks
 
 
 # ---------------------------------------------------------------- agent vs LLM-only
@@ -115,7 +155,7 @@ def llm_only_guess(query: str, movies_by_title: dict) -> str | None:
     return "__not_in_corpus__"
 
 
-def eval_agent(retriever, gold: list[GoldQuery], movies) -> dict:
+def eval_agent(retriever, gold: list[GoldQuery], movies, mode: str) -> dict:
     from movie_finder.agent.loop import run_agent
 
     by_title = defaultdict(list)
@@ -125,7 +165,7 @@ def eval_agent(retriever, gold: list[GoldQuery], movies) -> dict:
     rows = []
     for g in gold:
         t0 = time.perf_counter()
-        res = run_agent(g.query, retriever)
+        res = run_agent(g.query, retriever, mode=mode)
         dt = time.perf_counter() - t0
         top = res.answer.candidates[0].movie_id if res.answer.candidates else None
         base = llm_only_guess(g.query, by_title)
@@ -192,17 +232,26 @@ def write_report(res: dict) -> str:
             cells = [pct(m["per_tag"].get(t, {}).get("recall@5", float("nan"))) for m in first["modes"].values()]
             L.append(f"| {t} | {n} | " + " | ".join(cells) + " |")
 
+    if res.get("rewrite_leaks") is not None:
+        leaks = res["rewrite_leaks"]
+        L += ["", f"Rows marked `+rewrite` search the LLM-rewritten query (`eval/results/rewrites.json`). "
+                  f"Rewrites that named the gold movie: {', '.join(leaks) if leaks else 'none'}."]
+
     if res.get("sweep"):
+        rw = res.get("sweep_rewrite")
         L += ["", "## 2. `min_score` floor (dense)", "",
-              "| min_score | recall@5 kept (answerable) | returns nothing (unanswerable) |",
-              "|---|---|---|"]
-        for r in res["sweep"]:
-            L.append(f"| {r['min_score']:.2f} | {pct(r['recall@5_answerable'])} | "
-                     f"{pct(r['abstain_unanswerable'])} |")
+              "| min_score | recall@5 kept (answerable) | returns nothing (unanswerable) |"
+              + (" recall@5 kept, rewritten | returns nothing, rewritten |" if rw else ""),
+              "|---|---|---|" + ("---|---|" if rw else "")]
+        for i, r in enumerate(res["sweep"]):
+            row = f"| {r['min_score']:.2f} | {pct(r['recall@5_answerable'])} | {pct(r['abstain_unanswerable'])} |"
+            if rw:
+                row += f" {pct(rw[i]['recall@5_answerable'])} | {pct(rw[i]['abstain_unanswerable'])} |"
+            L.append(row)
 
     if res.get("agent"):
         s = res["agent"]["summary"]
-        L += ["", "## 3. End-to-end: agent vs. LLM-only (no retrieval)", "",
+        L += ["", f"## 3. End-to-end: agent ({res['config']['retrieval_mode']} retrieval) vs. LLM-only (no retrieval)", "",
               "| system | top-1 accuracy (answerable) | says not found (unanswerable) |",
               "|---|---|---|",
               f"| LLM-only baseline | {pct(s['llm_only_top1_answerable'])} | {pct(s['llm_only_abstain_unanswerable'])} |",
@@ -224,6 +273,7 @@ def main() -> None:
     ap.add_argument("--gold", type=Path, default=ROOT / "eval" / "queries.jsonl")
     ap.add_argument("--index", type=Path, nargs="+", default=[INDEX_DIR])
     ap.add_argument("--modes", nargs="+", default=["bm25", "dense", "hybrid"])
+    ap.add_argument("--rewrite", action="store_true", help="also evaluate LLM-rewritten queries (uses the LLM)")
     ap.add_argument("--agent", action="store_true", help="also run the end-to-end agent eval (uses the LLM)")
     ap.add_argument("--no-sweep", action="store_true")
     args = ap.parse_args()
@@ -243,26 +293,37 @@ def main() -> None:
         "generated": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
         "n_answerable": n_ans, "n_unanswerable": len(gold) - n_ans,
         "config": {"llm_model": s.llm_model, "embed_model": s.embed_model, "min_score": s.min_score,
-                   "agent_max_steps": s.agent_max_steps},
+                   "retrieval_mode": s.retrieval_mode, "agent_max_steps": s.agent_max_steps},
         "retrieval": [],
     }
+    rewrites = None
+    if args.rewrite:
+        print("[eval] rewriting queries with the LLM (cached) ...")
+        rewrites = get_rewrites(gold, s.llm_model)
+        res["rewrite_leaks"] = title_leaks(gold, rewrites)
+
     first_retriever = None
     for idx in args.index:
         idx = idx if idx.is_absolute() else ROOT / idx
         print(f"[eval] retrieval on {idx.name} ...")
         r = load_retriever(idx, movies=movies, min_score=0.0)
         first_retriever = first_retriever or r
-        res["retrieval"].append({"index": str(idx.relative_to(ROOT)), "meta": r.store.meta,
-                                 "modes": eval_retrieval(r, gold, args.modes)})
+        modes = eval_retrieval(r, gold, args.modes)
+        if rewrites:
+            modes |= eval_retrieval(r, gold, args.modes, rewrites=rewrites, suffix="+rewrite")
+        res["retrieval"].append({"index": str(idx.relative_to(ROOT).as_posix()), "meta": r.store.meta,
+                                 "modes": modes})
 
     if not args.no_sweep:
         print("[eval] min_score sweep ...")
         res["sweep"] = sweep_min_score(first_retriever, gold)
+        if rewrites:
+            res["sweep_rewrite"] = sweep_min_score(first_retriever, gold, rewrites)
 
     if args.agent:
         print("[eval] agent vs LLM-only (calls the LLM) ...")
         first_retriever.min_score = s.min_score
-        res["agent"] = eval_agent(first_retriever, gold, movies)
+        res["agent"] = eval_agent(first_retriever, gold, movies, s.retrieval_mode)
 
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     (RESULTS_DIR / "results.json").write_text(json.dumps(res, indent=2, ensure_ascii=False), encoding="utf-8")

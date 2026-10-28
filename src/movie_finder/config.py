@@ -53,6 +53,7 @@ class Settings:
     chunk_overlap: int
     top_k: int
     min_score: float
+    retrieval_mode: str
     # agent
     agent_max_steps: int
 
@@ -78,10 +79,13 @@ def get_settings() -> Settings:
         chunk_overlap=_int("CHUNK_OVERLAP", 50),
         top_k=_int("TOP_K", 5),
         min_score=_float("MIN_SCORE", 0.80),
+        retrieval_mode=os.getenv("RETRIEVAL_MODE", "hybrid"),
         agent_max_steps=_int("AGENT_MAX_STEPS", 5),
     )
     if s.chunk_overlap >= s.chunk_words:
         raise ConfigError("CHUNK_OVERLAP must be smaller than CHUNK_WORDS")
+    if s.retrieval_mode not in {"dense", "bm25", "hybrid"}:
+        raise ConfigError("RETRIEVAL_MODE must be dense, bm25 or hybrid")
     if not 1 <= s.agent_max_steps <= 20:
         raise ConfigError("AGENT_MAX_STEPS must be between 1 and 20")
     return s

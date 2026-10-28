@@ -80,8 +80,10 @@ The gold set is [`eval/queries.jsonl`](eval/queries.jsonl): half-remembered desc
 
 ```bash
 python scripts/find_movie.py "groundhog"     # look up a title when adding a query
+python scripts/check_dense.py                # sanity check: does a plot passage find its own movie?
 python eval/run_eval.py                      # retrieval: BM25 baseline vs dense vs hybrid + min_score sweep
-python eval/run_eval.py --agent              # + end-to-end agent vs LLM-only baseline (calls the LLM)
+python eval/run_eval.py --rewrite            # + the same queries after LLM rewriting (cached, calls the LLM)
+python eval/run_eval.py --rewrite --agent    # + end-to-end agent vs LLM-only baseline (calls the LLM)
 
 # chunk-size experiment: build extra indexes, then compare them in one report
 python scripts/build_index.py --chunk-words 100 --chunk-overlap 25 --out data/index_c100
