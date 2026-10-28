@@ -1,0 +1,154 @@
+{
+  "ผู้ชายคนหนึ่งตื่นขึ้นมาแล้วเจอวันเดิมซ้ำไปเรื่อย ๆ ในเมืองเล็ก ๆ ช่วงหน้าหนาว เขาเป็นคนพยากรณ์อากาศนิสัยไม่ดี": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A man wakes up to find that the same day is repeating endlessly in a small town during winter. He is a poorly behaved weather forecaster."
+  },
+  "a team of thieves breaks into a rich heir's mind while he sleeps to plant an idea instead of stealing one": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A team of thieves infiltrates the sleeping mind of a wealthy heir. Instead of stealing an object, the thieves attempt to implant a specific idea into the heir's consciousness."
+  },
+  "guy can't make new memories so he tattoos notes on his body and uses polaroid photos to hunt down his wife's killer": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A man who is unable to form new memories tattoos notes onto his body to retain information. He then uses Polaroid photographs to track down the person responsible for killing his wife."
+  },
+  "ชายคนหนึ่งค่อย ๆ รู้ว่าชีวิตทั้งชีวิตของเขาเป็นรายการทีวี ทุกคนรอบตัวเป็นนักแสดง": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A man gradually realizes that his entire life is a television show, and everyone around him consists of actors."
+  },
+  "the one where the guy is stuck on an island after a plane crash and his only friend is a volleyball": {
+    "model": "gemma-4-E4B-it",
+    "plot": "Following a plane crash, a man finds himself stranded on an island. His sole companion in this isolated setting is a volleyball."
+  },
+  "วัยรุ่นย้อนเวลากลับไปด้วยรถสปอร์ต แล้วเผลอทำให้พ่อแม่ตัวเองไม่ได้รักกัน ต้องแก้ให้ทั้งคู่กลับมาเจอกัน": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A teenager travels back in time using a sports car and accidentally causes their parents to stop being in love. The protagonist must then take steps to ensure both parents meet again."
+  },
+  "a child psychologist tries to help a scared little boy who says he can see ghosts, with a big twist at the end": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A child psychologist attempts to help a young boy who claims to see ghosts. The sessions involve the psychologist working with the boy to address his fears and visions. The narrative concludes with a significant revelation regarding the boy's experiences."
+  },
+  "เด็กผู้ชายขอพรกับตู้เกมแล้วตื่นมาตัวโตเป็นผู้ใหญ่ ได้ไปทำงานบริษัทของเล่น": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A young boy makes a wish to a game cabinet and wakes up as an adult. He subsequently goes to work at a toy company."
+  },
+  "lawyer who lies all the time suddenly cannot tell a lie for a whole day because of his son's birthday wish": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A lawyer who habitually lies finds himself unable to tell a falsehood for an entire day after a wish made by his son on his birthday takes effect."
+  },
+  "a man from eastern europe gets stuck living inside a new york airport for months because his country stops existing": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A man from Eastern Europe finds himself stranded inside a New York airport for several months after his home country ceases to exist."
+  },
+  "คุณลุงแก่ ๆ ผูกลูกโป่งเป็นพันลูกกับบ้านแล้วลอยไปอเมริกาใต้ มีเด็กลูกเสือติดไปด้วย": {
+    "model": "gemma-4-E4B-it",
+    "plot": "An elderly man attaches thousands of balloons to a house and floats it to South America, accompanied by a scout child."
+  },
+  "หนูที่อยากเป็นเชฟ แอบควบคุมเด็กหนุ่มในครัวร้านอาหารที่ปารีสด้วยการดึงผมใต้หมวก": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A young person aspiring to be a chef secretly controls a young man in a Parisian restaurant kitchen by pulling his hair under his hat."
+  },
+  "kids find an old board game and every roll lets jungle animals and a hunter out into their town, and a man comes out who was trapped inside for years": {
+    "model": "gemma-4-E4B-it",
+    "plot": "When children discover an old board game, each roll causes jungle animals and a hunter to emerge into their town. This event culminates with a man appearing, who had been trapped inside the game for several years."
+  },
+  "a boy is accidentally left home alone during easter holiday and fights off two burglars with traps": {
+    "model": "gemma-4-E4B-it",
+    "plot": "During the Easter holiday, a young boy finds himself home alone. He defends his residence against two burglars by setting and utilizing various traps."
+  },
+  "soldier fighting aliens keeps dying and waking up on the same day before the battle, training with a famous female soldier": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A soldier repeatedly dies and awakens on the same day before a battle against aliens. In this recurring loop, the soldier trains alongside a famous female soldier."
+  },
+  "a man wakes up in someone else's body on a commuter train and keeps reliving the last 8 minutes before it explodes": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A man awakens inside another person's body while on a commuter train. He finds himself repeatedly reliving the final eight minutes leading up to an explosion."
+  },
+  "ผู้ชายเหงา ๆ ที่เพิ่งหย่า ตกหลุมรักระบบปฏิบัติการ AI ในคอมพิวเตอร์ที่มีแค่เสียงผู้หญิง": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A lonely man who has recently divorced develops an infatuation with an AI operating system on his computer, which communicates solely through a female voice."
+  },
+  "young programmer is invited to a billionaire's remote house to test whether a female robot is truly conscious": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A young programmer is invited to a remote house belonging to a billionaire. The purpose of the visit is to test whether a female robot housed at the estate possesses genuine consciousness."
+  },
+  "two rival stage magicians in old london try to outdo each other, one uses a strange electric machine for a teleport trick": {
+    "model": "gemma-4-E4B-it",
+    "plot": "Two rival stage magicians compete in old London, vying to outdo one another in their performances. One of the magicians incorporates a strange electric machine into a trick involving teleportation."
+  },
+  "นักวิทยาศาสตร์ผู้หญิงที่ฟังสัญญาณจากอวกาศ ได้รับข้อความจากดาวดวงอื่นที่มีแบบแปลนสร้างเครื่องเดินทาง": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A female scientist monitoring signals from space receives a message from another planet. This message contains blueprints for constructing a spacecraft."
+  },
+  "a lonely worker near the end of a three year contract on a moon base finds another version of himself": {
+    "model": "gemma-4-E4B-it",
+    "plot": "Near the conclusion of a three-year contract on a moon base, a solitary worker encounters an alternate version of himself."
+  },
+  "two engineers building a gadget in their garage accidentally invent a time machine and the timelines get really confusing": {
+    "model": "gemma-4-E4B-it",
+    "plot": "Two engineers working in their garage construct a gadget, which unexpectedly results in the invention of a time machine. This invention subsequently causes the timelines to become highly confusing."
+  },
+  "ผู้ชายขี้อายพาตุ๊กตาขนาดเท่าคนจริงมาแนะนำว่าเป็นแฟน แล้วคนทั้งเมืองก็เล่นตามไปด้วย": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A shy man brings a life-sized doll to introduce as his partner, and the entire town begins to participate in the charade."
+  },
+  "a quiet man who loves trains inherits an abandoned little train depot in the countryside and slowly makes two unlikely friends": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A quiet man who has a fondness for trains inherits an abandoned small train depot located in the countryside. He begins the process of revitalizing the depot and gradually forms friendships with two unlikely companions."
+  },
+  "single people are sent to a hotel and must find a partner in 45 days or they get turned into an animal": {
+    "model": "gemma-4-E4B-it",
+    "plot": "Single individuals are sent to a hotel where they are given 45 days to find a romantic partner. Failure to find a partner within this timeframe results in the participants being transformed into an animal."
+  },
+  "อดีตสายลับรัฐบาลออกตามหาลูกสาววัยรุ่นที่โดนแก๊งค้ามนุษย์ลักพาตัวตอนไปเที่ยวยุโรป": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A former government agent searches for his teenage daughter who was abducted by a human trafficking gang while on vacation in Europe."
+  },
+  "there is a bomb on a train and if it goes below 50 miles per hour it explodes, a cop has to keep it moving": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A bomb is discovered on a train with a specific trigger: it will detonate if the train's speed drops below 50 miles per hour. A police officer is tasked with ensuring the train maintains sufficient velocity to prevent the explosion."
+  },
+  "นักบินอวกาศถูกทิ้งไว้บนดาวอังคารเพราะเพื่อนคิดว่าตายแล้ว ต้องปลูกมันฝรั่งเพื่อเอาชีวิตรอด": {
+    "model": "gemma-4-E4B-it",
+    "plot": "An astronaut is stranded on Mars after a colleague mistakenly believed them to be dead. To survive in the harsh environment, the astronaut must cultivate potatoes."
+  },
+  "two college friends go looking for their old genius classmate from engineering school who disappeared after graduation": {
+    "model": "gemma-4-E4B-it",
+    "plot": "Two college friends search for a former classmate from engineering school who vanished after graduation. The search is motivated by the classmate's reputation as a genius."
+  },
+  "นักเชลโลตกงานกลับไปบ้านเกิด แล้วได้งานใหม่เป็นคนจัดเตรียมศพก่อนใส่โลง ภรรยาไม่ยอมรับ": {
+    "model": "gemma-4-E4B-it",
+    "plot": "An unemployed cellist returns to his hometown and finds new work as a funeral preparer before the coffin is sealed. His wife does not accept this new profession."
+  },
+  "some movie from the 80s or 90s where a guy keeps living the same day over and over": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A man finds himself repeatedly reliving the same day. He attempts to alter the events of this recurring day, leading to a cycle of repetition."
+  },
+  "หนังที่มีตัวตลก น่ากลัว หลอกเด็กๆ ชื่อเรื่องว่าอะไร": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A clown figure is involved in frightening and tricking children."
+  },
+  "หนังเกี่ยวกับนักวิทยาศาสตร์ที่สร้างระเบิดปรมาณูลูกแรกในทะเลทรายนิวเม็กซิโก": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A scientist creates the first atomic bomb in the New Mexico desert. The film follows the events surrounding this creation."
+  },
+  "a tired laundromat owner jumps between parallel universes where she is a kung fu star and has hot dog fingers": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A weary owner of a laundromat finds herself traversing parallel universes. In these alternate realities, she manifests as a kung fu star and possesses fingers that resemble hot dogs."
+  },
+  "a poor family slowly gets hired one by one into a rich family's modern house by pretending to be strangers": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A poor family begins to be hired individually by a wealthy family residing in a modern house. They maintain the pretense of being strangers while gaining employment within the residence."
+  },
+  "a penguin opens a bakery in bangkok and accidentally becomes a k-pop idol": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A penguin establishes a bakery in Bangkok. Through unforeseen circumstances, this penguin unexpectedly transitions into a K-pop idol."
+  },
+  "ช้างที่ได้เป็นนักบินอวกาศคนแรกของประเทศไทย ต้องซ่อมสถานีอวกาศด้วยงวง": {
+    "model": "gemma-4-E4B-it",
+    "plot": "An elephant, who is Thailand's first astronaut, must repair the space station using its trunk."
+  },
+  "a perfect doll leaves her pink plastic world for the real world and has an existential crisis": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A perfect doll departs from her pink plastic environment and enters the real world. Upon arrival, the doll experiences an existential crisis regarding her existence."
+  }
+}

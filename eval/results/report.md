@@ -1,6 +1,6 @@
 # Evaluation report
 
-_Generated 2026-10-28 16:25 UTC — 32 answerable + 6 unanswerable queries from `eval/queries.jsonl`._
+_Generated 2026-10-28 16:36 UTC — 32 answerable + 6 unanswerable queries from `eval/queries.jsonl`._
 
 LLM: `gemma-4-E4B-it` · embeddings: `intfloat/multilingual-e5-small` · temperature 0
 
@@ -8,36 +8,41 @@ LLM: `gemma-4-E4B-it` · embeddings: `intfloat/multilingual-e5-small` · tempera
 
 | index | chunk words | mode | recall@1 | recall@5 | recall@10 | MRR@10 |
 |---|---|---|---|---|---|---|
-| `data\index` | 200 | bm25 (baseline) | 31.2% | 46.9% | 46.9% | 0.376 |
-| `data\index` | 200 | dense | 15.6% | 31.2% | 34.4% | 0.213 |
-| `data\index` | 200 | hybrid | 34.4% | 46.9% | 50.0% | 0.393 |
+| `data/index` | 200 | bm25 (baseline) | 31.2% | 46.9% | 46.9% | 0.376 |
+| `data/index` | 200 | dense | 15.6% | 31.2% | 34.4% | 0.213 |
+| `data/index` | 200 | hybrid | 34.4% | 46.9% | 50.0% | 0.393 |
+| `data/index` | 200 | bm25+rewrite | 37.5% | 62.5% | 75.0% | 0.497 |
+| `data/index` | 200 | dense+rewrite | 18.8% | 31.2% | 37.5% | 0.242 |
+| `data/index` | 200 | hybrid+rewrite | 50.0% | 75.0% | 75.0% | 0.588 |
 
-### recall@5 by query tag (`data\index`)
+### recall@5 by query tag (`data/index`)
 
-| tag | n | bm25 | dense | hybrid |
-|---|---|---|---|---|
-| confusable | 3 | 66.7% | 0.0% | 66.7% |
-| en | 19 | 78.9% | 52.6% | 78.9% |
-| famous | 24 | 41.7% | 33.3% | 45.8% |
-| obscure | 8 | 62.5% | 25.0% | 50.0% |
-| partial | 2 | 50.0% | 50.0% | 50.0% |
-| plain | 24 | 41.7% | 37.5% | 41.7% |
-| th | 13 | 0.0% | 0.0% | 0.0% |
-| vague | 2 | 0.0% | 0.0% | 0.0% |
-| wrong_detail | 2 | 100.0% | 0.0% | 100.0% |
+| tag | n | bm25 | dense | hybrid | bm25+rewrite | dense+rewrite | hybrid+rewrite |
+|---|---|---|---|---|---|---|---|
+| confusable | 3 | 66.7% | 0.0% | 66.7% | 66.7% | 0.0% | 33.3% |
+| en | 19 | 78.9% | 52.6% | 78.9% | 63.2% | 42.1% | 73.7% |
+| famous | 24 | 41.7% | 33.3% | 45.8% | 66.7% | 33.3% | 79.2% |
+| obscure | 8 | 62.5% | 25.0% | 50.0% | 50.0% | 25.0% | 62.5% |
+| partial | 2 | 50.0% | 50.0% | 50.0% | 50.0% | 50.0% | 50.0% |
+| plain | 24 | 41.7% | 37.5% | 41.7% | 62.5% | 37.5% | 79.2% |
+| th | 13 | 0.0% | 0.0% | 0.0% | 61.5% | 15.4% | 76.9% |
+| vague | 2 | 0.0% | 0.0% | 0.0% | 50.0% | 0.0% | 50.0% |
+| wrong_detail | 2 | 100.0% | 0.0% | 100.0% | 50.0% | 0.0% | 100.0% |
+
+Rows marked `+rewrite` search the LLM-rewritten query (`eval/results/rewrites.json`). Rewrites that named the gold movie: q14.
 
 ## 2. `min_score` floor (dense)
 
-| min_score | recall@5 kept (answerable) | returns nothing (unanswerable) |
-|---|---|---|
-| 0.00 | 31.2% | 0.0% |
-| 0.76 | 31.2% | 0.0% |
-| 0.78 | 31.2% | 0.0% |
-| 0.80 | 31.2% | 16.7% |
-| 0.82 | 31.2% | 33.3% |
-| 0.84 | 15.6% | 83.3% |
-| 0.86 | 6.2% | 100.0% |
-| 0.88 | 0.0% | 100.0% |
+| min_score | recall@5 kept (answerable) | returns nothing (unanswerable) | recall@5 kept, rewritten | returns nothing, rewritten |
+|---|---|---|---|---|
+| 0.00 | 31.2% | 0.0% | 31.2% | 0.0% |
+| 0.76 | 31.2% | 0.0% | 31.2% | 0.0% |
+| 0.78 | 31.2% | 0.0% | 31.2% | 0.0% |
+| 0.80 | 31.2% | 16.7% | 31.2% | 0.0% |
+| 0.82 | 31.2% | 33.3% | 31.2% | 16.7% |
+| 0.84 | 15.6% | 83.3% | 15.6% | 50.0% |
+| 0.86 | 6.2% | 100.0% | 3.1% | 100.0% |
+| 0.88 | 0.0% | 100.0% | 0.0% | 100.0% |
 
 ## Dense misses (rank ≠ 1) — for error analysis
 
