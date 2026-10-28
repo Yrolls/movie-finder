@@ -81,3 +81,11 @@ def test_garbage_after_max_steps_falls_back_to_hits(fake_client):
     res = run_agent("same day again", make_retriever(), client=client, max_steps=1)
     assert res.answer.status == "not_sure"
     assert res.answer.candidates[0].movie_id == "m00000"
+
+
+def test_final_carries_evidence_text(fake_client):
+    client = fake_client([SEARCH, final()])
+    res = run_agent("same day again", make_retriever(), client=client)
+    cited = res.answer.candidates[0].evidence_chunk_id
+    chunk_text = {c.chunk_id: c.text for c in make_retriever().store.chunks}[cited]
+    assert res.evidence["m00000"]["snippet"] == chunk_text[:300]   # evidence = the cited chunk's text

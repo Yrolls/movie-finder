@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Movie Finder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;1,8..60,400&family=Noto+Sans+Thai:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #E8ECF1;
+    --ink: #1A2240;
+    --slate: #5A6378;
+    --sheet: #FFFFFF;
+    --rule: #C9D0DB;
+    --marquee: #F2B705;
+    --miss: #B4413A;
+    --ui: "Bricolage Grotesque", "Noto Sans Thai", system-ui, sans-serif;
+    --quote: "Source Serif 4", "Noto Sans Thai", Georgia, serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --paper: #141A30; --ink: #E8ECF1; --slate: #9AA3B8; --sheet: #1D2542; --rule: #2E3859; --miss: #E7867E; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 17px/1.55 var(--ui); }
+  main { max-width: 720px; margin: 0 auto; padding: 56px 16px 96px; }
+
+  h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); line-height: 1.05; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 12px; }
+  .lede { color: var(--slate); margin: 0 0 32px; max-width: 34em; }
+
+  textarea {
+    width: 100%; min-height: 128px; resize: vertical; padding: 16px 18px;
+    font: 1.15rem/1.5 var(--ui); color: var(--ink); background: var(--sheet);
+    border: 2px solid var(--rule); border-radius: 6px;
+  }
+  textarea:focus-visible, button:focus-visible, a:focus-visible, input:focus-visible {
+    outline: 3px solid var(--marquee); outline-offset: 2px;
+  }
+  .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 14px; }
+  button {
+    font: 600 1rem var(--ui); padding: 12px 22px; border-radius: 6px; cursor: pointer;
+    border: 2px solid var(--ink); background: var(--ink); color: var(--paper);
+  }
+  button:disabled { opacity: .55; cursor: progress; }
+  .examples { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .examples span { color: var(--slate); font-size: .9rem; width: 100%; }
+  .chip {
+    font: 400 .92rem var(--ui); padding: 6px 12px; border-radius: 999px; cursor: pointer;
+    background: transparent; color: var(--ink); border: 1px solid var(--rule); text-align: left;
+  }
+
+  #steps { list-style: decimal; margin: 36px 0 0; padding-left: 1.4em; color: var(--slate); font-size: .95rem; }
+  #steps li { margin: 4px 0; }
+  #steps code { font-family: var(--ui); color: var(--ink); }
+
+  #result { margin-top: 28px; }
+  .pick { background: var(--sheet); border-radius: 6px; padding: 24px 24px 20px; border-left: 6px solid var(--marquee); }
+  .pick.focus-in { animation: focus-in 900ms cubic-bezier(.2,.7,.2,1) both; }
+  @keyframes focus-in { from { filter: blur(10px); opacity: .2; transform: scale(.985); } to { filter: none; opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .pick.focus-in { animation: none; } }
+
+  .title { font-size: 2rem; font-weight: 800; line-height: 1.1; margin: 0; }
+  .year { font-weight: 400; color: var(--slate); }
+  .why { margin: 12px 0 0; }
+  blockquote { margin: 16px 0 0; padding: 2px 0 2px 16px; border-left: 2px solid var(--rule); font: italic 1rem/1.65 var(--quote); color: var(--slate); }
+  .meta { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-top: 16px; font-size: .9rem; color: var(--slate); }
+  .bar { width: 120px; height: 8px; background: var(--rule); border-radius: 4px; overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--marquee); }
+  a { color: var(--ink); text-underline-offset: 3px; }
+
+  .others { margin-top: 22px; }
+  .others h2, .ask h2 { font-size: 1.05rem; margin: 0 0 8px; }
+  .alt { padding: 14px 0; border-top: 1px solid var(--rule); }
+  .alt b { font-size: 1.15rem; }
+
+  .ask { margin-top: 24px; }
+  .ask input { width: 100%; padding: 12px 14px; font: 1rem var(--ui); color: var(--ink); background: var(--sheet); border: 2px solid var(--rule); border-radius: 6px; }
+  .note { margin-top: 24px; padding: 18px 20px; background: var(--sheet); border-radius: 6px; }
+  .error { color: var(--miss); }
+  footer { margin-top: 64px; color: var(--slate); font-size: .85rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>What was that movie called?</h1>
+  <p class="lede">Describe whatever you remember — a scene, the premise, roughly when you saw it.
+    English or Thai both work. You'll get the title and the plot passage that matched.</p>
+
+  <form id="form">
+    <textarea id="desc" aria-label="What you remember about the movie" required minlength="5" maxlength="2000"
+      placeholder="e.g. a guy keeps waking up on the same day in a snowy little town…"></textarea>
+    <div class="row">
+      <button id="go" type="submit">Find the movie</button>
+      <span id="status" role="status" aria-live="polite"></span>
+    </div>
+  </form>
+
+  <div class="examples">
+    <span>Or try one:</span>
+    <button class="chip" type="button">a magician uses a strange electric machine to beat his rival</button>
+    <button class="chip" type="button">คุณตาผูกลูกโป่งเต็มบ้านแล้วบ้านลอยขึ้นฟ้า</button>
+    <button class="chip" type="button">a woman scientist hears a message from aliens with plans for a machine</button>
+  </div>
+
+  <ol id="steps" aria-label="What the assistant did"></ol>
+  <section id="result" aria-live="polite"></section>
+
+  <footer>Plots from Wikipedia (CC BY-SA), films 1980–2017. Answers come only from that database.</footer>
+</main>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const form = $("#form"), desc = $("#desc"), go = $("#go"), statusEl = $("#status");
+const steps = $("#steps"), result = $("#result");
+let history = [];          // answers to follow-up questions for the current description
+
+document.querySelectorAll(".chip").forEach((c) =>
+  c.addEventListener("click", () => { desc.value = c.textContent; history = []; desc.focus(); }));
+desc.addEventListener("input", () => { history = []; });
+form.addEventListener("submit", (e) => { e.preventDefault(); run(); });
+
+function esc(s) { const d = document.createElement("div"); d.textContent = s ?? ""; return d.innerHTML; }
+
+async function run() {
+  if (desc.value.trim().length < 5) { desc.focus(); return; }
+  go.disabled = true; statusEl.textContent = "Searching…";
+  steps.innerHTML = ""; result.innerHTML = "";
+  try {
+    const res = await fetch("/find/stream", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ description: desc.value.trim(), history }),
+    });
+    if (!res.ok) throw new Error(`Server returned ${res.status}. Check the terminal running uvicorn.`);
+    const reader = res.body.getReader(), dec = new TextDecoder();
+    let buf = "";
+    for (;;) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buf += dec.decode(value, { stream: true });
+      const parts = buf.split(/\r?\n\r?\n/); buf = parts.pop();
+      for (const p of parts) handle(p);
+    }
+  } catch (err) {
+    result.innerHTML = `<p class="note error">${esc(err.message)}</p>`;
+  } finally {
+    go.disabled = false; statusEl.textContent = "";
+  }
+}
+
+function handle(raw) {
+  const data = raw.split(/\r?\n/).filter((l) => l.startsWith("data:")).map((l) => l.slice(5).trim()).join("\n");
+  if (!data) return;
+  const ev = JSON.parse(data);
+  if (ev.type === "tool_call") {
+    let args = {}; try { args = JSON.parse(ev.arguments); } catch {}
+    const what = ev.name === "search_movies"
+      ? `Searched plots for <code>“${esc(args.query)}”</code>${args.year_from || args.year_to ? ` (${args.year_from ?? "…"}–${args.year_to ?? "…"})` : ""}`
+      : `Checked details of <code>${esc(args.movie_id)}</code>`;
+    steps.insertAdjacentHTML("beforeend", `<li>${what}</li>`);
+  } else if (ev.type === "tool_result" && ev.name === "search_movies") {
+    const li = steps.lastElementChild;
+    if (li) li.insertAdjacentHTML("beforeend", ` — ${ev.n_results ? ev.n_results + " close matches" : "nothing close enough"}`);
+  } else if (ev.type === "final") {
+    render(ev.answer, ev.evidence || {});
+  } else if (ev.type === "error") {
+    result.innerHTML = `<p class="note error">Something went wrong: ${esc(ev.message)}</p>`;
+  }
+}
+
+function render(ans, evidence) {
+  const c = ans.candidates || [];
+  if (ans.status === "not_found" || !c.length) {
+    result.innerHTML = `<div class="note"><b>No movie in the database matches that closely enough.</b>
+      <p>It may be newer than 2017 or not on Wikipedia's list. Try adding a scene or detail you remember.</p></div>`;
+    return;
+  }
+  const [top, ...rest] = c;
+  const ev = evidence[top.movie_id] || {};
+  let html = `<article class="pick focus-in">
+      <h2 class="title">${esc(top.title)} <span class="year">(${top.year})</span></h2>
+      <p class="why">${esc(top.why)}</p>
+      ${ev.snippet ? `<blockquote>${esc(ev.snippet)}…</blockquote>` : ""}
+      <div class="meta">
+        <span>Confidence</span><span class="bar" aria-hidden="true"><i style="width:${Math.round(top.confidence * 100)}%"></i></span>
+        <span>${Math.round(top.confidence * 100)}%</span>
+        ${ev.wiki_url ? `<a href="${esc(ev.wiki_url)}" target="_blank" rel="noopener">Read the plot on Wikipedia</a>` : ""}
+      </div>
+    </article>`;
+  if (rest.length) {
+    html += `<div class="others"><h2>Could also be</h2>` + rest.map((o) =>
+      `<div class="alt"><b>${esc(o.title)}</b> <span class="year">(${o.year})</span><div>${esc(o.why)}</div></div>`).join("") + `</div>`;
+  }
+  if (ans.status === "not_sure" && ans.follow_up_question) {
+    html += `<form class="ask" id="ask"><h2>${esc(ans.follow_up_question)}</h2>
+      <input id="reply" required placeholder="Your answer">
+      <div class="row"><button type="submit">Search again with this</button></div></form>`;
+  }
+  result.innerHTML = html;
+  const ask = $("#ask");
+  if (ask) ask.addEventListener("submit", (e) => {
+    e.preventDefault();
+    history.push(`${ans.follow_up_question} — ${$("#reply").value.trim()}`);
+    run();
+  });
+}
+</script>
+</body>
+</html>

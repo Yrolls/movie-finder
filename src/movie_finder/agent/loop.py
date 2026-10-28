@@ -61,6 +61,7 @@ class AgentResult:
     steps: int
     stopped_by: str                                   # "final_answer" | "max_steps"
     trace: list[dict[str, Any]] = field(default_factory=list)
+    evidence: dict[str, dict[str, str]] = field(default_factory=dict)   # movie_id -> snippet + link
 
 
 def run_agent(
@@ -160,8 +161,17 @@ def ground_answer(answer: FinalAnswer, box: ToolBox) -> FinalAnswer:
 
 def _finish(answer, box, steps, stopped_by, trace, emit) -> AgentResult:
     grounded = ground_answer(answer, box)
-    emit({"type": "final", "answer": json.loads(grounded.model_dump_json())})
-    return AgentResult(answer=grounded, steps=steps, stopped_by=stopped_by, trace=trace)
+    evidence = {}
+    for c in grounded.candidates:
+        movie = box.retriever.get_movie(c.movie_id)
+        evidence[c.movie_id] = {
+            "snippet": box.chunk_text.get(c.evidence_chunk_id, ""),
+            "wiki_url": movie.wiki_url if movie else "",
+        }
+    emit({"type": "final", "answer": json.loads(grounded.model_dump_json()), "evidence": evidence,
+          "steps": steps, "stopped_by": stopped_by})
+    return AgentResult(answer=grounded, steps=steps, stopped_by=stopped_by, trace=trace,
+                       evidence=evidence)
 
 
 def _fallback_from_hits(box: ToolBox) -> FinalAnswer:

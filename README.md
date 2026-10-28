@@ -59,7 +59,18 @@ python scripts/fetch_data.py
 python scripts/build_index.py
 ```
 
-_Running the API is added when that part lands — see the commit history._
+```bash
+# 4. start the app  → open http://localhost:8000
+uvicorn movie_finder.api.app:app --app-dir src --port 8000
+```
+
+| Endpoint | What it does |
+|---|---|
+| `GET /` | demo page: type a description, watch the agent's steps stream in, see the answer + cited passage |
+| `GET /health` | corpus / index / model info |
+| `POST /search` | retrieval only, no LLM — `{"query": "...", "k": 5, "mode": "dense"\|"bm25"\|"hybrid"}` |
+| `POST /find` | full agent, one JSON reply — `{"description": "...", "history": []}` |
+| `POST /find/stream` | same as `/find`, as Server-Sent Events: `tool_call`, `tool_result`, `final` |
 
 ## Evaluate
 
