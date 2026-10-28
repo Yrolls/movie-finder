@@ -89,3 +89,12 @@ def test_final_carries_evidence_text(fake_client):
     cited = res.answer.candidates[0].evidence_chunk_id
     chunk_text = {c.chunk_id: c.text for c in make_retriever().store.chunks}[cited]
     assert res.evidence["m00000"]["snippet"] == chunk_text[:300]   # evidence = the cited chunk's text
+
+
+def test_search_tool_accepts_several_phrasings():
+    box = ToolBox(make_retriever())
+    out = json.loads(box.run("search_movies", json.dumps(
+        {"query": "weatherman relives the same day", "queries": ["small town in winter"]})))
+    assert out["results"][0]["movie_id"] == "m00000"
+    bad = json.loads(box.run("search_movies", json.dumps({"queries": ["x"]})))
+    assert "invalid arguments" in bad["error"]

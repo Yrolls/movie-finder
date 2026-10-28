@@ -3,6 +3,7 @@
     python eval/run_eval.py                                  # retrieval: bm25 vs dense vs hybrid
     python eval/run_eval.py --index data/index data/index_c100 data/index_c400   # chunk sizes
     python eval/run_eval.py --rewrite                        # + same queries after LLM rewriting
+    python eval/run_eval.py --rewrite --multi                # + 3 phrasings per query fused with RRF
     python eval/run_eval.py --agent                          # + end-to-end agent vs LLM-only
 
 Parts
@@ -50,16 +51,21 @@ RESULTS_DIR = ROOT / "eval" / "results"
 
 # ---------------------------------------------------------------- retrieval
 def eval_retrieval(retriever, gold: list[GoldQuery], modes: list[str],
-                   rewrites: dict[str, str] | None = None, suffix: str = "") -> dict:
-    """`rewrites` maps original query -> text actually searched (None = search the raw query)."""
+                   rewrites: dict[str, str] | None = None, suffix: str = "",
+                   multi: dict[str, list[str]] | None = None) -> dict:
+    """`rewrites` maps original query -> text actually searched (None = search the raw query);
+    `multi` maps original query -> several phrasings, searched together and fused with RRF."""
     out = {}
     answerable = [g for g in gold if g.answerable]
     for mode in modes:
         ranks, per_tag = [], defaultdict(list)
         misses = []
         for g in answerable:
-            text = rewrites[g.query] if rewrites else g.query
-            hits = retriever.search(text, k=max(KS), mode=mode, min_score=0.0)
+            if multi:
+                hits = retriever.search_many(multi[g.query], k=max(KS), mode=mode, min_score=0.0)
+            else:
+                text = rewrites[g.query] if rewrites else g.query
+                hits = retriever.search(text, k=max(KS), mode=mode, min_score=0.0)
             r = rank_of(g.accepted, [h.movie_id for h in hits])
             ranks.append(r)
             for t in g.tags:
@@ -118,6 +124,27 @@ def get_rewrites(gold: list[GoldQuery], model: str) -> dict[str, str]:
         RESULTS_DIR.mkdir(parents=True, exist_ok=True)
         REWRITES_PATH.write_text(json.dumps(cache, indent=2, ensure_ascii=False), encoding="utf-8")
     return {g.query: cache[g.query]["plot"] for g in gold}
+
+
+MULTI_PATH = RESULTS_DIR / "rewrites_multi.json"
+
+
+def get_multi_rewrites(gold: list[GoldQuery], model: str) -> dict[str, list[str]]:
+    """Three phrasings per query (see retrieval/rewrite.py), cached like get_rewrites."""
+    from movie_finder.retrieval.rewrite import rewrite_queries
+
+    cache = json.loads(MULTI_PATH.read_text(encoding="utf-8")) if MULTI_PATH.exists() else {}
+    changed = False
+    for g in gold:
+        hit = cache.get(g.query)
+        if hit is None or hit.get("model") != model:
+            cache[g.query] = {"model": model, "plots": rewrite_queries(g.query)}
+            changed = True
+            print(f"  multi-rewrote {g.qid}")
+    if changed:
+        RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+        MULTI_PATH.write_text(json.dumps(cache, indent=2, ensure_ascii=False), encoding="utf-8")
+    return {g.query: cache[g.query]["plots"] for g in gold}
 
 
 def title_leaks(gold: list[GoldQuery], rewrites: dict[str, str]) -> list[str]:
@@ -239,6 +266,11 @@ def write_report(res: dict) -> str:
         leaks = res["rewrite_leaks"]
         L += ["", f"Rows marked `+rewrite` search the LLM-rewritten query (`eval/results/rewrites.json`). "
                   f"Rewrites that named the gold movie: {', '.join(leaks) if leaks else 'none'}."]
+    if res.get("multi_leaks") is not None:
+        leaks = res["multi_leaks"]
+        L += ["", f"Rows marked `+multi` search 3 LLM phrasings per query fused with RRF "
+                  f"(`eval/results/rewrites_multi.json`). Phrasings that named the gold movie: "
+                  f"{', '.join(leaks) if leaks else 'none'}."]
 
     if res.get("sweep"):
         rw = res.get("sweep_rewrite")
@@ -277,6 +309,8 @@ def main() -> None:
     ap.add_argument("--index", type=Path, nargs="+", default=[INDEX_DIR])
     ap.add_argument("--modes", nargs="+", default=["bm25", "dense", "hybrid"])
     ap.add_argument("--rewrite", action="store_true", help="also evaluate LLM-rewritten queries (uses the LLM)")
+    ap.add_argument("--multi", action="store_true",
+                    help="also evaluate 3 rewritten phrasings per query fused with RRF (uses the LLM)")
     ap.add_argument("--agent", action="store_true", help="also run the end-to-end agent eval (uses the LLM)")
     ap.add_argument("--no-sweep", action="store_true")
     args = ap.parse_args()
@@ -305,6 +339,13 @@ def main() -> None:
         rewrites = get_rewrites(gold, s.llm_model)
         res["rewrite_leaks"] = title_leaks(gold, rewrites)
 
+    multi = None
+    if args.multi:
+        print("[eval] multi-query rewriting with the LLM (cached) ...")
+        multi = get_multi_rewrites(gold, s.llm_model)
+        joined = {q: " ".join(v) for q, v in multi.items()}
+        res["multi_leaks"] = title_leaks(gold, joined)
+
     first_retriever = None
     for idx in args.index:
         idx = idx if idx.is_absolute() else ROOT / idx
@@ -314,6 +355,8 @@ def main() -> None:
         modes = eval_retrieval(r, gold, args.modes)
         if rewrites:
             modes |= eval_retrieval(r, gold, args.modes, rewrites=rewrites, suffix="+rewrite")
+        if multi:
+            modes |= eval_retrieval(r, gold, args.modes, multi=multi, suffix="+multi")
         res["retrieval"].append({"index": str(idx.relative_to(ROOT).as_posix()), "meta": r.store.meta,
                                  "modes": modes})
 

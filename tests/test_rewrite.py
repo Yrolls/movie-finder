@@ -25,3 +25,9 @@ def test_title_leak_check():
                 gold[1].query: "A boy is left home alone and fights two burglars.",   # user's words
                 gold[2].query: "An old man ties balloons to his house and it floats up."}
     assert run_eval.title_leaks(gold, rewrites) == ["q1"]          # q2: user's own words; q3: one-word title
+
+
+def test_rewrite_queries_returns_phrasings(fake_client):
+    from movie_finder.retrieval.rewrite import rewrite_queries
+    client = fake_client([json.dumps({"plots": ["A weatherman relives one day.", "A man is stuck in time.", "x"]})])
+    assert rewrite_queries("วันเดิมซ้ำ", client=client) == ["A weatherman relives one day.", "A man is stuck in time."]

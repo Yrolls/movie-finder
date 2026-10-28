@@ -33,3 +33,30 @@ def rewrite_query(description: str, client=None) -> str:
         client=client,
     )
     return out.plot
+
+
+# ---------------------------------------------------------------- multi-query
+MULTI_PROMPT = """The user half-remembers a film. Write THREE different short English versions of
+their description, each a 1-2 sentence plot summary in the style of a Wikipedia "Plot" section,
+so that a search over plot summaries finds the film from different angles:
+1. a faithful translation/rewrite of everything they said;
+2. the core premise only, in plain general words (who, what situation, what goal);
+3. the most specific, distinctive scene or detail they mentioned, described concretely.
+
+Rules:
+- Use only what the user said. Do not add details, and do NOT name or guess the movie, its
+  title, actors or character names -- even if you think you know it.
+Reply with ONLY: {"plots": ["<version 1>", "<version 2>", "<version 3>"]}"""
+
+
+class MultiRewrite(BaseModel):
+    plots: list[str] = Field(min_length=1, max_length=3)
+
+
+def rewrite_queries(description: str, client=None) -> list[str]:
+    out = chat_json(
+        [{"role": "system", "content": MULTI_PROMPT}, {"role": "user", "content": description}],
+        MultiRewrite,
+        client=client,
+    )
+    return [p.strip() for p in out.plots if len(p.strip()) >= 10]

@@ -83,7 +83,8 @@ python scripts/find_movie.py "groundhog"     # look up a title when adding a que
 python scripts/check_dense.py                # sanity check: does a plot passage find its own movie?
 python eval/run_eval.py                      # retrieval: BM25 baseline vs dense vs hybrid + min_score sweep
 python eval/run_eval.py --rewrite            # + the same queries after LLM rewriting (cached, calls the LLM)
-python eval/run_eval.py --rewrite --agent    # + end-to-end agent vs LLM-only baseline (calls the LLM)
+python eval/run_eval.py --rewrite --multi    # + 3 phrasings per query fused with RRF (cached, calls the LLM)
+python eval/run_eval.py --rewrite --multi --agent   # + end-to-end agent vs LLM-only baseline
 
 # chunk-size experiment: build extra indexes, then compare them in one report
 python scripts/build_index.py --chunk-words 100 --chunk-overlap 25 --out data/index_c100

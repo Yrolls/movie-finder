@@ -44,7 +44,8 @@ class SearchHit(BaseModel):
 
 # ---------------------------------------------------------------- tool args
 class SearchMoviesArgs(BaseModel):
-    query: str = Field(min_length=3, max_length=500)
+    query: str | None = Field(default=None, min_length=3, max_length=500)
+    queries: list[str] | None = Field(default=None, min_length=1, max_length=3)   # alt phrasings
     year_from: int | None = Field(default=None, ge=1890, le=2030)
     year_to: int | None = Field(default=None, ge=1890, le=2030)
     k: int = Field(default=5, ge=1, le=10)
@@ -53,7 +54,15 @@ class SearchMoviesArgs(BaseModel):
     def _year_range(self) -> "SearchMoviesArgs":
         if self.year_from and self.year_to and self.year_from > self.year_to:
             raise ValueError("year_from must be <= year_to")
+        if not self.query and not self.queries:
+            raise ValueError("give `query` or `queries`")
+        if self.queries and any(not 3 <= len(q) <= 500 for q in self.queries):
+            raise ValueError("each query must be 3-500 characters")
         return self
+
+    @property
+    def all_queries(self) -> list[str]:
+        return ([self.query] if self.query else []) + list(self.queries or [])
 
 
 class GetMovieArgs(BaseModel):

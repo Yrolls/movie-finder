@@ -37,6 +37,12 @@ TOOL_SPECS: list[dict[str, Any]] = [
                         "description": "What happens in the movie, in English, in plain words. "
                                        "Rephrase the user's description; do not guess titles.",
                     },
+                    "queries": {
+                        "type": "array", "items": {"type": "string"}, "maxItems": 3,
+                        "description": "Optional: up to 3 extra English phrasings of the same "
+                                       "memory from different angles (the premise in general "
+                                       "words; the most distinctive scene). Results are fused.",
+                    },
                     "year_from": {"type": "integer", "description": "Optional earliest release year."},
                     "year_to": {"type": "integer", "description": "Optional latest release year."},
                     "k": {"type": "integer", "description": "Number of results, 1-10 (default 5)."},
@@ -88,8 +94,8 @@ class ToolBox:
 
     # ------------------------------------------------------------ tools
     def _search(self, a: SearchMoviesArgs) -> str:
-        hits = self.retriever.search(
-            a.query, k=a.k, mode=self.mode, year_from=a.year_from, year_to=a.year_to
+        hits = self.retriever.search_many(
+            a.all_queries, k=a.k, mode=self.mode, year_from=a.year_from, year_to=a.year_to
         )
         for h in hits:
             self.seen_chunks.add(h.chunk_id)

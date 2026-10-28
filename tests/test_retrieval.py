@@ -47,3 +47,17 @@ def test_bm25_prefers_rare_terms():
     idx = BM25Index(["the iceberg sank", "the ship sailed", "the ship docked"])
     s = idx.scores("iceberg ship")
     assert s.argmax() == 0
+
+
+def test_search_many_fuses_phrasings(retriever):
+    # neither phrasing alone is great; together they agree on the right movie
+    hits = retriever.search_many(["man stuck in a small town in winter",
+                                  "weatherman relives the same day"], k=3)
+    assert hits[0].movie_id == "m00000"
+    assert len({h.movie_id for h in hits}) == len(hits)
+
+
+def test_search_many_single_query_equals_search(retriever):
+    a = retriever.search("ship ice cold", k=3)
+    b = retriever.search_many(["ship ice cold", "ship ice cold "], k=3)   # duplicate collapses
+    assert [h.movie_id for h in a] == [h.movie_id for h in b]

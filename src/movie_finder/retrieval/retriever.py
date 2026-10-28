@@ -81,6 +81,38 @@ class Retriever:
 
         raise ValueError(f"unknown mode {mode!r}")
 
+    def search_many(
+        self,
+        queries: Sequence[str],
+        *,
+        k: int = 5,
+        mode: Mode = "dense",
+        year_from: int | None = None,
+        year_to: int | None = None,
+        min_score: float | None = None,
+        depth: int = 50,
+    ) -> list[SearchHit]:
+        """Multi-query search: run each phrasing, then fuse the movie rankings with RRF.
+
+        People remember a film from different angles; several phrasings of the same memory
+        widen recall. Each movie keeps the hit (and citation) with its highest similarity.
+        """
+        queries = [q for q in dict.fromkeys(q.strip() for q in queries) if q]   # dedupe, keep order
+        if len(queries) == 1:
+            return self.search(queries[0], k=k, mode=mode, year_from=year_from,
+                               year_to=year_to, min_score=min_score)
+        fused: dict[str, float] = {}
+        best: dict[str, SearchHit] = {}
+        for q in queries:
+            hits = self.search(q, k=depth, mode=mode, year_from=year_from,
+                               year_to=year_to, min_score=min_score)
+            for rank, h in enumerate(hits):
+                fused[h.movie_id] = fused.get(h.movie_id, 0.0) + 1.0 / (_RRF_K + rank + 1)
+                if h.movie_id not in best or h.score > best[h.movie_id].score:
+                    best[h.movie_id] = h
+        order = sorted(fused, key=fused.get, reverse=True)
+        return [best[m] for m in order[:k]]
+
     def get_movie(self, movie_id: str) -> Movie | None:
         return self.movies.get(movie_id)
 
