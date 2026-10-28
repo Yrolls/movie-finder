@@ -1,11 +1,11 @@
 {
-  "generated": "2026-10-28 16:36 UTC",
+  "generated": "2026-10-28 16:45 UTC",
   "n_answerable": 32,
   "n_unanswerable": 6,
   "config": {
     "llm_model": "gemma-4-E4B-it",
     "embed_model": "intfloat/multilingual-e5-small",
-    "min_score": 0.8,
+    "min_score": 0.82,
     "retrieval_mode": "hybrid",
     "agent_max_steps": 5
   },
@@ -1393,13 +1393,678 @@
               "top1": "Clownhouse (1988)"
             }
           ]
+        },
+        "bm25+multi": {
+          "overall": {
+            "recall@1": 0.40625,
+            "recall@5": 0.71875,
+            "recall@10": 0.78125,
+            "mrr@10": 0.54140625
+          },
+          "per_tag": {
+            "confusable": {
+              "n": 3,
+              "recall@1": 0.3333333333333333,
+              "recall@5": 0.6666666666666666,
+              "recall@10": 0.6666666666666666,
+              "mrr@10": 0.5
+            },
+            "en": {
+              "n": 19,
+              "recall@1": 0.5263157894736842,
+              "recall@5": 0.7894736842105263,
+              "recall@10": 0.8421052631578947,
+              "mrr@10": 0.6486842105263158
+            },
+            "famous": {
+              "n": 24,
+              "recall@1": 0.2916666666666667,
+              "recall@5": 0.7083333333333334,
+              "recall@10": 0.7916666666666666,
+              "mrr@10": 0.471875
+            },
+            "obscure": {
+              "n": 8,
+              "recall@1": 0.75,
+              "recall@5": 0.75,
+              "recall@10": 0.75,
+              "mrr@10": 0.75
+            },
+            "partial": {
+              "n": 2,
+              "recall@1": 0.0,
+              "recall@5": 0.5,
+              "recall@10": 0.5,
+              "mrr@10": 0.25
+            },
+            "plain": {
+              "n": 24,
+              "recall@1": 0.4583333333333333,
+              "recall@5": 0.7083333333333334,
+              "recall@10": 0.7916666666666666,
+              "mrr@10": 0.578125
+            },
+            "th": {
+              "n": 13,
+              "recall@1": 0.23076923076923078,
+              "recall@5": 0.6153846153846154,
+              "recall@10": 0.6923076923076923,
+              "mrr@10": 0.38461538461538464
+            },
+            "vague": {
+              "n": 2,
+              "recall@1": 0.0,
+              "recall@5": 1.0,
+              "recall@10": 1.0,
+              "mrr@10": 0.375
+            },
+            "wrong_detail": {
+              "n": 2,
+              "recall@1": 0.5,
+              "recall@5": 1.0,
+              "recall@10": 1.0,
+              "mrr@10": 0.6
+            }
+          },
+          "misses": [
+            {
+              "id": "q01",
+              "query": "ผู้ชายคนหนึ่งตื่นขึ้นมาแล้วเจอวันเดิมซ้ำไปเรื่อย ๆ ในเมืองเล็ก ๆ ช่วงหน้าหนาว เขาเป็นคนพยากรณ์อากาศนิสัยไม่ดี",
+              "gold": "Groundhog Day",
+              "rank": 6,
+              "top1": "A Beautiful Star (2017)"
+            },
+            {
+              "id": "q02",
+              "query": "a team of thieves breaks into a rich heir's mind while he sleeps to plant an idea instead of stealing one",
+              "gold": "Inception",
+              "rank": null,
+              "top1": "Freakshow (2007)"
+            },
+            {
+              "id": "q05",
+              "query": "the one where the guy is stuck on an island after a plane crash and his only friend is a volleyball",
+              "gold": "Cast Away",
+              "rank": 2,
+              "top1": "Teri Bahon Mein (1984)"
+            },
+            {
+              "id": "q06",
+              "query": "วัยรุ่นย้อนเวลากลับไปด้วยรถสปอร์ต แล้วเผลอทำให้พ่อแม่ตัวเองไม่ได้รักกัน ต้องแก้ให้ทั้งคู่กลับมาเจอกัน",
+              "gold": "Back to the Future",
+              "rank": null,
+              "top1": "Love Affair (1994)"
+            },
+            {
+              "id": "q08",
+              "query": "เด็กผู้ชายขอพรกับตู้เกมแล้วตื่นมาตัวโตเป็นผู้ใหญ่ ได้ไปทำงานบริษัทของเล่น",
+              "gold": "Big",
+              "rank": 2,
+              "top1": "The Road (2011)"
+            },
+            {
+              "id": "q10",
+              "query": "a man from eastern europe gets stuck living inside a new york airport for months because his country stops existing",
+              "gold": "The Terminal",
+              "rank": 2,
+              "top1": "The International (2009)"
+            },
+            {
+              "id": "q12",
+              "query": "หนูที่อยากเป็นเชฟ แอบควบคุมเด็กหนุ่มในครัวร้านอาหารที่ปารีสด้วยการดึงผมใต้หมวก",
+              "gold": "Ratatouille",
+              "rank": 4,
+              "top1": "Cook Up a Storm (2017)"
+            },
+            {
+              "id": "q14",
+              "query": "a boy is accidentally left home alone during easter holiday and fights off two burglars with traps",
+              "gold": "Home Alone",
+              "rank": 5,
+              "top1": "Hari Puttar: A Comedy of Terrors (2008)"
+            },
+            {
+              "id": "q15",
+              "query": "soldier fighting aliens keeps dying and waking up on the same day before the battle, training with a famous female soldier",
+              "gold": "Edge of Tomorrow",
+              "rank": null,
+              "top1": "Lady Hunter (1991)"
+            },
+            {
+              "id": "q17",
+              "query": "ผู้ชายเหงา ๆ ที่เพิ่งหย่า ตกหลุมรักระบบปฏิบัติการ AI ในคอมพิวเตอร์ที่มีแค่เสียงผู้หญิง",
+              "gold": "Her",
+              "rank": 2,
+              "top1": "Andromedia (1998)"
+            },
+            {
+              "id": "q18",
+              "query": "young programmer is invited to a billionaire's remote house to test whether a female robot is truly conscious",
+              "gold": "Ex Machina",
+              "rank": 8,
+              "top1": "Chappie (2015)"
+            },
+            {
+              "id": "q19",
+              "query": "two rival stage magicians in old london try to outdo each other, one uses a strange electric machine for a teleport trick",
+              "gold": "The Prestige",
+              "rank": 2,
+              "top1": "Now You See Me (2013)"
+            },
+            {
+              "id": "q20",
+              "query": "นักวิทยาศาสตร์ผู้หญิงที่ฟังสัญญาณจากอวกาศ ได้รับข้อความจากดาวดวงอื่นที่มีแบบแปลนสร้างเครื่องเดินทาง",
+              "gold": "Contact",
+              "rank": null,
+              "top1": "Patalghar (2003)"
+            },
+            {
+              "id": "q23",
+              "query": "ผู้ชายขี้อายพาตุ๊กตาขนาดเท่าคนจริงมาแนะนำว่าเป็นแฟน แล้วคนทั้งเมืองก็เล่นตามไปด้วย",
+              "gold": "Lars and the Real Girl",
+              "rank": null,
+              "top1": "May (2003)"
+            },
+            {
+              "id": "q26",
+              "query": "อดีตสายลับรัฐบาลออกตามหาลูกสาววัยรุ่นที่โดนแก๊งค้ามนุษย์ลักพาตัวตอนไปเที่ยวยุโรป",
+              "gold": "Taken",
+              "rank": null,
+              "top1": "Karma Yodha (കർമ്മയോദ്ധാ) (2012)"
+            },
+            {
+              "id": "q28",
+              "query": "นักบินอวกาศถูกทิ้งไว้บนดาวอังคารเพราะเพื่อนคิดว่าตายแล้ว ต้องปลูกมันฝรั่งเพื่อเอาชีวิตรอด",
+              "gold": "The Martian",
+              "rank": 3,
+              "top1": "RocketMan (1997)"
+            },
+            {
+              "id": "q29",
+              "query": "two college friends go looking for their old genius classmate from engineering school who disappeared after graduation",
+              "gold": "3 Idiots",
+              "rank": null,
+              "top1": "Yeto Vellipoyindhi Manasu (2012)"
+            },
+            {
+              "id": "q31",
+              "query": "some movie from the 80s or 90s where a guy keeps living the same day over and over",
+              "gold": "Groundhog Day",
+              "rank": 2,
+              "top1": "Repeaters (2010)"
+            },
+            {
+              "id": "q38",
+              "query": "หนังที่มีตัวตลก น่ากลัว หลอกเด็กๆ ชื่อเรื่องว่าอะไร",
+              "gold": "It",
+              "rank": 4,
+              "top1": "Joker (2000)"
+            }
+          ]
+        },
+        "dense+multi": {
+          "overall": {
+            "recall@1": 0.15625,
+            "recall@5": 0.28125,
+            "recall@10": 0.40625,
+            "mrr@10": 0.22333829365079366
+          },
+          "per_tag": {
+            "confusable": {
+              "n": 3,
+              "recall@1": 0.0,
+              "recall@5": 0.0,
+              "recall@10": 0.0,
+              "mrr@10": 0.0
+            },
+            "en": {
+              "n": 19,
+              "recall@1": 0.15789473684210525,
+              "recall@5": 0.3684210526315789,
+              "recall@10": 0.5263157894736842,
+              "mrr@10": 0.2650375939849624
+            },
+            "famous": {
+              "n": 24,
+              "recall@1": 0.16666666666666666,
+              "recall@5": 0.2916666666666667,
+              "recall@10": 0.4166666666666667,
+              "mrr@10": 0.2306547619047619
+            },
+            "obscure": {
+              "n": 8,
+              "recall@1": 0.125,
+              "recall@5": 0.25,
+              "recall@10": 0.375,
+              "mrr@10": 0.2013888888888889
+            },
+            "partial": {
+              "n": 2,
+              "recall@1": 0.0,
+              "recall@5": 0.5,
+              "recall@10": 0.5,
+              "mrr@10": 0.25
+            },
+            "plain": {
+              "n": 24,
+              "recall@1": 0.20833333333333334,
+              "recall@5": 0.3333333333333333,
+              "recall@10": 0.5,
+              "mrr@10": 0.2769510582010582
+            },
+            "th": {
+              "n": 13,
+              "recall@1": 0.15384615384615385,
+              "recall@5": 0.15384615384615385,
+              "recall@10": 0.23076923076923078,
+              "mrr@10": 0.1623931623931624
+            },
+            "vague": {
+              "n": 2,
+              "recall@1": 0.0,
+              "recall@5": 0.0,
+              "recall@10": 0.0,
+              "mrr@10": 0.0
+            },
+            "wrong_detail": {
+              "n": 2,
+              "recall@1": 0.0,
+              "recall@5": 0.0,
+              "recall@10": 0.0,
+              "mrr@10": 0.0
+            }
+          },
+          "misses": [
+            {
+              "id": "q01",
+              "query": "ผู้ชายคนหนึ่งตื่นขึ้นมาแล้วเจอวันเดิมซ้ำไปเรื่อย ๆ ในเมืองเล็ก ๆ ช่วงหน้าหนาว เขาเป็นคนพยากรณ์อากาศนิสัยไม่ดี",
+              "gold": "Groundhog Day",
+              "rank": null,
+              "top1": "Tuck Everlasting (1981)"
+            },
+            {
+              "id": "q02",
+              "query": "a team of thieves breaks into a rich heir's mind while he sleeps to plant an idea instead of stealing one",
+              "gold": "Inception",
+              "rank": null,
+              "top1": "Crazy Stone (2006)"
+            },
+            {
+              "id": "q03",
+              "query": "guy can't make new memories so he tattoos notes on his body and uses polaroid photos to hunt down his wife's killer",
+              "gold": "Memento",
+              "rank": 7,
+              "top1": "Gojitmal (1999)"
+            },
+            {
+              "id": "q04",
+              "query": "ชายคนหนึ่งค่อย ๆ รู้ว่าชีวิตทั้งชีวิตของเขาเป็นรายการทีวี ทุกคนรอบตัวเป็นนักแสดง",
+              "gold": "The Truman Show",
+              "rank": null,
+              "top1": "Monsoon Mangoes (2016)"
+            },
+            {
+              "id": "q05",
+              "query": "the one where the guy is stuck on an island after a plane crash and his only friend is a volleyball",
+              "gold": "Cast Away",
+              "rank": 2,
+              "top1": "Nim's Island (2008)"
+            },
+            {
+              "id": "q06",
+              "query": "วัยรุ่นย้อนเวลากลับไปด้วยรถสปอร์ต แล้วเผลอทำให้พ่อแม่ตัวเองไม่ได้รักกัน ต้องแก้ให้ทั้งคู่กลับมาเจอกัน",
+              "gold": "Back to the Future",
+              "rank": null,
+              "top1": "Project Almanac (2015)"
+            },
+            {
+              "id": "q07",
+              "query": "a child psychologist tries to help a scared little boy who says he can see ghosts, with a big twist at the end",
+              "gold": "The Sixth Sense",
+              "rank": 7,
+              "top1": "Unto the Dusk (2015)"
+            },
+            {
+              "id": "q08",
+              "query": "เด็กผู้ชายขอพรกับตู้เกมแล้วตื่นมาตัวโตเป็นผู้ใหญ่ ได้ไปทำงานบริษัทของเล่น",
+              "gold": "Big",
+              "rank": null,
+              "top1": "Characterz (2016)"
+            },
+            {
+              "id": "q09",
+              "query": "lawyer who lies all the time suddenly cannot tell a lie for a whole day because of his son's birthday wish",
+              "gold": "Liar Liar",
+              "rank": 4,
+              "top1": "Time Bara Vait (2015)"
+            },
+            {
+              "id": "q10",
+              "query": "a man from eastern europe gets stuck living inside a new york airport for months because his country stops existing",
+              "gold": "The Terminal",
+              "rank": 6,
+              "top1": "Mississippi Masala (1991)"
+            },
+            {
+              "id": "q11",
+              "query": "คุณลุงแก่ ๆ ผูกลูกโป่งเป็นพันลูกกับบ้านแล้วลอยไปอเมริกาใต้ มีเด็กลูกเสือติดไปด้วย",
+              "gold": "Up",
+              "rank": null,
+              "top1": "Onbadhu Roobai Nottu (2007)"
+            },
+            {
+              "id": "q12",
+              "query": "หนูที่อยากเป็นเชฟ แอบควบคุมเด็กหนุ่มในครัวร้านอาหารที่ปารีสด้วยการดึงผมใต้หมวก",
+              "gold": "Ratatouille",
+              "rank": null,
+              "top1": "Love Khichdi (2009)"
+            },
+            {
+              "id": "q14",
+              "query": "a boy is accidentally left home alone during easter holiday and fights off two burglars with traps",
+              "gold": "Home Alone",
+              "rank": null,
+              "top1": "Look Who's Talking Too (1990)"
+            },
+            {
+              "id": "q15",
+              "query": "soldier fighting aliens keeps dying and waking up on the same day before the battle, training with a famous female soldier",
+              "gold": "Edge of Tomorrow",
+              "rank": null,
+              "top1": "Alice's Birthday (2009)"
+            },
+            {
+              "id": "q16",
+              "query": "a man wakes up in someone else's body on a commuter train and keeps reliving the last 8 minutes before it explodes",
+              "gold": "Source Code",
+              "rank": null,
+              "top1": "Everyone's Going to Die (2013)"
+            },
+            {
+              "id": "q19",
+              "query": "two rival stage magicians in old london try to outdo each other, one uses a strange electric machine for a teleport trick",
+              "gold": "The Prestige",
+              "rank": 3,
+              "top1": "Sleight (2017)"
+            },
+            {
+              "id": "q20",
+              "query": "นักวิทยาศาสตร์ผู้หญิงที่ฟังสัญญาณจากอวกาศ ได้รับข้อความจากดาวดวงอื่นที่มีแบบแปลนสร้างเครื่องเดินทาง",
+              "gold": "Contact",
+              "rank": null,
+              "top1": "A Brand New You (2004)"
+            },
+            {
+              "id": "q21",
+              "query": "a lonely worker near the end of a three year contract on a moon base finds another version of himself",
+              "gold": "Moon",
+              "rank": 2,
+              "top1": "Delete My Love (2014)"
+            },
+            {
+              "id": "q23",
+              "query": "ผู้ชายขี้อายพาตุ๊กตาขนาดเท่าคนจริงมาแนะนำว่าเป็นแฟน แล้วคนทั้งเมืองก็เล่นตามไปด้วย",
+              "gold": "Lars and the Real Girl",
+              "rank": 9,
+              "top1": "CJ7 (2008)"
+            },
+            {
+              "id": "q24",
+              "query": "a quiet man who loves trains inherits an abandoned little train depot in the countryside and slowly makes two unlikely friends",
+              "gold": "The Station Agent",
+              "rank": null,
+              "top1": "Everyone's Going to Die (2013)"
+            },
+            {
+              "id": "q25",
+              "query": "single people are sent to a hotel and must find a partner in 45 days or they get turned into an animal",
+              "gold": "The Lobster",
+              "rank": null,
+              "top1": "Chat Room (2002)"
+            },
+            {
+              "id": "q26",
+              "query": "อดีตสายลับรัฐบาลออกตามหาลูกสาววัยรุ่นที่โดนแก๊งค้ามนุษย์ลักพาตัวตอนไปเที่ยวยุโรป",
+              "gold": "Taken",
+              "rank": null,
+              "top1": "Chashme Buddoor (1981)"
+            },
+            {
+              "id": "q27",
+              "query": "there is a bomb on a train and if it goes below 50 miles per hour it explodes, a cop has to keep it moving",
+              "gold": "Speed",
+              "rank": null,
+              "top1": "Last Passenger (2013)"
+            },
+            {
+              "id": "q29",
+              "query": "two college friends go looking for their old genius classmate from engineering school who disappeared after graduation",
+              "gold": "3 Idiots",
+              "rank": null,
+              "top1": "Mujhe Kucch Kehna Hai (2001)"
+            },
+            {
+              "id": "q30",
+              "query": "นักเชลโลตกงานกลับไปบ้านเกิด แล้วได้งานใหม่เป็นคนจัดเตรียมศพก่อนใส่โลง ภรรยาไม่ยอมรับ",
+              "gold": "Departures",
+              "rank": null,
+              "top1": "Unto the Dusk (2015)"
+            },
+            {
+              "id": "q31",
+              "query": "some movie from the 80s or 90s where a guy keeps living the same day over and over",
+              "gold": "Groundhog Day",
+              "rank": null,
+              "top1": "Russian Ark (2002)"
+            },
+            {
+              "id": "q38",
+              "query": "หนังที่มีตัวตลก น่ากลัว หลอกเด็กๆ ชื่อเรื่องว่าอะไร",
+              "gold": "It",
+              "rank": null,
+              "top1": "Achchamundu! Achchamundu! (2009)"
+            }
+          ]
+        },
+        "hybrid+multi": {
+          "overall": {
+            "recall@1": 0.46875,
+            "recall@5": 0.6875,
+            "recall@10": 0.71875,
+            "mrr@10": 0.5477430555555556
+          },
+          "per_tag": {
+            "confusable": {
+              "n": 3,
+              "recall@1": 0.0,
+              "recall@5": 0.0,
+              "recall@10": 0.0,
+              "mrr@10": 0.0
+            },
+            "en": {
+              "n": 19,
+              "recall@1": 0.631578947368421,
+              "recall@5": 0.6842105263157895,
+              "recall@10": 0.6842105263157895,
+              "mrr@10": 0.6578947368421053
+            },
+            "famous": {
+              "n": 24,
+              "recall@1": 0.5,
+              "recall@5": 0.75,
+              "recall@10": 0.75,
+              "mrr@10": 0.5902777777777778
+            },
+            "obscure": {
+              "n": 8,
+              "recall@1": 0.375,
+              "recall@5": 0.5,
+              "recall@10": 0.625,
+              "mrr@10": 0.4201388888888889
+            },
+            "partial": {
+              "n": 2,
+              "recall@1": 0.5,
+              "recall@5": 0.5,
+              "recall@10": 0.5,
+              "mrr@10": 0.5
+            },
+            "plain": {
+              "n": 24,
+              "recall@1": 0.5416666666666666,
+              "recall@5": 0.75,
+              "recall@10": 0.7916666666666666,
+              "mrr@10": 0.6122685185185185
+            },
+            "th": {
+              "n": 13,
+              "recall@1": 0.23076923076923078,
+              "recall@5": 0.6923076923076923,
+              "recall@10": 0.7692307692307693,
+              "mrr@10": 0.38675213675213677
+            },
+            "vague": {
+              "n": 2,
+              "recall@1": 0.0,
+              "recall@5": 0.5,
+              "recall@10": 0.5,
+              "mrr@10": 0.16666666666666666
+            },
+            "wrong_detail": {
+              "n": 2,
+              "recall@1": 0.5,
+              "recall@5": 1.0,
+              "recall@10": 1.0,
+              "mrr@10": 0.75
+            }
+          },
+          "misses": [
+            {
+              "id": "q01",
+              "query": "ผู้ชายคนหนึ่งตื่นขึ้นมาแล้วเจอวันเดิมซ้ำไปเรื่อย ๆ ในเมืองเล็ก ๆ ช่วงหน้าหนาว เขาเป็นคนพยากรณ์อากาศนิสัยไม่ดี",
+              "gold": "Groundhog Day",
+              "rank": 2,
+              "top1": "Whitewash (2013)"
+            },
+            {
+              "id": "q02",
+              "query": "a team of thieves breaks into a rich heir's mind while he sleeps to plant an idea instead of stealing one",
+              "gold": "Inception",
+              "rank": null,
+              "top1": "Happy New Year (1987)"
+            },
+            {
+              "id": "q04",
+              "query": "ชายคนหนึ่งค่อย ๆ รู้ว่าชีวิตทั้งชีวิตของเขาเป็นรายการทีวี ทุกคนรอบตัวเป็นนักแสดง",
+              "gold": "The Truman Show",
+              "rank": null,
+              "top1": "Monsoon Mangoes (2016)"
+            },
+            {
+              "id": "q06",
+              "query": "วัยรุ่นย้อนเวลากลับไปด้วยรถสปอร์ต แล้วเผลอทำให้พ่อแม่ตัวเองไม่ได้รักกัน ต้องแก้ให้ทั้งคู่กลับมาเจอกัน",
+              "gold": "Back to the Future",
+              "rank": null,
+              "top1": "Forever Strong (2008)"
+            },
+            {
+              "id": "q11",
+              "query": "คุณลุงแก่ ๆ ผูกลูกโป่งเป็นพันลูกกับบ้านแล้วลอยไปอเมริกาใต้ มีเด็กลูกเสือติดไปด้วย",
+              "gold": "Up",
+              "rank": 3,
+              "top1": "Lightning Jack (1994)"
+            },
+            {
+              "id": "q12",
+              "query": "หนูที่อยากเป็นเชฟ แอบควบคุมเด็กหนุ่มในครัวร้านอาหารที่ปารีสด้วยการดึงผมใต้หมวก",
+              "gold": "Ratatouille",
+              "rank": 4,
+              "top1": "Cook Up a Storm (2017)"
+            },
+            {
+              "id": "q14",
+              "query": "a boy is accidentally left home alone during easter holiday and fights off two burglars with traps",
+              "gold": "Home Alone",
+              "rank": 2,
+              "top1": "Hari Puttar: A Comedy of Terrors (2008)"
+            },
+            {
+              "id": "q15",
+              "query": "soldier fighting aliens keeps dying and waking up on the same day before the battle, training with a famous female soldier",
+              "gold": "Edge of Tomorrow",
+              "rank": null,
+              "top1": "My Brother's Wedding (1983)"
+            },
+            {
+              "id": "q16",
+              "query": "a man wakes up in someone else's body on a commuter train and keeps reliving the last 8 minutes before it explodes",
+              "gold": "Source Code",
+              "rank": null,
+              "top1": "Deadly Eyes (1982)"
+            },
+            {
+              "id": "q20",
+              "query": "นักวิทยาศาสตร์ผู้หญิงที่ฟังสัญญาณจากอวกาศ ได้รับข้อความจากดาวดวงอื่นที่มีแบบแปลนสร้างเครื่องเดินทาง",
+              "gold": "Contact",
+              "rank": 4,
+              "top1": "Alice's Birthday (2009)"
+            },
+            {
+              "id": "q23",
+              "query": "ผู้ชายขี้อายพาตุ๊กตาขนาดเท่าคนจริงมาแนะนำว่าเป็นแฟน แล้วคนทั้งเมืองก็เล่นตามไปด้วย",
+              "gold": "Lars and the Real Girl",
+              "rank": 4,
+              "top1": "The Nightmare Before Christmas (1993)"
+            },
+            {
+              "id": "q24",
+              "query": "a quiet man who loves trains inherits an abandoned little train depot in the countryside and slowly makes two unlikely friends",
+              "gold": "The Station Agent",
+              "rank": null,
+              "top1": "Everyone's Going to Die (2013)"
+            },
+            {
+              "id": "q26",
+              "query": "อดีตสายลับรัฐบาลออกตามหาลูกสาววัยรุ่นที่โดนแก๊งค้ามนุษย์ลักพาตัวตอนไปเที่ยวยุโรป",
+              "gold": "Taken",
+              "rank": null,
+              "top1": "Karma Yodha (കർമ്മയോദ്ധാ) (2012)"
+            },
+            {
+              "id": "q29",
+              "query": "two college friends go looking for their old genius classmate from engineering school who disappeared after graduation",
+              "gold": "3 Idiots",
+              "rank": null,
+              "top1": "Yeto Vellipoyindhi Manasu (2012)"
+            },
+            {
+              "id": "q30",
+              "query": "นักเชลโลตกงานกลับไปบ้านเกิด แล้วได้งานใหม่เป็นคนจัดเตรียมศพก่อนใส่โลง ภรรยาไม่ยอมรับ",
+              "gold": "Departures",
+              "rank": 9,
+              "top1": "Unto the Dusk (2015)"
+            },
+            {
+              "id": "q31",
+              "query": "some movie from the 80s or 90s where a guy keeps living the same day over and over",
+              "gold": "Groundhog Day",
+              "rank": null,
+              "top1": "Russian Ark (2002)"
+            },
+            {
+              "id": "q38",
+              "query": "หนังที่มีตัวตลก น่ากลัว หลอกเด็กๆ ชื่อเรื่องว่าอะไร",
+              "gold": "It",
+              "rank": 3,
+              "top1": "Clownhouse (1988)"
+            }
+          ]
         }
       }
     }
   ],
-  "rewrite_leaks": [
-    "q14"
-  ],
+  "rewrite_leaks": [],
+  "multi_leaks": [],
   "sweep": [
     {
       "min_score": 0.0,

@@ -1,6 +1,6 @@
 # Evaluation report
 
-_Generated 2026-10-28 16:36 UTC — 32 answerable + 6 unanswerable queries from `eval/queries.jsonl`._
+_Generated 2026-10-28 16:45 UTC — 32 answerable + 6 unanswerable queries from `eval/queries.jsonl`._
 
 LLM: `gemma-4-E4B-it` · embeddings: `intfloat/multilingual-e5-small` · temperature 0
 
@@ -14,22 +14,27 @@ LLM: `gemma-4-E4B-it` · embeddings: `intfloat/multilingual-e5-small` · tempera
 | `data/index` | 200 | bm25+rewrite | 37.5% | 62.5% | 75.0% | 0.497 |
 | `data/index` | 200 | dense+rewrite | 18.8% | 31.2% | 37.5% | 0.242 |
 | `data/index` | 200 | hybrid+rewrite | 50.0% | 75.0% | 75.0% | 0.588 |
+| `data/index` | 200 | bm25+multi | 40.6% | 71.9% | 78.1% | 0.541 |
+| `data/index` | 200 | dense+multi | 15.6% | 28.1% | 40.6% | 0.223 |
+| `data/index` | 200 | hybrid+multi | 46.9% | 68.8% | 71.9% | 0.548 |
 
 ### recall@5 by query tag (`data/index`)
 
-| tag | n | bm25 | dense | hybrid | bm25+rewrite | dense+rewrite | hybrid+rewrite |
-|---|---|---|---|---|---|---|---|
-| confusable | 3 | 66.7% | 0.0% | 66.7% | 66.7% | 0.0% | 33.3% |
-| en | 19 | 78.9% | 52.6% | 78.9% | 63.2% | 42.1% | 73.7% |
-| famous | 24 | 41.7% | 33.3% | 45.8% | 66.7% | 33.3% | 79.2% |
-| obscure | 8 | 62.5% | 25.0% | 50.0% | 50.0% | 25.0% | 62.5% |
-| partial | 2 | 50.0% | 50.0% | 50.0% | 50.0% | 50.0% | 50.0% |
-| plain | 24 | 41.7% | 37.5% | 41.7% | 62.5% | 37.5% | 79.2% |
-| th | 13 | 0.0% | 0.0% | 0.0% | 61.5% | 15.4% | 76.9% |
-| vague | 2 | 0.0% | 0.0% | 0.0% | 50.0% | 0.0% | 50.0% |
-| wrong_detail | 2 | 100.0% | 0.0% | 100.0% | 50.0% | 0.0% | 100.0% |
+| tag | n | bm25 | dense | hybrid | bm25+rewrite | dense+rewrite | hybrid+rewrite | bm25+multi | dense+multi | hybrid+multi |
+|---|---|---|---|---|---|---|---|---|---|---|
+| confusable | 3 | 66.7% | 0.0% | 66.7% | 66.7% | 0.0% | 33.3% | 66.7% | 0.0% | 0.0% |
+| en | 19 | 78.9% | 52.6% | 78.9% | 63.2% | 42.1% | 73.7% | 78.9% | 36.8% | 68.4% |
+| famous | 24 | 41.7% | 33.3% | 45.8% | 66.7% | 33.3% | 79.2% | 70.8% | 29.2% | 75.0% |
+| obscure | 8 | 62.5% | 25.0% | 50.0% | 50.0% | 25.0% | 62.5% | 75.0% | 25.0% | 50.0% |
+| partial | 2 | 50.0% | 50.0% | 50.0% | 50.0% | 50.0% | 50.0% | 50.0% | 50.0% | 50.0% |
+| plain | 24 | 41.7% | 37.5% | 41.7% | 62.5% | 37.5% | 79.2% | 70.8% | 33.3% | 75.0% |
+| th | 13 | 0.0% | 0.0% | 0.0% | 61.5% | 15.4% | 76.9% | 61.5% | 15.4% | 69.2% |
+| vague | 2 | 0.0% | 0.0% | 0.0% | 50.0% | 0.0% | 50.0% | 100.0% | 0.0% | 50.0% |
+| wrong_detail | 2 | 100.0% | 0.0% | 100.0% | 50.0% | 0.0% | 100.0% | 100.0% | 0.0% | 100.0% |
 
-Rows marked `+rewrite` search the LLM-rewritten query (`eval/results/rewrites.json`). Rewrites that named the gold movie: q14.
+Rows marked `+rewrite` search the LLM-rewritten query (`eval/results/rewrites.json`). Rewrites that named the gold movie: none.
+
+Rows marked `+multi` search 3 LLM phrasings per query fused with RRF (`eval/results/rewrites_multi.json`). Phrasings that named the gold movie: none.
 
 ## 2. `min_score` floor (dense)
 
