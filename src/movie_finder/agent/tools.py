@@ -69,6 +69,7 @@ class ToolBox:
     seen_hits: dict[str, SearchHit] = field(default_factory=dict)        # movie_id -> best hit
     seen_chunks: set[str] = field(default_factory=set)
     chunk_text: dict[str, str] = field(default_factory=dict)            # chunk_id -> snippet shown
+    chunk_score: dict[str, float] = field(default_factory=dict)         # chunk_id -> retrieval score
 
     def run(self, name: str, raw_args: str | dict | None) -> str:
         """Execute one tool call and return a JSON string for the model. Never raises."""
@@ -93,6 +94,7 @@ class ToolBox:
         for h in hits:
             self.seen_chunks.add(h.chunk_id)
             self.chunk_text[h.chunk_id] = h.snippet
+            self.chunk_score[h.chunk_id] = max(h.score, self.chunk_score.get(h.chunk_id, h.score))
             best = self.seen_hits.get(h.movie_id)
             if best is None or h.score > best.score:
                 self.seen_hits[h.movie_id] = h

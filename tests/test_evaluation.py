@@ -63,3 +63,12 @@ def test_metrics():
     assert m["mrr@10"] == pytest.approx((1 + 1 / 3 + 1 / 7) / 4)
     assert rank_of("b", ["a", "b"]) == 2 and rank_of("z", ["a"]) is None
     assert abstain_rate([0, 2, 0, 1]) == 0.5
+
+
+def test_also_accepts_remakes(tmp_path):
+    gold = gold_file(tmp_path, [
+        {"query": "a", "title": "Remake", "year": 2010, "also": [{"title": "Remake", "year": 1990}]},
+    ])
+    assert resolve_gold(gold, MOVIES) == []
+    assert gold[0].accepted == ["m00002", "m00001"]
+    assert rank_of(gold[0].accepted, ["m00009", "m00001"]) == 2      # the older version also counts

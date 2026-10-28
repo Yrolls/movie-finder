@@ -16,7 +16,7 @@ import json
 import threading
 from contextlib import asynccontextmanager
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse
@@ -42,7 +42,7 @@ class SearchRequest(BaseModel):
 
 class FindResponse(BaseModel):
     answer: FinalAnswer
-    evidence: dict[str, dict[str, str]]       # movie_id -> {"snippet", "wiki_url"}
+    evidence: dict[str, dict[str, Any]]       # movie_id -> chunk_id, passage, snippet, similarity, wiki_url
     steps: int
     stopped_by: str
 

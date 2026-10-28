@@ -54,7 +54,7 @@ def eval_retrieval(retriever, gold: list[GoldQuery], modes: list[str]) -> dict:
         misses = []
         for g in answerable:
             hits = retriever.search(g.query, k=max(KS), mode=mode, min_score=0.0)
-            r = rank_of(g.movie_id, [h.movie_id for h in hits])
+            r = rank_of(g.accepted, [h.movie_id for h in hits])
             ranks.append(r)
             for t in g.tags:
                 per_tag[t].append(r)
@@ -82,7 +82,7 @@ def sweep_min_score(retriever, gold: list[GoldQuery]) -> list[dict]:
         for g, hits in scored:
             kept = [mid for mid, s in hits if s >= t]
             if g.answerable:
-                ranks.append(rank_of(g.movie_id, kept))
+                ranks.append(rank_of(g.accepted, kept))
             else:
                 empties.append(len(kept))
         rows.append({"min_score": t,
@@ -130,8 +130,8 @@ def eval_agent(retriever, gold: list[GoldQuery], movies) -> dict:
         top = res.answer.candidates[0].movie_id if res.answer.candidates else None
         base = llm_only_guess(g.query, by_title)
         if g.answerable:
-            agent_ok = top == g.movie_id and res.answer.status != "not_found"
-            base_ok = base == g.movie_id
+            agent_ok = top in g.accepted and res.answer.status != "not_found"
+            base_ok = base in g.accepted
         else:
             agent_ok = res.answer.status == "not_found"
             base_ok = base is None

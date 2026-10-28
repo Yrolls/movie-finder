@@ -61,7 +61,7 @@ class AgentResult:
     steps: int
     stopped_by: str                                   # "final_answer" | "max_steps"
     trace: list[dict[str, Any]] = field(default_factory=list)
-    evidence: dict[str, dict[str, str]] = field(default_factory=dict)   # movie_id -> snippet + link
+    evidence: dict[str, dict[str, Any]] = field(default_factory=dict)   # movie_id -> citation details
 
 
 def run_agent(
@@ -164,8 +164,14 @@ def _finish(answer, box, steps, stopped_by, trace, emit) -> AgentResult:
     evidence = {}
     for c in grounded.candidates:
         movie = box.retriever.get_movie(c.movie_id)
+        cid = c.evidence_chunk_id
         evidence[c.movie_id] = {
-            "snippet": box.chunk_text.get(c.evidence_chunk_id, ""),
+            "chunk_id": cid,
+            "passage": int(cid.split("#")[1]) + 1,          # 1-based passage number for display
+            "snippet": box.chunk_text.get(cid, ""),
+            # measured similarity of the cited passage -- shown instead of the model's own
+            # confidence, which is self-reported and not calibrated
+            "similarity": round(box.chunk_score.get(cid, box.seen_hits[c.movie_id].score), 3),
             "wiki_url": movie.wiki_url if movie else "",
         }
     emit({"type": "final", "answer": json.loads(grounded.model_dump_json()), "evidence": evidence,

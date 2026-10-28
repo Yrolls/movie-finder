@@ -33,10 +33,16 @@ class GoldQuery:
     year: int | None
     tags: list[str] = field(default_factory=list)
     movie_id: str | None = None          # filled in by resolve_gold
+    also: list[dict] = field(default_factory=list)       # other accepted answers, e.g. a remake
+    movie_ids: list[str] = field(default_factory=list)   # all accepted ids (movie_id first)
 
     @property
     def answerable(self) -> bool:
         return self.title is not None
+
+    @property
+    def accepted(self) -> list[str]:
+        return self.movie_ids or ([self.movie_id] if self.movie_id else [])
 
 
 def load_gold(path: Path) -> list[GoldQuery]:
@@ -48,33 +54,38 @@ def load_gold(path: Path) -> list[GoldQuery]:
                 continue
             d = json.loads(line)
             out.append(GoldQuery(qid=d.get("id", f"q{i:02d}"), query=d["query"], title=d.get("title"),
-                                 year=d.get("year"), tags=d.get("tags", [])))
+                                 year=d.get("year"), tags=d.get("tags", []), also=d.get("also", [])))
     return out
 
 
 def resolve_gold(gold: list[GoldQuery], movies: Sequence[Movie], year_tolerance: int = 1) -> list[str]:
-    """Fill movie_id for every answerable query. Returns a list of problems (empty = all good)."""
+    """Fill movie_id / movie_ids for every answerable query. Returns problems (empty = all good)."""
     index: dict[str, list[Movie]] = defaultdict(list)
     for m in movies:
         index[norm_title(m.title)].append(m)
 
-    problems = []
+    def one(qid: str, title: str, year: int | None, problems: list[str]) -> str | None:
+        cands = [m for m in index.get(norm_title(title), [])
+                 if year is None or abs(m.year - year) <= year_tolerance]
+        if len(cands) == 1:
+            return cands[0].movie_id
+        if not cands:
+            problems.append(f"{qid}: '{title}' ({year}) not found in corpus")
+            return None
+        exact = [m for m in cands if m.year == year]
+        if len(exact) == 1:
+            return exact[0].movie_id
+        found = ", ".join(f"{m.movie_id} {m.title} ({m.year}, {m.origin})" for m in cands)
+        problems.append(f"{qid}: '{title}' is ambiguous: {found}")
+        return None
+
+    problems: list[str] = []
     for g in gold:
         if not g.answerable:
             continue
-        cands = [m for m in index.get(norm_title(g.title), [])
-                 if g.year is None or abs(m.year - g.year) <= year_tolerance]
-        if len(cands) == 1:
-            g.movie_id = cands[0].movie_id
-        elif not cands:
-            problems.append(f"{g.qid}: '{g.title}' ({g.year}) not found in corpus")
-        else:
-            exact = [m for m in cands if m.year == g.year]
-            if len(exact) == 1:
-                g.movie_id = exact[0].movie_id
-            else:
-                found = ", ".join(f"{m.movie_id} {m.title} ({m.year}, {m.origin})" for m in cands)
-                problems.append(f"{g.qid}: '{g.title}' is ambiguous: {found}")
+        g.movie_id = one(g.qid, g.title, g.year, problems)
+        extra = [one(g.qid, a["title"], a.get("year"), problems) for a in g.also]
+        g.movie_ids = [i for i in [g.movie_id, *extra] if i]
     return problems
 
 
@@ -85,12 +96,13 @@ def find_titles(movies: Iterable[Movie], text: str, limit: int = 15) -> list[Mov
 
 
 # ---------------------------------------------------------------- metrics
-def rank_of(gold_id: str, ranked_ids: Sequence[str]) -> int | None:
-    """1-based rank of the gold id, or None if absent."""
-    try:
-        return list(ranked_ids).index(gold_id) + 1
-    except ValueError:
-        return None
+def rank_of(gold: str | Sequence[str], ranked_ids: Sequence[str]) -> int | None:
+    """1-based rank of the first accepted id (one id or a list of ids), or None if absent."""
+    accepted = {gold} if isinstance(gold, str) else set(gold)
+    for i, mid in enumerate(ranked_ids, 1):
+        if mid in accepted:
+            return i
+    return None
 
 
 def retrieval_metrics(ranks: Sequence[int | None], ks: Sequence[int] = (1, 5, 10)) -> dict[str, float]:

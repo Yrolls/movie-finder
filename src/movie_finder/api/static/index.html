@@ -65,8 +65,8 @@
   .why { margin: 12px 0 0; }
   blockquote { margin: 16px 0 0; padding: 2px 0 2px 16px; border-left: 2px solid var(--rule); font: italic 1rem/1.65 var(--quote); color: var(--slate); }
   .meta { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-top: 16px; font-size: .9rem; color: var(--slate); }
-  .bar { width: 120px; height: 8px; background: var(--rule); border-radius: 4px; overflow: hidden; }
-  .bar i { display: block; height: 100%; background: var(--marquee); }
+  .source { margin: 8px 0 0 18px; font-size: .88rem; color: var(--slate); }
+  .score b { background: var(--marquee); color: #1A2240; padding: 1px 7px; border-radius: 4px; }
   a { color: var(--ink); text-underline-offset: 3px; }
 
   .others { margin-top: 22px; }
@@ -180,12 +180,12 @@ function render(ans, evidence) {
   let html = `<article class="pick focus-in">
       <h2 class="title">${esc(top.title)} <span class="year">(${top.year})</span></h2>
       <p class="why">${esc(top.why)}</p>
-      ${ev.snippet ? `<blockquote>${esc(ev.snippet)}…</blockquote>` : ""}
-      <div class="meta">
-        <span>Confidence</span><span class="bar" aria-hidden="true"><i style="width:${Math.round(top.confidence * 100)}%"></i></span>
-        <span>${Math.round(top.confidence * 100)}%</span>
-        ${ev.wiki_url ? `<a href="${esc(ev.wiki_url)}" target="_blank" rel="noopener">Read the plot on Wikipedia</a>` : ""}
-      </div>
+      ${ev.snippet ? `<blockquote>${esc(ev.snippet)}…</blockquote>
+        <p class="source">Source: Wikipedia plot of ${ev.wiki_url
+          ? `<a href="${esc(ev.wiki_url)}" target="_blank" rel="noopener"><cite>${esc(top.title)}</cite></a>`
+          : `<cite>${esc(top.title)}</cite>`}, passage ${ev.passage} <span class="year">(${esc(ev.chunk_id)})</span></p>` : ""}
+      ${ev.similarity != null ? `<div class="meta score" title="Cosine similarity between your description and the cited passage">
+        Plot similarity <b>${ev.similarity.toFixed(2)}</b></div>` : ""}
     </article>`;
   if (rest.length) {
     html += `<div class="others"><h2>Could also be</h2>` + rest.map((o) =>
