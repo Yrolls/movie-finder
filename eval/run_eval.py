@@ -45,7 +45,7 @@ from movie_finder.evaluation import (  # noqa: E402
 from movie_finder.retrieval.loader import load_retriever  # noqa: E402
 
 KS = (1, 5, 10)
-SWEEP = [0.0, 0.76, 0.78, 0.80, 0.82, 0.84, 0.86, 0.88]
+SWEEP = [0.0, 0.70, 0.74, 0.76, 0.78, 0.80, 0.82, 0.84, 0.86]
 RESULTS_DIR = ROOT / "eval" / "results"
 
 
@@ -81,12 +81,14 @@ def eval_retrieval(retriever, gold: list[GoldQuery], modes: list[str],
     return out
 
 
-def sweep_min_score(retriever, gold: list[GoldQuery], rewrites: dict[str, str] | None = None) -> list[dict]:
-    """Score every query once (no floor), then apply each threshold offline."""
+def sweep_min_score(retriever, gold: list[GoldQuery], rewrites: dict[str, str] | None = None,
+                    mode: str = "dense") -> list[dict]:
+    """Score every query once (no floor), then apply each threshold offline.
+    In hybrid mode each hit carries its dense similarity, which is what the floor is applied to."""
     scored = []
     for g in gold:
         text = rewrites[g.query] if rewrites else g.query
-        hits = retriever.search(text, k=5, mode="dense", min_score=0.0)
+        hits = retriever.search(text, k=5, mode=mode, min_score=0.0)
         scored.append((g, [(h.movie_id, h.score) for h in hits]))
 
     rows = []
@@ -208,7 +210,8 @@ def eval_agent(retriever, gold: list[GoldQuery], movies, mode: str) -> dict:
         rows.append({"id": g.qid, "answerable": g.answerable, "tags": g.tags,
                      "status": res.answer.status, "agent_top1": top, "agent_ok": agent_ok,
                      "llm_only": base, "llm_only_ok": base_ok,
-                     "steps": res.steps, "stopped_by": res.stopped_by, "seconds": round(dt, 1)})
+                     "steps": res.steps, "stopped_by": res.stopped_by, "seconds": round(dt, 1),
+                     "searches": [t["arguments"] for t in res.trace if t.get("tool") == "search_movies"]})
         print(f"  {g.qid}: agent={'OK ' if agent_ok else 'MISS'} llm-only={'OK ' if base_ok else 'MISS'} "
               f"({res.steps} steps, {dt:.1f}s)")
 
@@ -273,16 +276,21 @@ def write_report(res: dict) -> str:
                   f"{', '.join(leaks) if leaks else 'none'}."]
 
     if res.get("sweep"):
-        rw = res.get("sweep_rewrite")
-        L += ["", "## 2. `min_score` floor (dense)", "",
-              "| min_score | recall@5 kept (answerable) | returns nothing (unanswerable) |"
-              + (" recall@5 kept, rewritten | returns nothing, rewritten |" if rw else ""),
-              "|---|---|---|" + ("---|---|" if rw else "")]
+        cols = [("dense, raw", res["sweep"])]
+        if res.get("sweep_rewrite"):
+            cols.append(("dense, rewritten", res["sweep_rewrite"]))
+        if res.get("sweep_hybrid_rewrite"):
+            cols.append(("**hybrid, rewritten (as the app runs)**", res["sweep_hybrid_rewrite"]))
+        L += ["", "## 2. `min_score` floor on the dense similarity", "",
+              "Each pair: recall@5 kept on answerable queries / share of unanswerable queries "
+              "that return nothing.", "",
+              "| min_score | " + " | ".join(f"{name}: recall@5 | {name}: nothing" for name, _ in cols) + " |",
+              "|---|" + "---|---|" * len(cols)]
         for i, r in enumerate(res["sweep"]):
-            row = f"| {r['min_score']:.2f} | {pct(r['recall@5_answerable'])} | {pct(r['abstain_unanswerable'])} |"
-            if rw:
-                row += f" {pct(rw[i]['recall@5_answerable'])} | {pct(rw[i]['abstain_unanswerable'])} |"
-            L.append(row)
+            cells = []
+            for _, rows in cols:
+                cells += [pct(rows[i]["recall@5_answerable"]), pct(rows[i]["abstain_unanswerable"])]
+            L.append(f"| {r['min_score']:.2f} | " + " | ".join(cells) + " |")
 
     if res.get("agent"):
         s = res["agent"]["summary"]
@@ -365,6 +373,8 @@ def main() -> None:
         res["sweep"] = sweep_min_score(first_retriever, gold)
         if rewrites:
             res["sweep_rewrite"] = sweep_min_score(first_retriever, gold, rewrites)
+            # the floor as the app applies it: hybrid retrieval on the rewritten query
+            res["sweep_hybrid_rewrite"] = sweep_min_score(first_retriever, gold, rewrites, mode="hybrid")
 
     if args.agent:
         print("[eval] agent vs LLM-only (calls the LLM) ...")
