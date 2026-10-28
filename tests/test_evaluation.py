@@ -72,3 +72,14 @@ def test_also_accepts_remakes(tmp_path):
     assert resolve_gold(gold, MOVIES) == []
     assert gold[0].accepted == ["m00002", "m00001"]
     assert rank_of(gold[0].accepted, ["m00009", "m00001"]) == 2      # the older version also counts
+
+
+def test_exact_title_breaks_ties(tmp_path):
+    movies = MOVIES + [
+        Movie(movie_id="m00010", title="Contact", year=1997, plot=P),
+        Movie(movie_id="m00011", title="The Contact", year=1997, plot=P),
+    ]
+    gold = gold_file(tmp_path, [{"query": "a", "title": "Contact", "year": 1997},
+                                {"query": "b", "title": "The Contact", "year": 1997}])
+    assert resolve_gold(gold, movies) == []
+    assert [g.movie_id for g in gold] == ["m00010", "m00011"]

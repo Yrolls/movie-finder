@@ -72,9 +72,12 @@ def resolve_gold(gold: list[GoldQuery], movies: Sequence[Movie], year_tolerance:
         if not cands:
             problems.append(f"{qid}: '{title}' ({year}) not found in corpus")
             return None
-        exact = [m for m in cands if m.year == year]
-        if len(exact) == 1:
-            return exact[0].movie_id
+        # loose matching ignores "The"/punctuation; break ties by exact title, then exact year
+        same_title = [m for m in cands if m.title.casefold() == title.casefold()]
+        for narrowed in (same_title, [m for m in same_title if m.year == year],
+                         [m for m in cands if m.year == year]):
+            if len(narrowed) == 1:
+                return narrowed[0].movie_id
         found = ", ".join(f"{m.movie_id} {m.title} ({m.year}, {m.origin})" for m in cands)
         problems.append(f"{qid}: '{title}' is ambiguous: {found}")
         return None
