@@ -54,6 +54,9 @@ python scripts/smoke_test_llm.py
 
 # 2. download + clean the corpus  → data/processed/movies.jsonl
 python scripts/fetch_data.py
+
+# 3. chunk + embed the plots       → data/index/   (first run downloads the embedding model)
+python scripts/build_index.py
 ```
 
 _Steps for building the index, running the API and the evaluation are added as those
