@@ -1,6 +1,6 @@
 # Evaluation report
 
-_Generated 2026-10-28 16:45 UTC — 32 answerable + 6 unanswerable queries from `eval/queries.jsonl`._
+_Generated 2026-10-28 16:49 UTC — 32 answerable + 6 unanswerable queries from `eval/queries.jsonl`._
 
 LLM: `gemma-4-E4B-it` · embeddings: `intfloat/multilingual-e5-small` · temperature 0
 
@@ -48,6 +48,15 @@ Rows marked `+multi` search 3 LLM phrasings per query fused with RRF (`eval/resu
 | 0.84 | 15.6% | 83.3% | 15.6% | 50.0% |
 | 0.86 | 6.2% | 100.0% | 3.1% | 100.0% |
 | 0.88 | 0.0% | 100.0% | 0.0% | 100.0% |
+
+## 3. End-to-end: agent (hybrid retrieval) vs. LLM-only (no retrieval)
+
+| system | top-1 accuracy (answerable) | says not found (unanswerable) |
+|---|---|---|
+| LLM-only baseline | 68.8% | 33.3% |
+| Agent + retrieval | 59.4% | 33.3% |
+
+Average 3.2 model turns and 6.7s per query.
 
 ## Dense misses (rank ≠ 1) — for error analysis
 

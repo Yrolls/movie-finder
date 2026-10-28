@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-28 16:45 UTC",
+  "generated": "2026-10-28 16:49 UTC",
   "n_answerable": 32,
   "n_unanswerable": 6,
   "config": {
@@ -2148,5 +2148,658 @@
       "recall@5_answerable": 0.0,
       "abstain_unanswerable": 1.0
     }
-  ]
+  ],
+  "agent": {
+    "summary": {
+      "agent_top1_answerable": 0.59375,
+      "llm_only_top1_answerable": 0.6875,
+      "agent_abstain_unanswerable": 0.3333333333333333,
+      "llm_only_abstain_unanswerable": 0.3333333333333333,
+      "avg_steps": 3.236842105263158,
+      "avg_seconds": 6.671052631578948
+    },
+    "rows": [
+      {
+        "id": "q01",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "plain"
+        ],
+        "status": "not_sure",
+        "agent_top1": "m00459",
+        "agent_ok": false,
+        "llm_only": "m04124",
+        "llm_only_ok": true,
+        "steps": 5,
+        "stopped_by": "final_answer",
+        "seconds": 11.6
+      },
+      {
+        "id": "q02",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "plain"
+        ],
+        "status": "found",
+        "agent_top1": "m12804",
+        "agent_ok": true,
+        "llm_only": "m12804",
+        "llm_only_ok": true,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 4.7
+      },
+      {
+        "id": "q03",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "plain"
+        ],
+        "status": "found",
+        "agent_top1": "m07215",
+        "agent_ok": true,
+        "llm_only": "m07215",
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 3.1
+      },
+      {
+        "id": "q04",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "plain"
+        ],
+        "status": "not_sure",
+        "agent_top1": "m17499",
+        "agent_ok": false,
+        "llm_only": "m06518",
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 4.6
+      },
+      {
+        "id": "q05",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "partial"
+        ],
+        "status": "found",
+        "agent_top1": "m06987",
+        "agent_ok": true,
+        "llm_only": "m06987",
+        "llm_only_ok": true,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 2.6
+      },
+      {
+        "id": "q06",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "plain"
+        ],
+        "status": "not_sure",
+        "agent_top1": "m16955",
+        "agent_ok": false,
+        "llm_only": "m14883",
+        "llm_only_ok": false,
+        "steps": 4,
+        "stopped_by": "final_answer",
+        "seconds": 8.3
+      },
+      {
+        "id": "q07",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "plain"
+        ],
+        "status": "found",
+        "agent_top1": "m06923",
+        "agent_ok": true,
+        "llm_only": "m06923",
+        "llm_only_ok": true,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 4.7
+      },
+      {
+        "id": "q08",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "plain"
+        ],
+        "status": "not_sure",
+        "agent_top1": "m03970",
+        "agent_ok": false,
+        "llm_only": "__not_in_corpus__",
+        "llm_only_ok": false,
+        "steps": 4,
+        "stopped_by": "final_answer",
+        "seconds": 5.8
+      },
+      {
+        "id": "q09",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "plain"
+        ],
+        "status": "found",
+        "agent_top1": "m05945",
+        "agent_ok": true,
+        "llm_only": "m10454",
+        "llm_only_ok": false,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 3.8
+      },
+      {
+        "id": "q10",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "plain"
+        ],
+        "status": "found",
+        "agent_top1": "m09291",
+        "agent_ok": true,
+        "llm_only": "m09291",
+        "llm_only_ok": true,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 3.8
+      },
+      {
+        "id": "q11",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "plain"
+        ],
+        "status": "not_found",
+        "agent_top1": null,
+        "agent_ok": false,
+        "llm_only": "m12463",
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 1.2
+      },
+      {
+        "id": "q12",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "plain"
+        ],
+        "status": "not_sure",
+        "agent_top1": "m16447",
+        "agent_ok": false,
+        "llm_only": "m10578",
+        "llm_only_ok": true,
+        "steps": 5,
+        "stopped_by": "final_answer",
+        "seconds": 7.4
+      },
+      {
+        "id": "q13",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "plain"
+        ],
+        "status": "found",
+        "agent_top1": "m05031",
+        "agent_ok": true,
+        "llm_only": "m06102",
+        "llm_only_ok": false,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 3.9
+      },
+      {
+        "id": "q14",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "wrong_detail"
+        ],
+        "status": "found",
+        "agent_top1": "m03016",
+        "agent_ok": true,
+        "llm_only": "m03016",
+        "llm_only_ok": true,
+        "steps": 4,
+        "stopped_by": "final_answer",
+        "seconds": 5.3
+      },
+      {
+        "id": "q15",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "confusable"
+        ],
+        "status": "found",
+        "agent_top1": "m15986",
+        "agent_ok": true,
+        "llm_only": "m15986",
+        "llm_only_ok": true,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 4.6
+      },
+      {
+        "id": "q16",
+        "answerable": true,
+        "tags": [
+          "en",
+          "obscure",
+          "confusable"
+        ],
+        "status": "not_sure",
+        "agent_top1": "m15290",
+        "agent_ok": false,
+        "llm_only": "m13839",
+        "llm_only_ok": true,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 4.3
+      },
+      {
+        "id": "q17",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "plain"
+        ],
+        "status": "found",
+        "agent_top1": "m15182",
+        "agent_ok": true,
+        "llm_only": "m15182",
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 4.1
+      },
+      {
+        "id": "q18",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "plain"
+        ],
+        "status": "found",
+        "agent_top1": "m16728",
+        "agent_ok": true,
+        "llm_only": "m16728",
+        "llm_only_ok": true,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 3.5
+      },
+      {
+        "id": "q19",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "plain"
+        ],
+        "status": "found",
+        "agent_top1": "m10488",
+        "agent_ok": true,
+        "llm_only": "m10488",
+        "llm_only_ok": true,
+        "steps": 4,
+        "stopped_by": "final_answer",
+        "seconds": 3.4
+      },
+      {
+        "id": "q20",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "plain"
+        ],
+        "status": "found",
+        "agent_top1": "m05805",
+        "agent_ok": true,
+        "llm_only": "m05805",
+        "llm_only_ok": true,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 4.4
+      },
+      {
+        "id": "q21",
+        "answerable": true,
+        "tags": [
+          "en",
+          "obscure",
+          "plain"
+        ],
+        "status": "found",
+        "agent_top1": "m12221",
+        "agent_ok": true,
+        "llm_only": "m12221",
+        "llm_only_ok": true,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 2.9
+      },
+      {
+        "id": "q22",
+        "answerable": true,
+        "tags": [
+          "en",
+          "obscure",
+          "plain"
+        ],
+        "status": "not_sure",
+        "agent_top1": "m09158",
+        "agent_ok": true,
+        "llm_only": "m09158",
+        "llm_only_ok": true,
+        "steps": 5,
+        "stopped_by": "max_steps",
+        "seconds": 26.5
+      },
+      {
+        "id": "q23",
+        "answerable": true,
+        "tags": [
+          "th",
+          "obscure",
+          "plain"
+        ],
+        "status": "found",
+        "agent_top1": "m10869",
+        "agent_ok": true,
+        "llm_only": "m15182",
+        "llm_only_ok": false,
+        "steps": 4,
+        "stopped_by": "final_answer",
+        "seconds": 5.5
+      },
+      {
+        "id": "q24",
+        "answerable": true,
+        "tags": [
+          "en",
+          "obscure",
+          "plain"
+        ],
+        "status": "not_sure",
+        "agent_top1": "m12629",
+        "agent_ok": false,
+        "llm_only": "__not_in_corpus__",
+        "llm_only_ok": false,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 4.7
+      },
+      {
+        "id": "q25",
+        "answerable": true,
+        "tags": [
+          "en",
+          "obscure",
+          "plain"
+        ],
+        "status": "found",
+        "agent_top1": "m17066",
+        "agent_ok": true,
+        "llm_only": "__not_in_corpus__",
+        "llm_only_ok": false,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 2.5
+      },
+      {
+        "id": "q26",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "plain"
+        ],
+        "status": "not_sure",
+        "agent_top1": "m12258",
+        "agent_ok": false,
+        "llm_only": "m11691",
+        "llm_only_ok": true,
+        "steps": 5,
+        "stopped_by": "final_answer",
+        "seconds": 9.5
+      },
+      {
+        "id": "q27",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "wrong_detail"
+        ],
+        "status": "found",
+        "agent_top1": "m04725",
+        "agent_ok": true,
+        "llm_only": "m04725",
+        "llm_only_ok": true,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 3.8
+      },
+      {
+        "id": "q28",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "plain"
+        ],
+        "status": "found",
+        "agent_top1": "m17072",
+        "agent_ok": true,
+        "llm_only": "m17072",
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 4.0
+      },
+      {
+        "id": "q29",
+        "answerable": true,
+        "tags": [
+          "en",
+          "obscure",
+          "partial"
+        ],
+        "status": "not_sure",
+        "agent_top1": "m05875",
+        "agent_ok": false,
+        "llm_only": "m13184",
+        "llm_only_ok": false,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 4.5
+      },
+      {
+        "id": "q30",
+        "answerable": true,
+        "tags": [
+          "th",
+          "obscure",
+          "plain"
+        ],
+        "status": "not_sure",
+        "agent_top1": "m17124",
+        "agent_ok": false,
+        "llm_only": null,
+        "llm_only_ok": false,
+        "steps": 5,
+        "stopped_by": "max_steps",
+        "seconds": 16.5
+      },
+      {
+        "id": "q31",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "vague",
+          "confusable"
+        ],
+        "status": "found",
+        "agent_top1": "m02880",
+        "agent_ok": false,
+        "llm_only": "m04124",
+        "llm_only_ok": true,
+        "steps": 4,
+        "stopped_by": "final_answer",
+        "seconds": 3.5
+      },
+      {
+        "id": "q38",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "vague"
+        ],
+        "status": "not_sure",
+        "agent_top1": "m02234",
+        "agent_ok": false,
+        "llm_only": null,
+        "llm_only_ok": false,
+        "steps": 5,
+        "stopped_by": "max_steps",
+        "seconds": 27.6
+      },
+      {
+        "id": "q32",
+        "answerable": false,
+        "tags": [
+          "th",
+          "unanswerable"
+        ],
+        "status": "not_sure",
+        "agent_top1": "m02627",
+        "agent_ok": false,
+        "llm_only": "__not_in_corpus__",
+        "llm_only_ok": false,
+        "steps": 5,
+        "stopped_by": "max_steps",
+        "seconds": 31.6
+      },
+      {
+        "id": "q33",
+        "answerable": false,
+        "tags": [
+          "en",
+          "unanswerable"
+        ],
+        "status": "not_sure",
+        "agent_top1": "m12519",
+        "agent_ok": false,
+        "llm_only": "__not_in_corpus__",
+        "llm_only_ok": false,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 4.2
+      },
+      {
+        "id": "q34",
+        "answerable": false,
+        "tags": [
+          "en",
+          "unanswerable"
+        ],
+        "status": "not_sure",
+        "agent_top1": "m12307",
+        "agent_ok": false,
+        "llm_only": "m12772",
+        "llm_only_ok": false,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 4.3
+      },
+      {
+        "id": "q35",
+        "answerable": false,
+        "tags": [
+          "en",
+          "unanswerable"
+        ],
+        "status": "not_found",
+        "agent_top1": null,
+        "agent_ok": true,
+        "llm_only": null,
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 1.3
+      },
+      {
+        "id": "q36",
+        "answerable": false,
+        "tags": [
+          "th",
+          "unanswerable"
+        ],
+        "status": "not_found",
+        "agent_top1": null,
+        "agent_ok": true,
+        "llm_only": null,
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 1.2
+      },
+      {
+        "id": "q37",
+        "answerable": false,
+        "tags": [
+          "en",
+          "unanswerable"
+        ],
+        "status": "not_sure",
+        "agent_top1": "m11895",
+        "agent_ok": false,
+        "llm_only": "m12001",
+        "llm_only_ok": false,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 4.3
+      }
+    ]
+  }
 }
