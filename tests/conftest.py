@@ -6,18 +6,30 @@ from types import SimpleNamespace
 import pytest
 
 
-class FakeClient:
-    """Mimics `client.chat.completions.create(...)`, returning scripted replies in order."""
+def tool_call(name: str, arguments: str, call_id: str = "call_1"):
+    """A scripted reply that asks to run one tool."""
+    fn = SimpleNamespace(name=name, arguments=arguments)
+    return {"tool_calls": [SimpleNamespace(id=call_id, type="function", function=fn)]}
 
-    def __init__(self, replies: list[str]):
+
+class FakeClient:
+    """Mimics `client.chat.completions.create(...)`, returning scripted replies in order.
+
+    A reply is either a string (plain content) or a dict from `tool_call(...)`.
+    """
+
+    def __init__(self, replies: list):
         self._replies = list(replies)
         self.calls: list[dict] = []
         self.chat = SimpleNamespace(completions=SimpleNamespace(create=self._create))
 
     def _create(self, **kwargs):
         self.calls.append(kwargs)
-        content = self._replies.pop(0)
-        msg = SimpleNamespace(content=content, tool_calls=None)
+        r = self._replies.pop(0)
+        if isinstance(r, dict):
+            msg = SimpleNamespace(content="", tool_calls=r["tool_calls"])
+        else:
+            msg = SimpleNamespace(content=r, tool_calls=None)
         return SimpleNamespace(choices=[SimpleNamespace(message=msg)])
 
 
