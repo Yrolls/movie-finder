@@ -59,8 +59,27 @@ python scripts/fetch_data.py
 python scripts/build_index.py
 ```
 
-_Steps for building the index, running the API and the evaluation are added as those
-parts land — see the commit history._
+_Running the API is added when that part lands — see the commit history._
+
+## Evaluate
+
+The gold set is [`eval/queries.jsonl`](eval/queries.jsonl): half-remembered descriptions
+(English and Thai) labelled with the movie's title + year, plus queries for movies that are
+**not** in the corpus (`"title": null`), where the right answer is "not found".
+
+```bash
+python scripts/find_movie.py "groundhog"     # look up a title when adding a query
+python eval/run_eval.py                      # retrieval: BM25 baseline vs dense vs hybrid + min_score sweep
+python eval/run_eval.py --agent              # + end-to-end agent vs LLM-only baseline (calls the LLM)
+
+# chunk-size experiment: build extra indexes, then compare them in one report
+python scripts/build_index.py --chunk-words 100 --chunk-overlap 25 --out data/index_c100
+python scripts/build_index.py --chunk-words 400 --chunk-overlap 100 --out data/index_c400
+python eval/run_eval.py --index data/index data/index_c100 data/index_c400
+```
+
+Results are written to [`eval/results/report.md`](eval/results/report.md) (committed) and
+`eval/results/results.json`.
 
 ## Tests
 

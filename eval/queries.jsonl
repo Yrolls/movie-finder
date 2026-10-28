@@ -1,0 +1,40 @@
+// Gold set: one JSON object per line.  title/year = the movie the query describes (null = NOT in the corpus).
+// Queries are written from memory in our own words -- never copied from the Wikipedia plot.
+// tags: language (en/th) · fame (famous/obscure) · kind (plain/partial/wrong_detail/vague/confusable) · unanswerable
+{"id": "q01", "query": "ผู้ชายคนหนึ่งตื่นขึ้นมาแล้วเจอวันเดิมซ้ำไปเรื่อย ๆ ในเมืองเล็ก ๆ ช่วงหน้าหนาว เขาเป็นคนพยากรณ์อากาศนิสัยไม่ดี", "title": "Groundhog Day", "year": 1993, "tags": ["th", "famous", "plain"]}
+{"id": "q02", "query": "a team of thieves breaks into a rich heir's mind while he sleeps to plant an idea instead of stealing one", "title": "Inception", "year": 2010, "tags": ["en", "famous", "plain"]}
+{"id": "q03", "query": "guy can't make new memories so he tattoos notes on his body and uses polaroid photos to hunt down his wife's killer", "title": "Memento", "year": 2000, "tags": ["en", "famous", "plain"]}
+{"id": "q04", "query": "ชายคนหนึ่งค่อย ๆ รู้ว่าชีวิตทั้งชีวิตของเขาเป็นรายการทีวี ทุกคนรอบตัวเป็นนักแสดง", "title": "The Truman Show", "year": 1998, "tags": ["th", "famous", "plain"]}
+{"id": "q05", "query": "the one where the guy is stuck on an island after a plane crash and his only friend is a volleyball", "title": "Cast Away", "year": 2000, "tags": ["en", "famous", "partial"]}
+{"id": "q06", "query": "วัยรุ่นย้อนเวลากลับไปด้วยรถสปอร์ต แล้วเผลอทำให้พ่อแม่ตัวเองไม่ได้รักกัน ต้องแก้ให้ทั้งคู่กลับมาเจอกัน", "title": "Back to the Future", "year": 1985, "tags": ["th", "famous", "plain"]}
+{"id": "q07", "query": "a child psychologist tries to help a scared little boy who says he can see ghosts, with a big twist at the end", "title": "The Sixth Sense", "year": 1999, "tags": ["en", "famous", "plain"]}
+{"id": "q08", "query": "เด็กผู้ชายขอพรกับตู้เกมแล้วตื่นมาตัวโตเป็นผู้ใหญ่ ได้ไปทำงานบริษัทของเล่น", "title": "Big", "year": 1988, "tags": ["th", "famous", "plain"]}
+{"id": "q09", "query": "lawyer who lies all the time suddenly cannot tell a lie for a whole day because of his son's birthday wish", "title": "Liar Liar", "year": 1997, "tags": ["en", "famous", "plain"]}
+{"id": "q10", "query": "a man from eastern europe gets stuck living inside a new york airport for months because his country stops existing", "title": "The Terminal", "year": 2004, "tags": ["en", "famous", "plain"]}
+{"id": "q11", "query": "คุณลุงแก่ ๆ ผูกลูกโป่งเป็นพันลูกกับบ้านแล้วลอยไปอเมริกาใต้ มีเด็กลูกเสือติดไปด้วย", "title": "Up", "year": 2009, "tags": ["th", "famous", "plain"]}
+{"id": "q12", "query": "หนูที่อยากเป็นเชฟ แอบควบคุมเด็กหนุ่มในครัวร้านอาหารที่ปารีสด้วยการดึงผมใต้หมวก", "title": "Ratatouille", "year": 2007, "tags": ["th", "famous", "plain"]}
+{"id": "q13", "query": "kids find an old board game and every roll lets jungle animals and a hunter out into their town, and a man comes out who was trapped inside for years", "title": "Jumanji", "year": 1995, "tags": ["en", "famous", "plain"]}
+{"id": "q14", "query": "a boy is accidentally left home alone during easter holiday and fights off two burglars with traps", "title": "Home Alone", "year": 1990, "tags": ["en", "famous", "wrong_detail"]}
+{"id": "q15", "query": "soldier fighting aliens keeps dying and waking up on the same day before the battle, training with a famous female soldier", "title": "Edge of Tomorrow", "year": 2014, "tags": ["en", "famous", "confusable"]}
+{"id": "q16", "query": "a man wakes up in someone else's body on a commuter train and keeps reliving the last 8 minutes before it explodes", "title": "Source Code", "year": 2011, "tags": ["en", "obscure", "confusable"]}
+{"id": "q17", "query": "ผู้ชายเหงา ๆ ที่เพิ่งหย่า ตกหลุมรักระบบปฏิบัติการ AI ในคอมพิวเตอร์ที่มีแค่เสียงผู้หญิง", "title": "Her", "year": 2013, "tags": ["th", "famous", "plain"]}
+{"id": "q18", "query": "young programmer is invited to a billionaire's remote house to test whether a female robot is truly conscious", "title": "Ex Machina", "year": 2014, "tags": ["en", "famous", "plain"]}
+{"id": "q19", "query": "two rival stage magicians in old london try to outdo each other, one uses a strange electric machine for a teleport trick", "title": "The Prestige", "year": 2006, "tags": ["en", "famous", "plain"]}
+{"id": "q20", "query": "นักภาษาศาสตร์ผู้หญิงถูกทหารเรียกตัวมาช่วยคุยกับมนุษย์ต่างดาวที่ยานลงมาหลายที่ทั่วโลก", "title": "Arrival", "year": 2016, "tags": ["th", "famous", "plain"]}
+{"id": "q21", "query": "a lonely worker near the end of a three year contract on a moon base finds another version of himself", "title": "Moon", "year": 2009, "tags": ["en", "obscure", "plain"]}
+{"id": "q22", "query": "two engineers building a gadget in their garage accidentally invent a time machine and the timelines get really confusing", "title": "Primer", "year": 2004, "tags": ["en", "obscure", "plain"]}
+{"id": "q23", "query": "ผู้ชายขี้อายพาตุ๊กตาขนาดเท่าคนจริงมาแนะนำว่าเป็นแฟน แล้วคนทั้งเมืองก็เล่นตามไปด้วย", "title": "Lars and the Real Girl", "year": 2007, "tags": ["th", "obscure", "plain"]}
+{"id": "q24", "query": "quiet movie about a week in the life of a bus driver who writes poems in a notebook and lives with his creative girlfriend and a dog", "title": "Paterson", "year": 2016, "tags": ["en", "obscure", "plain"]}
+{"id": "q25", "query": "single people are sent to a hotel and must find a partner in 45 days or they get turned into an animal", "title": "The Lobster", "year": 2015, "tags": ["en", "obscure", "plain"]}
+{"id": "q26", "query": "อดีตสายลับรัฐบาลออกตามหาลูกสาววัยรุ่นที่โดนแก๊งค้ามนุษย์ลักพาตัวตอนไปเที่ยวยุโรป", "title": "Taken", "year": 2008, "tags": ["th", "famous", "plain"]}
+{"id": "q27", "query": "there is a bomb on a train and if it goes below 50 miles per hour it explodes, a cop has to keep it moving", "title": "Speed", "year": 1994, "tags": ["en", "famous", "wrong_detail"]}
+{"id": "q28", "query": "นักบินอวกาศถูกทิ้งไว้บนดาวอังคารเพราะเพื่อนคิดว่าตายแล้ว ต้องปลูกมันฝรั่งเพื่อเอาชีวิตรอด", "title": "The Martian", "year": 2015, "tags": ["th", "famous", "plain"]}
+{"id": "q29", "query": "two college friends go looking for their old genius classmate from engineering school who disappeared after graduation", "title": "3 Idiots", "year": 2009, "tags": ["en", "obscure", "partial"]}
+{"id": "q30", "query": "นักเชลโลตกงานกลับไปบ้านเกิด แล้วได้งานใหม่เป็นคนจัดเตรียมศพก่อนใส่โลง ภรรยาไม่ยอมรับ", "title": "Departures", "year": 2008, "tags": ["th", "obscure", "plain"]}
+{"id": "q31", "query": "some movie from the 80s or 90s where a guy keeps living the same day over and over", "title": "Groundhog Day", "year": 1993, "tags": ["en", "famous", "vague", "confusable"]}
+{"id": "q32", "query": "หนังเกี่ยวกับนักวิทยาศาสตร์ที่สร้างระเบิดปรมาณูลูกแรกในทะเลทรายนิวเม็กซิโก", "title": null, "year": null, "tags": ["th", "unanswerable"]}
+{"id": "q33", "query": "a tired laundromat owner jumps between parallel universes where she is a kung fu star and has hot dog fingers", "title": null, "year": null, "tags": ["en", "unanswerable"]}
+{"id": "q34", "query": "a poor family slowly gets hired one by one into a rich family's modern house by pretending to be strangers", "title": null, "year": null, "tags": ["en", "unanswerable"]}
+{"id": "q35", "query": "a penguin opens a bakery in bangkok and accidentally becomes a k-pop idol", "title": null, "year": null, "tags": ["en", "unanswerable"]}
+{"id": "q36", "query": "ช้างที่ได้เป็นนักบินอวกาศคนแรกของประเทศไทย ต้องซ่อมสถานีอวกาศด้วยงวง", "title": null, "year": null, "tags": ["th", "unanswerable"]}
+{"id": "q37", "query": "a perfect doll leaves her pink plastic world for the real world and has an existential crisis", "title": null, "year": null, "tags": ["en", "unanswerable"]}

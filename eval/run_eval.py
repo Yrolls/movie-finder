@@ -1,0 +1,276 @@
+"""Reproducible evaluation. Writes eval/results/report.md and eval/results/results.json.
+
+    python eval/run_eval.py                                  # retrieval: bm25 vs dense vs hybrid
+    python eval/run_eval.py --index data/index data/index_c100 data/index_c400   # chunk sizes
+    python eval/run_eval.py --agent                          # + end-to-end agent vs LLM-only
+
+Parts
+1. Retrieval   recall@1/5/10 and MRR@10 on answerable queries, per mode and per index
+               (BM25 is the named baseline).
+2. min_score   sweep of the dense floor: recall@5 kept on answerable queries vs. share of
+               unanswerable queries correctly answered with nothing.
+3. Agent       (--agent, calls the LLM) top-1 accuracy of the full app vs. a no-retrieval
+               baseline where the model guesses the title from its own memory.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+import time
+from collections import defaultdict
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+
+from pydantic import BaseModel  # noqa: E402
+
+from movie_finder.config import INDEX_DIR, PROCESSED_DIR, get_settings  # noqa: E402
+from movie_finder.data.corpus import load_movies  # noqa: E402
+from movie_finder.evaluation import (  # noqa: E402
+    GoldQuery,
+    abstain_rate,
+    load_gold,
+    norm_title,
+    rank_of,
+    resolve_gold,
+    retrieval_metrics,
+)
+from movie_finder.retrieval.loader import load_retriever  # noqa: E402
+
+KS = (1, 5, 10)
+SWEEP = [0.0, 0.76, 0.78, 0.80, 0.82, 0.84, 0.86, 0.88]
+RESULTS_DIR = ROOT / "eval" / "results"
+
+
+# ---------------------------------------------------------------- retrieval
+def eval_retrieval(retriever, gold: list[GoldQuery], modes: list[str]) -> dict:
+    out = {}
+    answerable = [g for g in gold if g.answerable]
+    for mode in modes:
+        ranks, per_tag = [], defaultdict(list)
+        misses = []
+        for g in answerable:
+            hits = retriever.search(g.query, k=max(KS), mode=mode, min_score=0.0)
+            r = rank_of(g.movie_id, [h.movie_id for h in hits])
+            ranks.append(r)
+            for t in g.tags:
+                per_tag[t].append(r)
+            if r != 1:
+                misses.append({"id": g.qid, "query": g.query, "gold": g.title, "rank": r,
+                               "top1": f"{hits[0].title} ({hits[0].year})" if hits else None})
+        out[mode] = {
+            "overall": retrieval_metrics(ranks, KS),
+            "per_tag": {t: {"n": len(rs), **retrieval_metrics(rs, KS)} for t, rs in sorted(per_tag.items())},
+            "misses": misses,
+        }
+    return out
+
+
+def sweep_min_score(retriever, gold: list[GoldQuery]) -> list[dict]:
+    """Score every query once (no floor), then apply each threshold offline."""
+    scored = []
+    for g in gold:
+        hits = retriever.search(g.query, k=5, mode="dense", min_score=0.0)
+        scored.append((g, [(h.movie_id, h.score) for h in hits]))
+
+    rows = []
+    for t in SWEEP:
+        ranks, empties = [], []
+        for g, hits in scored:
+            kept = [mid for mid, s in hits if s >= t]
+            if g.answerable:
+                ranks.append(rank_of(g.movie_id, kept))
+            else:
+                empties.append(len(kept))
+        rows.append({"min_score": t,
+                     "recall@5_answerable": retrieval_metrics(ranks, (5,))["recall@5"],
+                     "abstain_unanswerable": abstain_rate(empties)})
+    return rows
+
+
+# ---------------------------------------------------------------- agent vs LLM-only
+class Guess(BaseModel):
+    title: str | None
+    year: int | None = None
+
+
+def llm_only_guess(query: str, movies_by_title: dict) -> str | None:
+    from movie_finder.llm import chat_json
+
+    g = chat_json(
+        [{"role": "system", "content": "Identify the movie the user describes from your own knowledge. "
+                                       'Reply with ONLY JSON: {"title": str|null, "year": int|null}. '
+                                       "Use null if you do not know."},
+         {"role": "user", "content": query}],
+        Guess,
+    )
+    if not g.title:
+        return None
+    for m in movies_by_title.get(norm_title(g.title), []):
+        if g.year is None or abs(m.year - g.year) <= 1:
+            return m.movie_id
+    return "__not_in_corpus__"
+
+
+def eval_agent(retriever, gold: list[GoldQuery], movies) -> dict:
+    from movie_finder.agent.loop import run_agent
+
+    by_title = defaultdict(list)
+    for m in movies:
+        by_title[norm_title(m.title)].append(m)
+
+    rows = []
+    for g in gold:
+        t0 = time.perf_counter()
+        res = run_agent(g.query, retriever)
+        dt = time.perf_counter() - t0
+        top = res.answer.candidates[0].movie_id if res.answer.candidates else None
+        base = llm_only_guess(g.query, by_title)
+        if g.answerable:
+            agent_ok = top == g.movie_id and res.answer.status != "not_found"
+            base_ok = base == g.movie_id
+        else:
+            agent_ok = res.answer.status == "not_found"
+            base_ok = base is None
+        rows.append({"id": g.qid, "answerable": g.answerable, "tags": g.tags,
+                     "status": res.answer.status, "agent_top1": top, "agent_ok": agent_ok,
+                     "llm_only": base, "llm_only_ok": base_ok,
+                     "steps": res.steps, "stopped_by": res.stopped_by, "seconds": round(dt, 1)})
+        print(f"  {g.qid}: agent={'OK ' if agent_ok else 'MISS'} llm-only={'OK ' if base_ok else 'MISS'} "
+              f"({res.steps} steps, {dt:.1f}s)")
+
+    def acc(rs, key):
+        return sum(r[key] for r in rs) / len(rs) if rs else float("nan")
+
+    ans = [r for r in rows if r["answerable"]]
+    una = [r for r in rows if not r["answerable"]]
+    return {
+        "summary": {
+            "agent_top1_answerable": acc(ans, "agent_ok"),
+            "llm_only_top1_answerable": acc(ans, "llm_only_ok"),
+            "agent_abstain_unanswerable": acc(una, "agent_ok"),
+            "llm_only_abstain_unanswerable": acc(una, "llm_only_ok"),
+            "avg_steps": sum(r["steps"] for r in rows) / len(rows),
+            "avg_seconds": sum(r["seconds"] for r in rows) / len(rows),
+        },
+        "rows": rows,
+    }
+
+
+# ---------------------------------------------------------------- report
+def pct(x: float) -> str:
+    return "n/a" if x != x else f"{100 * x:.1f}%"
+
+
+def write_report(res: dict) -> str:
+    L = [f"# Evaluation report", "",
+         f"_Generated {res['generated']} — {res['n_answerable']} answerable + "
+         f"{res['n_unanswerable']} unanswerable queries from `eval/queries.jsonl`._", "",
+         f"LLM: `{res['config']['llm_model']}` · embeddings: `{res['config']['embed_model']}` · "
+         f"temperature 0", "",
+         "## 1. Retrieval (answerable queries)", "",
+         "| index | chunk words | mode | recall@1 | recall@5 | recall@10 | MRR@10 |",
+         "|---|---|---|---|---|---|---|"]
+    for idx in res["retrieval"]:
+        for mode, r in idx["modes"].items():
+            o = r["overall"]
+            L.append(f"| `{idx['index']}` | {idx['meta'].get('chunk_words', '?')} | {mode}"
+                     f"{' (baseline)' if mode == 'bm25' else ''} | {pct(o['recall@1'])} | "
+                     f"{pct(o['recall@5'])} | {pct(o['recall@10'])} | {o['mrr@10']:.3f} |")
+
+    first = res["retrieval"][0]
+    tags = sorted({t for m in first["modes"].values() for t in m["per_tag"]})
+    if tags:
+        L += ["", f"### recall@5 by query tag (`{first['index']}`)", "",
+              "| tag | n | " + " | ".join(first["modes"]) + " |",
+              "|---|---|" + "---|" * len(first["modes"])]
+        for t in tags:
+            n = next(m["per_tag"][t]["n"] for m in first["modes"].values() if t in m["per_tag"])
+            cells = [pct(m["per_tag"].get(t, {}).get("recall@5", float("nan"))) for m in first["modes"].values()]
+            L.append(f"| {t} | {n} | " + " | ".join(cells) + " |")
+
+    if res.get("sweep"):
+        L += ["", "## 2. `min_score` floor (dense)", "",
+              "| min_score | recall@5 kept (answerable) | returns nothing (unanswerable) |",
+              "|---|---|---|"]
+        for r in res["sweep"]:
+            L.append(f"| {r['min_score']:.2f} | {pct(r['recall@5_answerable'])} | "
+                     f"{pct(r['abstain_unanswerable'])} |")
+
+    if res.get("agent"):
+        s = res["agent"]["summary"]
+        L += ["", "## 3. End-to-end: agent vs. LLM-only (no retrieval)", "",
+              "| system | top-1 accuracy (answerable) | says not found (unanswerable) |",
+              "|---|---|---|",
+              f"| LLM-only baseline | {pct(s['llm_only_top1_answerable'])} | {pct(s['llm_only_abstain_unanswerable'])} |",
+              f"| Agent + retrieval | {pct(s['agent_top1_answerable'])} | {pct(s['agent_abstain_unanswerable'])} |",
+              "", f"Average {s['avg_steps']:.1f} model turns and {s['avg_seconds']:.1f}s per query."]
+
+    for idx in res["retrieval"][:1]:
+        if "dense" in idx["modes"]:
+            L += ["", "## Dense misses (rank ≠ 1) — for error analysis", "",
+                  "| id | query | gold | rank | dense top-1 |", "|---|---|---|---|---|"]
+            for m in idx["modes"]["dense"]["misses"]:
+                q = m["query"].replace("|", "/")
+                L.append(f"| {m['id']} | {q[:80]} | {m['gold']} | {m['rank'] or '>10'} | {m['top1']} |")
+    return "\n".join(L) + "\n"
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--gold", type=Path, default=ROOT / "eval" / "queries.jsonl")
+    ap.add_argument("--index", type=Path, nargs="+", default=[INDEX_DIR])
+    ap.add_argument("--modes", nargs="+", default=["bm25", "dense", "hybrid"])
+    ap.add_argument("--agent", action="store_true", help="also run the end-to-end agent eval (uses the LLM)")
+    ap.add_argument("--no-sweep", action="store_true")
+    args = ap.parse_args()
+
+    s = get_settings()
+    movies = load_movies(PROCESSED_DIR / "movies.jsonl")
+    gold = load_gold(args.gold)
+    problems = resolve_gold(gold, movies)
+    if problems:
+        print("Fix these gold labels first (use scripts/find_movie.py):")
+        print("\n".join("  - " + p for p in problems))
+        sys.exit(1)
+    n_ans = sum(g.answerable for g in gold)
+    print(f"[eval] {n_ans} answerable + {len(gold) - n_ans} unanswerable queries")
+
+    res: dict = {
+        "generated": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
+        "n_answerable": n_ans, "n_unanswerable": len(gold) - n_ans,
+        "config": {"llm_model": s.llm_model, "embed_model": s.embed_model, "min_score": s.min_score,
+                   "agent_max_steps": s.agent_max_steps},
+        "retrieval": [],
+    }
+    first_retriever = None
+    for idx in args.index:
+        idx = idx if idx.is_absolute() else ROOT / idx
+        print(f"[eval] retrieval on {idx.name} ...")
+        r = load_retriever(idx, movies=movies, min_score=0.0)
+        first_retriever = first_retriever or r
+        res["retrieval"].append({"index": str(idx.relative_to(ROOT)), "meta": r.store.meta,
+                                 "modes": eval_retrieval(r, gold, args.modes)})
+
+    if not args.no_sweep:
+        print("[eval] min_score sweep ...")
+        res["sweep"] = sweep_min_score(first_retriever, gold)
+
+    if args.agent:
+        print("[eval] agent vs LLM-only (calls the LLM) ...")
+        first_retriever.min_score = s.min_score
+        res["agent"] = eval_agent(first_retriever, gold, movies)
+
+    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    (RESULTS_DIR / "results.json").write_text(json.dumps(res, indent=2, ensure_ascii=False), encoding="utf-8")
+    report = write_report(res)
+    (RESULTS_DIR / "report.md").write_text(report, encoding="utf-8")
+    print(report)
+    print(f"[eval] wrote {RESULTS_DIR / 'report.md'}")
+
+
+if __name__ == "__main__":
+    main()

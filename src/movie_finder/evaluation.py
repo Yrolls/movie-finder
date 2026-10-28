@@ -1,0 +1,109 @@
+"""Evaluation helpers: gold-set loading, title->movie_id resolution, and metrics.
+
+The gold set (eval/queries.jsonl) names the target movie by title + year, not by id, so it
+stays valid if the corpus is rebuilt. `"title": null` marks a query whose movie is NOT in the
+corpus -- the right behaviour there is to return nothing.
+"""
+from __future__ import annotations
+
+import json
+import re
+import unicodedata
+from collections import defaultdict
+from collections.abc import Iterable, Sequence
+from dataclasses import dataclass, field
+from pathlib import Path
+
+from .schemas import Movie
+
+_NON_ALNUM = re.compile(r"[^a-z0-9]+")
+
+
+def norm_title(t: str) -> str:
+    t = unicodedata.normalize("NFKD", t).encode("ascii", "ignore").decode().lower()
+    t = _NON_ALNUM.sub(" ", t).strip()
+    return re.sub(r"^(the|a|an) ", "", t)
+
+
+@dataclass
+class GoldQuery:
+    qid: str
+    query: str
+    title: str | None
+    year: int | None
+    tags: list[str] = field(default_factory=list)
+    movie_id: str | None = None          # filled in by resolve_gold
+
+    @property
+    def answerable(self) -> bool:
+        return self.title is not None
+
+
+def load_gold(path: Path) -> list[GoldQuery]:
+    out = []
+    with path.open(encoding="utf-8") as f:
+        for i, line in enumerate(f, 1):
+            line = line.strip()
+            if not line or line.startswith("//"):
+                continue
+            d = json.loads(line)
+            out.append(GoldQuery(qid=d.get("id", f"q{i:02d}"), query=d["query"], title=d.get("title"),
+                                 year=d.get("year"), tags=d.get("tags", [])))
+    return out
+
+
+def resolve_gold(gold: list[GoldQuery], movies: Sequence[Movie], year_tolerance: int = 1) -> list[str]:
+    """Fill movie_id for every answerable query. Returns a list of problems (empty = all good)."""
+    index: dict[str, list[Movie]] = defaultdict(list)
+    for m in movies:
+        index[norm_title(m.title)].append(m)
+
+    problems = []
+    for g in gold:
+        if not g.answerable:
+            continue
+        cands = [m for m in index.get(norm_title(g.title), [])
+                 if g.year is None or abs(m.year - g.year) <= year_tolerance]
+        if len(cands) == 1:
+            g.movie_id = cands[0].movie_id
+        elif not cands:
+            problems.append(f"{g.qid}: '{g.title}' ({g.year}) not found in corpus")
+        else:
+            exact = [m for m in cands if m.year == g.year]
+            if len(exact) == 1:
+                g.movie_id = exact[0].movie_id
+            else:
+                found = ", ".join(f"{m.movie_id} {m.title} ({m.year}, {m.origin})" for m in cands)
+                problems.append(f"{g.qid}: '{g.title}' is ambiguous: {found}")
+    return problems
+
+
+def find_titles(movies: Iterable[Movie], text: str, limit: int = 15) -> list[Movie]:
+    """Substring search on normalized titles -- used by scripts/find_movie.py."""
+    q = norm_title(text)
+    return [m for m in movies if q in norm_title(m.title)][:limit]
+
+
+# ---------------------------------------------------------------- metrics
+def rank_of(gold_id: str, ranked_ids: Sequence[str]) -> int | None:
+    """1-based rank of the gold id, or None if absent."""
+    try:
+        return list(ranked_ids).index(gold_id) + 1
+    except ValueError:
+        return None
+
+
+def retrieval_metrics(ranks: Sequence[int | None], ks: Sequence[int] = (1, 5, 10)) -> dict[str, float]:
+    """Recall@k and MRR (cut at max k) for answerable queries; `ranks` uses None for a miss."""
+    n = len(ranks)
+    if n == 0:
+        return {}
+    kmax = max(ks)
+    out = {f"recall@{k}": sum(r is not None and r <= k for r in ranks) / n for k in ks}
+    out[f"mrr@{kmax}"] = sum(1 / r for r in ranks if r is not None and r <= kmax) / n
+    return out
+
+
+def abstain_rate(result_counts: Sequence[int]) -> float:
+    """Share of unanswerable queries for which the system returned nothing (higher = better)."""
+    return sum(c == 0 for c in result_counts) / len(result_counts) if result_counts else float("nan")
