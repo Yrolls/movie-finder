@@ -90,6 +90,8 @@ TOOL_SPECS: list[dict[str, Any]] = [
 ALLOWED_TOOLS = frozenset(t["function"]["name"] for t in TOOL_SPECS)
 META = "#meta"                    # chunk-id suffix for a citation that is a metadata row
 DB_SAMPLE = 15                    # SQL rows shown to the model (all matches are kept in db_ids)
+MAX_DETAIL_CALLS = 2              # get_movie budget per run: re-search instead of browsing
+OUTSIDE_K = 3                     # best plot matches outside the SQL set, shown next to it
 
 
 def get_moviedb(retriever: Retriever) -> MovieDB:
@@ -114,6 +116,7 @@ class ToolBox:
     # no-progress guard (Lectures 10-11): identical calls are refused, and the loop watches
     # `last_progress` to stop an agent that keeps calling tools without learning anything new
     db_ids: list[str] | None = None                                      # last SQL match set
+    detail_calls: int = 0
     calls_seen: set[str] = field(default_factory=set)
     repeats: int = 0
     last_progress: bool = False
@@ -149,11 +152,17 @@ class ToolBox:
                     if not self.db_ids:
                         return _error("no database results to search within; call "
                                       "query_movie_database first, or search without it")
-                    a = a.model_copy(update={"movie_ids": self.db_ids})
-                out = self._search(a)
+                    out = self._search_within(a)
+                else:
+                    out = self._search(a)
             elif name == "query_movie_database":
                 out = self._query_db(QueryDatabaseArgs.model_validate(args))
             else:
+                if self.detail_calls >= MAX_DETAIL_CALLS:
+                    return _error(f"you already checked {MAX_DETAIL_CALLS} movies in detail. If one "
+                                  "fits, answer now; if none fits, call search_movies with "
+                                  "different, simpler wording")
+                self.detail_calls += 1
                 out = self._get_movie(GetMovieArgs.model_validate(args))
                 self.last_progress = '"error"' not in out[:12]   # inspecting a new movie counts
                 return out
@@ -164,6 +173,33 @@ class ToolBox:
 
     # ------------------------------------------------------------ tools
     def _search(self, a: SearchMoviesArgs) -> str:
+        hits = self._retrieve(a)
+        if not hits:
+            return json.dumps({"results": [], "note": "no movie matched closely enough"})
+        payload = {"results": [h.model_dump() for h in hits]}
+        return _cap(json.dumps(payload, ensure_ascii=False))
+
+    def _search_within(self, a: SearchMoviesArgs) -> str:
+        """Plot search inside the SQL match set, plus the best plot matches OUTSIDE it.
+
+        People misremember actors and directors (eval q48: "the Mad Max with Mel Gibson" is
+        Fury Road, with Tom Hardy). Showing both lets the model notice when the story fits a
+        film outside the remembered facts much better.
+        """
+        inside = self._retrieve(a.model_copy(update={"movie_ids": self.db_ids}))
+        ids = set(self.db_ids or [])
+        outside = [h for h in self._retrieve(a.model_copy(update={"k": OUTSIDE_K + len(inside)}))
+                   if h.movie_id not in ids][:OUTSIDE_K]
+        payload = {
+            "results": [h.model_dump() for h in inside],
+            "outside_database_results": [h.model_dump() for h in outside],
+            "note": ("results = films matching the remembered facts; outside_database_results = "
+                     "best plot matches without them. If an outside film fits the story clearly "
+                     "better, the remembered actor/director/year may be wrong."),
+        }
+        return _cap(json.dumps(payload, ensure_ascii=False))
+
+    def _retrieve(self, a: SearchMoviesArgs) -> list[SearchHit]:
         # one phrasing is what the app uses: the eval found single rewrite + hybrid beat
         # 3 fused phrasings (recall@5 75.0% vs 68.8%); `queries` stays accepted for experiments
         hits = self.retriever.search_many(
@@ -177,10 +213,7 @@ class ToolBox:
             best = self.seen_hits.get(h.movie_id)
             if best is None or h.score > best.score:
                 self.seen_hits[h.movie_id] = h
-        if not hits:
-            return json.dumps({"results": [], "note": "no movie matched closely enough"})
-        payload = {"results": [h.model_dump() for h in hits]}
-        return _cap(json.dumps(payload, ensure_ascii=False))
+        return hits
 
     def _query_db(self, a: QueryDatabaseArgs) -> str:
         res = answer_with_sql(a.question, get_moviedb(self.retriever), client=self.client)
@@ -202,6 +235,8 @@ class ToolBox:
             self.chunk_text[mid + META] = line
             sample.append({"movie_id": mid, "title": m.title, "year": m.year})
         payload = {"sql": res["sql"], "n_matches": len(ids), "results": sample}
+        if res.get("relaxed_from"):
+            payload["relaxed_from"] = res["relaxed_from"]       # first query matched nothing
         if not ids:
             payload["note"] = ("no film in the database matches these facts -- the user may "
                                "misremember them; continue with a plain plot search")

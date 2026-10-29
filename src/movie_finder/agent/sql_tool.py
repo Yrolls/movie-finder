@@ -45,22 +45,36 @@ class GeneratedSQL(BaseModel):
     sql: str = Field(min_length=10, max_length=1000)
 
 
+RELAX = ("That query returned 0 rows -- the conditions are too strict, or the user misremembered "
+         "one. Drop the least certain condition (genre first, then the year range) and reply with "
+         "ONLY the JSON.")
+
+
 def answer_with_sql(question: str, db: MovieDB, client=None) -> dict:
-    """Returns {"sql", "columns", "rows"} or {"sql", "error"}; never raises."""
+    """Returns {"sql", "columns", "rows"[, "relaxed_from"]} or {"sql", "error"}; never raises.
+
+    One extra turn is allowed, used either to repair a failing query (error fed back) or to
+    relax a query that matched nothing (e.g. an over-specific genre filter).
+    """
     messages = [{"role": "system", "content": SQL_PROMPT}, {"role": "user", "content": question}]
-    sql, error = "", ""
-    for attempt in range(2):                                   # first try + one repair
+    sql, error, empty = "", "", None
+    for attempt in range(2):                                   # first try + one repair/relax
         try:
             sql = chat_json(messages, GeneratedSQL, client=client).sql
         except Exception as e:  # noqa: BLE001 -- model/proxy failure becomes a readable error
             return {"sql": sql, "error": f"could not generate SQL: {type(e).__name__}"}
         try:
             cols, rows = db.run(sql)
-            return {"sql": sql, "columns": cols, "rows": rows}
         except (SQLRefused, sqlite3.Error) as e:
             error = f"{type(e).__name__}: {e}"
-            messages += [
-                {"role": "assistant", "content": f'{{"sql": "{sql}"}}'},
-                {"role": "user", "content": f"That query failed ({error}). Fix it and reply with ONLY the JSON."},
-            ]
+            feedback = f"That query failed ({error}). Fix it and reply with ONLY the JSON."
+        else:
+            if rows or attempt == 1:
+                out = {"sql": sql, "columns": cols, "rows": rows}
+                if empty:
+                    out["relaxed_from"] = empty
+                return out
+            empty, feedback = sql, RELAX
+        messages += [{"role": "assistant", "content": f'{{"sql": "{sql}"}}'},
+                     {"role": "user", "content": feedback}]
     return {"sql": sql, "error": error}

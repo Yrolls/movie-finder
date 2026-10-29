@@ -26,3 +26,19 @@ def test_refused_twice_returns_error(fake_client):
     title = json.dumps({"sql": "SELECT * FROM movies WHERE title = 'Loop Day'"})
     out = answer_with_sql("loop day", MovieDB(MOVIES), client=fake_client([title, title]))
     assert "title" in out["error"]
+
+
+def test_empty_result_is_relaxed_once(fake_client):
+    strict = json.dumps({"sql": "SELECT movie_id, title, year, director, actors FROM movies "
+                                "WHERE actors LIKE '%Murray%' AND genre LIKE '%martial arts%'"})
+    client = fake_client([strict, GOOD])
+    out = answer_with_sql("a Bill Murray martial arts film", MovieDB(MOVIES), client=client)
+    assert [r[0] for r in out["rows"]] == ["m00000"]
+    assert "martial arts" in out["relaxed_from"]
+    assert "0 rows" in client.calls[1]["messages"][-1]["content"]
+
+
+def test_still_empty_after_relaxing_returns_no_rows(fake_client):
+    none = json.dumps({"sql": "SELECT movie_id, title, year, director, actors FROM movies WHERE year > 2020"})
+    out = answer_with_sql("a 2022 movie", MovieDB(MOVIES), client=fake_client([none, none]))
+    assert out["rows"] == [] and "error" not in out

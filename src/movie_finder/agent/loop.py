@@ -37,9 +37,11 @@ How to work:
 2. If the user mentions an actor, a director, a decade or year, a country or a genre, call
    query_movie_database with just those facts in English, then call search_movies again with the
    plot summary and within_database_results=true, to see which of those films fits the story.
-   Remembered details can be wrong: if that finds nothing that fits, trust the plot search.
-3. If the results look weak or mixed, search again with DIFFERENT wording. Never repeat a call.
-   Use get_movie to check a promising candidate.
+   Remembered details can be wrong: if a film in outside_database_results fits the story
+   clearly better, prefer it.
+3. If no result fits, search again with DIFFERENT, simpler wording (just the core premise)
+   before anything else. Never repeat a call. Use get_movie only to check ONE or TWO promising
+   candidates.
 4. When done, reply WITHOUT calling a tool, with ONLY this JSON object:
 {"status": "found" | "not_sure" | "not_found",
  "candidates": [{"movie_id": str, "title": str, "year": int, "confidence": 0.0-1.0,
@@ -232,11 +234,15 @@ def _fallback_from_hits(box: ToolBox) -> FinalAnswer:
 def _result_hits(result: str) -> list[dict[str, Any]]:
     """The ranked movies a search_movies call returned, compactly (for the UI and the trace)."""
     try:
-        rows = json.loads(result).get("results", [])
+        d = json.loads(result)
+        rows = d.get("results", [])
+        outside = d.get("outside_database_results", [])
     except (ValueError, AttributeError):
         return []
-    return [{"rank": i, "movie_id": r["movie_id"], "title": r["title"], "year": r["year"],
-             "score": r.get("score")} for i, r in enumerate(rows, 1)]
+    return ([{"rank": i, "movie_id": r["movie_id"], "title": r["title"], "year": r["year"],
+              "score": r.get("score")} for i, r in enumerate(rows, 1)]
+            + [{"rank": None, "movie_id": r["movie_id"], "title": r["title"], "year": r["year"],
+                "score": r.get("score"), "outside": True} for r in outside])
 
 
 def _result_extra(result: str) -> dict[str, Any]:

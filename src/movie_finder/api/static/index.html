@@ -58,6 +58,7 @@
   #steps summary:focus-visible { outline: 3px solid var(--marquee); outline-offset: 2px; }
   .hits { margin: 6px 0 0; padding-left: 1.3em; }
   .hits li { margin: 2px 0; font-variant-numeric: tabular-nums; }
+  .hits li.outside { list-style: circle; }
   .hits .sc, #steps .sc { color: var(--slate); }
   .sql { margin: 6px 0; padding: 8px 10px; background: var(--sheet); border-radius: 4px; font: .82rem/1.45 ui-monospace, Menlo, Consolas, monospace; white-space: pre-wrap; overflow-wrap: anywhere; color: var(--ink); }
 
@@ -181,7 +182,7 @@ function handle(raw) {
     if (!hits.length) { li.insertAdjacentHTML("beforeend", ` — nothing close enough${sql ? `<details><summary>SQL</summary>${sql}</details>` : ""}`); return; }
     const label = ev.sql ? `${ev.n_matches ?? hits.length} films matched${(ev.n_matches ?? 0) > hits.length ? ` (showing ${hits.length})` : ""}` : `Top ${hits.length} retrieved`;
     li.insertAdjacentHTML("beforeend", `<details><summary>${label}</summary>${sql}<ol class="hits">${
-      hits.map((h) => `<li>${esc(h.title)} (${h.year})${h.score != null ? ` <span class="sc">· similarity ${h.score.toFixed(2)}</span>` : ""}</li>`).join("")
+      hits.map((h) => `<li${h.outside ? ' class="outside"' : ""}>${esc(h.title)} (${h.year})${h.score != null ? ` <span class="sc">· similarity ${h.score.toFixed(2)}</span>` : ""}${h.outside ? ' <span class="sc">· outside the database match</span>' : ""}</li>`).join("")
     }</ol></details>`);
   } else if (ev.type === "final") {
     render(ev.answer, ev.evidence || {});

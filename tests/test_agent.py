@@ -167,3 +167,23 @@ def test_large_sql_result_is_sampled_but_fully_searchable(fake_client, monkeypat
     res = json.loads(box.run("search_movies", {"query": "ship strikes an iceberg",
                                                "within_database_results": True}))
     assert res["results"][0]["movie_id"] == "m00002"      # found although it wasn't in the sample
+
+
+def test_detail_calls_are_budgeted():
+    box = ToolBox(make_retriever())
+    for mid in ("m00000", "m00001"):
+        assert "error" not in json.loads(box.run("get_movie", {"movie_id": mid}))
+    out = json.loads(box.run("get_movie", {"movie_id": "m00002"}))
+    assert "different, simpler wording" in out["error"] and not box.last_progress
+
+
+def test_search_within_also_shows_outside_matches(fake_client):
+    # remembered actor (DiCaprio) is "wrong": the story is the weatherman one (m00000, Bill Murray)
+    box = ToolBox(make_retriever(), client=fake_client([DB_SQL]))
+    box.run("query_movie_database", {"question": "DiCaprio films"})
+    out = json.loads(box.run("search_movies", {"query": "weatherman relives the same winter day",
+                                               "within_database_results": True}))
+    assert {r["movie_id"] for r in out["results"]} <= {"m00001", "m00002"}
+    outside = [r["movie_id"] for r in out["outside_database_results"]]
+    assert outside[0] == "m00000" and not set(outside) & {"m00001", "m00002"}
+    assert "m00000" in box.seen_hits                      # so the agent may answer with it
