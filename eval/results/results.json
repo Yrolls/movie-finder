@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-29 09:05 UTC",
+  "generated": "2026-10-29 09:21 UTC",
   "n_answerable": 42,
   "n_unanswerable": 7,
   "gold": "eval/queries.jsonl",
@@ -6390,7 +6390,7 @@
                 {
                   "title": "Groundhog Day",
                   "year": 1993,
-                  "score": 23.5458,
+                  "score": 23.5457,
                   "correct": true
                 },
                 {
@@ -11995,44 +11995,46 @@
   "rewrite_leaks": [],
   "agent": {
     "summary": {
-      "gold_retrieved_answerable": 0.9047619047619048,
-      "gold_in_candidates_answerable": 0.8809523809523809,
-      "precision_of_found": 1.0,
-      "n_found": 30,
+      "gold_retrieved_answerable": 0.9285714285714286,
+      "gold_in_candidates_answerable": 0.9047619047619048,
+      "precision_of_found": 0.96875,
+      "n_found": 32,
       "outcomes": {
         "answerable": {
-          "found, correct": 30,
-          "not sure, wrong on top": 6,
-          "not sure, correct on top": 5,
-          "said not found": 1
+          "found, correct": 31,
+          "not sure, wrong on top": 5,
+          "not sure, correct on top": 6
         },
         "unanswerable": {
-          "not sure": 4,
-          "said not found": 3
+          "not sure": 3,
+          "said not found": 3,
+          "found, WRONG": 1
         }
       },
       "stopped_by": {
-        "final_answer": 38,
-        "max_steps": 11
+        "final_answer": 47,
+        "invalid_output": 2
       },
       "used_sql": 7,
-      "used_title_check": 17,
-      "correct_via_title_check": 2,
-      "gold_only_by_title_check_answerable": 0.07142857142857142,
+      "used_title_check": 16,
+      "repairs": 23,
+      "second_looks": 16,
+      "correct_via_title_check": 1,
+      "gold_only_by_title_check_answerable": 0.047619047619047616,
       "per_tag": {
         "confusable": {
           "n": 3,
-          "agent": 0.6666666666666666,
+          "agent": 1.0,
           "llm_only": 1.0
         },
         "en": {
           "n": 27,
-          "agent": 0.8888888888888888,
+          "agent": 0.9259259259259259,
           "llm_only": 0.7407407407407407
         },
         "famous": {
           "n": 34,
-          "agent": 0.8823529411764706,
+          "agent": 0.9411764705882353,
           "llm_only": 0.7941176470588235
         },
         "metadata": {
@@ -12052,17 +12054,17 @@
         },
         "plain": {
           "n": 24,
-          "agent": 0.8333333333333334,
+          "agent": 0.875,
           "llm_only": 0.6666666666666666
         },
         "th": {
           "n": 15,
-          "agent": 0.7333333333333333,
+          "agent": 0.8,
           "llm_only": 0.6666666666666666
         },
         "vague": {
           "n": 3,
-          "agent": 0.3333333333333333,
+          "agent": 0.6666666666666666,
           "llm_only": 0.6666666666666666
         },
         "wrong_detail": {
@@ -12071,11 +12073,11 @@
           "llm_only": 1.0
         }
       },
-      "agent_top1_answerable": 0.8333333333333334,
+      "agent_top1_answerable": 0.8809523809523809,
       "llm_only_top1_answerable": 0.7142857142857143,
       "agent_abstain_unanswerable": 0.42857142857142855,
       "llm_only_abstain_unanswerable": 0.2857142857142857,
-      "avg_steps": 3.5306122448979593,
+      "avg_steps": 3.6122448979591835,
       "avg_seconds": 10.06326530612245
     },
     "rows": [
@@ -12096,16 +12098,18 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m04124",
         "llm_only_ok": true,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 4.6,
+        "seconds": 6.6,
         "searches": [
-          "{\"query\": \"A man wakes up to find the same day repeating in a small town during winter, and he is a grumpy weatherman.\"}"
+          "{\"query\": \"A grumpy weather forecaster wakes up to find the same day repeating in a small town during winter\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"A man wakes up to find the same day repeating in a small town during winter, and he is a grumpy weatherman.\"})"
+          "search_movies({\"query\": \"A grumpy weather forecaster wakes up to find the same day repeating in a small town during winter\"})"
         ],
         "sql": []
       },
@@ -12123,20 +12127,22 @@
         "agent_ok": true,
         "gold_in_candidates": true,
         "gold_retrieved": true,
-        "gold_only_by_title_check": true,
-        "top_via": "title_check",
-        "used_title_check": true,
+        "gold_only_by_title_check": false,
+        "top_via": "search",
+        "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m12804",
         "llm_only_ok": true,
-        "steps": 4,
+        "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 6.6,
+        "seconds": 5.1,
         "searches": [
-          "{\"query\": \"thieves break into a rich heir's mind while he sleeps to plant an idea instead of stealing one\"}"
+          "{\"query\": \"thieves break into a rich heir's mind while he sleeps to plant an idea\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"thieves break into a rich heir's mind while he sleeps to plant an idea instead of stealing one\"})",
-          "check_title({\"description\": \"a team of thieves breaks into a rich heir's mind while he sleeps to plant an idea instead of stealing one\", \"titles\": [\"Inception\", \"The Matrix\", \"Minority Report\"]})"
+          "search_movies({\"query\": \"thieves break into a rich heir's mind while he sleeps to plant an idea\"})",
+          "get_movie({\"movie_id\": \"m12804\"})"
         ],
         "sql": []
       },
@@ -12157,11 +12163,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m07215",
         "llm_only_ok": true,
         "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 4.0,
+        "seconds": 5.7,
         "searches": [
           "{\"query\": \"man who cannot make new memories tattoos notes on his body and uses polaroid photos to find his wife's killer\"}"
         ],
@@ -12188,16 +12196,18 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m06518",
         "llm_only_ok": true,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 3.6,
+        "seconds": 3.8,
         "searches": [
-          "{\"query\": \"a man slowly realizes his entire life is a TV show and everyone around him is an actor\"}"
+          "{\"query\": \"a man slowly realizes his entire life is a TV show and everyone around him are actors\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"a man slowly realizes his entire life is a TV show and everyone around him is an actor\"})"
+          "search_movies({\"query\": \"a man slowly realizes his entire life is a TV show and everyone around him are actors\"})"
         ],
         "sql": []
       },
@@ -12218,6 +12228,8 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m06987",
         "llm_only_ok": true,
         "steps": 2,
@@ -12248,11 +12260,13 @@
         "gold_only_by_title_check": true,
         "top_via": "title_check",
         "used_title_check": true,
+        "repairs": 1,
+        "second_look": true,
         "llm_only": "m14883",
         "llm_only_ok": false,
-        "steps": 4,
+        "steps": 5,
         "stopped_by": "final_answer",
-        "seconds": 6.5,
+        "seconds": 10.6,
         "searches": [
           "{\"query\": \"teenager time travels in a sports car and accidentally causes their parents to stop loving each other, and must fix it so they meet again\"}"
         ],
@@ -12279,16 +12293,19 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m06923",
         "llm_only_ok": true,
-        "steps": 2,
+        "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 4.2,
+        "seconds": 5.0,
         "searches": [
-          "{\"query\": \"child psychologist helps a little boy who sees ghosts with a big twist\"}"
+          "{\"query\": \"child psychologist helps a scared little boy who sees ghosts with a big twist\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"child psychologist helps a little boy who sees ghosts with a big twist\"})"
+          "search_movies({\"query\": \"child psychologist helps a scared little boy who sees ghosts with a big twist\"})",
+          "get_movie({\"movie_id\": \"m06923\"})"
         ],
         "sql": []
       },
@@ -12309,11 +12326,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "__not_in_corpus__",
         "llm_only_ok": false,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 4.4,
+        "seconds": 4.9,
         "searches": [
           "{\"query\": \"boy makes a wish to a game cabinet and wakes up as an adult who works at a toy company\"}"
         ],
@@ -12339,16 +12358,19 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 1,
+        "second_look": false,
         "llm_only": "m10454",
         "llm_only_ok": false,
-        "steps": 2,
+        "steps": 4,
         "stopped_by": "final_answer",
-        "seconds": 4.5,
+        "seconds": 4.8,
         "searches": [
-          "{\"query\": \"lawyer who lies all the time suddenly cannot tell a lie for a whole day because of his son's birthday wish\"}"
+          "{\"query\": \"a lawyer who always lies suddenly cannot tell a lie for a whole day because of his son's birthday wish\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"lawyer who lies all the time suddenly cannot tell a lie for a whole day because of his son's birthday wish\"})"
+          "search_movies({\"query\": \"a lawyer who always lies suddenly cannot tell a lie for a whole day because of his son's birthday wish\"})",
+          "get_movie({\"movie_id\": \"m05945\"})"
         ],
         "sql": []
       },
@@ -12369,11 +12391,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 1,
+        "second_look": false,
         "llm_only": "m09291",
         "llm_only_ok": true,
         "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 8.2,
+        "seconds": 7.7,
         "searches": [
           "{\"query\": \"a man from eastern europe gets stuck living inside a new york airport for months because his country stops existing\"}"
         ],
@@ -12399,17 +12423,19 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": true,
+        "repairs": 1,
+        "second_look": true,
         "llm_only": "m12463",
         "llm_only_ok": true,
         "steps": 5,
-        "stopped_by": "max_steps",
-        "seconds": 15.8,
+        "stopped_by": "final_answer",
+        "seconds": 13.1,
         "searches": [
           "{\"query\": \"old man ties thousands of balloons to a house and floats to South America with a scout child\"}"
         ],
         "calls": [
           "search_movies({\"query\": \"old man ties thousands of balloons to a house and floats to South America with a scout child\"})",
-          "check_title({\"description\": \"old man ties thousands of balloons to a house and floats to South America with a scout child\", \"titles\": [\"Up\", \"The Balloonist\", \"Up in the Air\"]})"
+          "check_title({\"description\": \"old man ties thousands of balloons to a house and floats to South America with a scout child\", \"titles\": [\"Up\"]})"
         ],
         "sql": []
       },
@@ -12430,6 +12456,8 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": true,
+        "repairs": 0,
+        "second_look": true,
         "llm_only": "m10578",
         "llm_only_ok": true,
         "steps": 4,
@@ -12461,18 +12489,20 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": true,
+        "repairs": 2,
+        "second_look": true,
         "llm_only": "m06102",
         "llm_only_ok": false,
-        "steps": 5,
-        "stopped_by": "max_steps",
-        "seconds": 10.8,
+        "steps": 7,
+        "stopped_by": "final_answer",
+        "seconds": 17.3,
         "searches": [
           "{\"query\": \"kids find an old board game that releases jungle animals and a hunter into their town, and a man trapped inside comes out\"}"
         ],
         "calls": [
           "search_movies({\"query\": \"kids find an old board game that releases jungle animals and a hunter into their town, and a man trapped inside comes out\"})",
           "get_movie({\"movie_id\": \"m05031\"})",
-          "check_title({\"description\": \"kids find an old board game and every roll lets jungle animals and a hunter out into their town, and a man comes out who was trapped inside for years\", \"titles\": [\"Jumanji\"]})"
+          "check_title({\"description\": \"kids find an old board game and every roll lets jungle animals and a hunter out into their town, and a man comes out who was trapped inside for years\", \"titles\": [\"Jumanji\", \"The Game\", \"Pan\"]})"
         ],
         "sql": []
       },
@@ -12493,11 +12523,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m03016",
         "llm_only_ok": true,
-        "steps": 4,
+        "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 4.6,
+        "seconds": 5.4,
         "searches": [
           "{\"query\": \"a boy is left home alone during Easter holiday and fights off two burglars with traps\"}"
         ],
@@ -12524,11 +12556,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m15986",
         "llm_only_ok": true,
         "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 6.3,
+        "seconds": 4.0,
         "searches": [
           "{\"query\": \"soldier fighting aliens keeps dying and waking up on the same day before the battle, training with a famous female soldier\"}"
         ],
@@ -12555,11 +12589,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 1,
+        "second_look": false,
         "llm_only": "m13839",
         "llm_only_ok": true,
-        "steps": 3,
+        "steps": 4,
         "stopped_by": "final_answer",
-        "seconds": 4.5,
+        "seconds": 5.2,
         "searches": [
           "{\"query\": \"a man wakes up in someone else's body on a commuter train and keeps reliving the last 8 minutes before it explodes\"}"
         ],
@@ -12586,11 +12622,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m15182",
         "llm_only_ok": true,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 3.5,
+        "seconds": 4.6,
         "searches": [
           "{\"query\": \"lonely divorced man falls in love with a female voice AI operating system on a computer\"}"
         ],
@@ -12616,11 +12654,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m16728",
         "llm_only_ok": true,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 4.5,
+        "seconds": 3.5,
         "searches": [
           "{\"query\": \"young programmer is invited to a billionaire's remote house to test whether a female robot is truly conscious\"}"
         ],
@@ -12646,11 +12686,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m10488",
         "llm_only_ok": true,
         "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 4.2,
+        "seconds": 5.4,
         "searches": [
           "{\"query\": \"two rival stage magicians in old london try to outdo each other, one uses a strange electric machine for a teleport trick\"}"
         ],
@@ -12669,25 +12711,27 @@
           "plain"
         ],
         "status": "not_sure",
-        "outcome": "not sure, wrong on top",
-        "agent_top1": "m11899",
-        "agent_ok": false,
+        "outcome": "not sure, correct on top",
+        "agent_top1": "m05805",
+        "agent_ok": true,
         "gold_in_candidates": true,
         "gold_retrieved": true,
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": true,
+        "repairs": 0,
+        "second_look": true,
         "llm_only": "m05805",
         "llm_only_ok": true,
-        "steps": 5,
-        "stopped_by": "max_steps",
-        "seconds": 23.1,
+        "steps": 4,
+        "stopped_by": "final_answer",
+        "seconds": 5.6,
         "searches": [
           "{\"query\": \"female scientist receives signal from space with blueprints for a spaceship\"}"
         ],
         "calls": [
           "search_movies({\"query\": \"female scientist receives signal from space with blueprints for a spaceship\"})",
-          "check_title({\"description\": \"female scientist receives signal from space with blueprints for a spaceship\", \"titles\": [\"Contact\", \"Arrival\", \"Interstellar\"]})"
+          "check_title({\"description\": \"female scientist receives signal from space with blueprints for a spaceship\", \"titles\": [\"Contact\"]})"
         ],
         "sql": []
       },
@@ -12708,11 +12752,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m12221",
         "llm_only_ok": true,
-        "steps": 4,
+        "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 4.8,
+        "seconds": 3.8,
         "searches": [
           "{\"query\": \"lonely worker on a moon base finds another version of himself near the end of a three year contract\"}"
         ],
@@ -12739,11 +12785,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m09158",
         "llm_only_ok": true,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 4.4,
+        "seconds": 4.2,
         "searches": [
           "{\"query\": \"two engineers build a time machine in a garage and the timelines become confusing\"}"
         ],
@@ -12769,11 +12817,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m06518",
         "llm_only_ok": false,
-        "steps": 3,
+        "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 7.7,
+        "seconds": 4.3,
         "searches": [
           "{\"query\": \"shy man brings a life-sized doll to introduce as his girlfriend and the whole town plays along\"}"
         ],
@@ -12790,27 +12840,29 @@
           "obscure",
           "plain"
         ],
-        "status": "not_found",
-        "outcome": "said not found",
-        "agent_top1": null,
+        "status": "not_sure",
+        "outcome": "not sure, wrong on top",
+        "agent_top1": "m15666",
         "agent_ok": false,
         "gold_in_candidates": false,
         "gold_retrieved": false,
         "gold_only_by_title_check": false,
-        "top_via": null,
+        "top_via": "title_check",
         "used_title_check": true,
+        "repairs": 2,
+        "second_look": true,
         "llm_only": "__not_in_corpus__",
         "llm_only_ok": false,
-        "steps": 5,
-        "stopped_by": "max_steps",
-        "seconds": 11.8,
+        "steps": 7,
+        "stopped_by": "final_answer",
+        "seconds": 21.1,
         "searches": [
           "{\"query\": \"a quiet man who loves trains inherits an abandoned little train depot in the countryside and slowly makes two unlikely friends\"}"
         ],
         "calls": [
           "search_movies({\"query\": \"a quiet man who loves trains inherits an abandoned little train depot in the countryside and slowly makes two unlikely friends\"})",
           "get_movie({\"movie_id\": \"m12629\"})",
-          "check_title({\"description\": \"a quiet man who loves trains inherits an abandoned little train depot in the countryside and slowly makes two unlikely friends\", \"titles\": [\"The Train\", \"Murder on the Orient Express\", \"Midnight Express\"]})"
+          "check_title({\"description\": \"a quiet man who loves trains inherits an abandoned little train depot in the countryside and slowly makes two unlikely friends\", \"titles\": [\"The Railway Man\", \"Murder on the Orient Express\", \"The Train\"]})"
         ],
         "sql": []
       },
@@ -12831,11 +12883,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "__not_in_corpus__",
         "llm_only_ok": false,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 2.5,
+        "seconds": 2.3,
         "searches": [
           "{\"query\": \"single people are sent to a hotel and must find a partner in 45 days or they get turned into an animal\"}"
         ],
@@ -12861,11 +12915,13 @@
         "gold_only_by_title_check": true,
         "top_via": "title_check",
         "used_title_check": true,
+        "repairs": 1,
+        "second_look": true,
         "llm_only": "m11691",
         "llm_only_ok": true,
-        "steps": 4,
+        "steps": 5,
         "stopped_by": "final_answer",
-        "seconds": 10.7,
+        "seconds": 15.2,
         "searches": [
           "{\"query\": \"former government spy searches for his teenage daughter kidnapped by human traffickers while traveling in Europe\"}"
         ],
@@ -12892,11 +12948,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m04725",
         "llm_only_ok": true,
         "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 4.4,
+        "seconds": 5.0,
         "searches": [
           "{\"query\": \"a bomb is on a train and it will explode if it goes below 50 miles per hour, so a police officer must keep it moving\"}"
         ],
@@ -12923,11 +12981,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m17072",
         "llm_only_ok": true,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 3.2,
+        "seconds": 4.3,
         "searches": [
           "{\"query\": \"astronaut stranded on Mars because friends thought he was dead and must grow potatoes to survive\"}"
         ],
@@ -12953,16 +13013,19 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": true,
+        "repairs": 2,
+        "second_look": true,
         "llm_only": "__not_in_corpus__",
         "llm_only_ok": false,
-        "steps": 5,
-        "stopped_by": "max_steps",
-        "seconds": 20.5,
+        "steps": 7,
+        "stopped_by": "final_answer",
+        "seconds": 18.8,
         "searches": [
           "{\"query\": \"two college friends search for their missing genius classmate from engineering school\"}"
         ],
         "calls": [
           "search_movies({\"query\": \"two college friends search for their missing genius classmate from engineering school\"})",
+          "get_movie({\"movie_id\": \"m05875\"})",
           "check_title({\"description\": \"two college friends go looking for their old genius classmate from engineering school who disappeared after graduation\", \"titles\": [\"Good Will Hunting\", \"The Theory of Everything\", \"A Beautiful Mind\"]})"
         ],
         "sql": []
@@ -12977,24 +13040,26 @@
         ],
         "status": "not_sure",
         "outcome": "not sure, wrong on top",
-        "agent_top1": "m05660",
+        "agent_top1": "m14987",
         "agent_ok": false,
         "gold_in_candidates": false,
         "gold_retrieved": false,
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": true,
+        "repairs": 1,
+        "second_look": true,
         "llm_only": null,
         "llm_only_ok": false,
         "steps": 5,
-        "stopped_by": "max_steps",
-        "seconds": 20.0,
+        "stopped_by": "final_answer",
+        "seconds": 13.0,
         "searches": [
           "{\"query\": \"a cello player who loses his job returns to his hometown and gets a new job as a funeral preparer before the coffin, his wife does not accept it\"}"
         ],
         "calls": [
           "search_movies({\"query\": \"a cello player who loses his job returns to his hometown and gets a new job as a funeral preparer before the coffin, his wife does not accept it\"})",
-          "check_title({\"description\": \"A cello player who loses his job returns to his hometown and gets a new job as a funeral preparer before the coffin, his wife does not accept it\", \"titles\": [\"Breathe In\", \"The Pallbearer\", \"Buried\"]})"
+          "check_title({\"description\": \"A cello player who loses his job returns to his hometown and gets a new job as a funeral preparer before the coffin, his wife does not accept it\", \"titles\": [\"The Pallbearer\", \"Breathe In\"]})"
         ],
         "sql": []
       },
@@ -13007,25 +13072,28 @@
           "vague",
           "confusable"
         ],
-        "status": "not_sure",
-        "outcome": "not sure, wrong on top",
-        "agent_top1": "m04227",
-        "agent_ok": false,
-        "gold_in_candidates": false,
-        "gold_retrieved": false,
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m04124",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m04124",
         "llm_only_ok": true,
-        "steps": 5,
-        "stopped_by": "max_steps",
-        "seconds": 94.7,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 4.0,
         "searches": [
-          "{\"query\": \"a guy keeps living the same day over and over\", \"year_from\": 1980, \"year_to\": 1999}"
+          "{\"query\": \"a man repeatedly lives the same day over and over\", \"year_from\": 1980, \"year_to\": 1999}"
         ],
         "calls": [
-          "search_movies({\"query\": \"a guy keeps living the same day over and over\", \"year_from\": 1980, \"year_to\": 1999})"
+          "search_movies({\"query\": \"a man repeatedly lives the same day over and over\", \"year_from\": 1980, \"year_to\": 1999})",
+          "get_movie({\"movie_id\": \"m04124\"})"
         ],
         "sql": []
       },
@@ -13046,11 +13114,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 3,
+        "second_look": false,
         "llm_only": null,
         "llm_only_ok": false,
-        "steps": 5,
-        "stopped_by": "max_steps",
-        "seconds": 28.1,
+        "steps": 4,
+        "stopped_by": "invalid_output",
+        "seconds": 138.5,
         "searches": [
           "{\"query\": \"scary clown that tricks children\"}"
         ],
@@ -13076,11 +13146,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m07953",
         "llm_only_ok": true,
         "steps": 4,
         "stopped_by": "final_answer",
-        "seconds": 8.1,
+        "seconds": 6.0,
         "searches": [
           "{\"query\": \"young con man pretends to be a pilot and a doctor while an FBI agent chases him\", \"within_database_results\": true}"
         ],
@@ -13110,11 +13182,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m04161",
         "llm_only_ok": true,
         "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 6.1,
+        "seconds": 5.6,
         "searches": [
           "{\"query\": \"scientists bring dinosaurs back to life on an island and they escape\", \"within_database_results\": true}"
         ],
@@ -13143,11 +13217,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": null,
         "llm_only_ok": false,
         "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 3.1,
+        "seconds": 3.9,
         "searches": [
           "{\"query\": \"Christopher Nolan movie where a farmer dad leaves his daughter and flies through a wormhole to find a new planet\"}"
         ],
@@ -13174,6 +13250,8 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m07760",
         "llm_only_ok": true,
         "steps": 3,
@@ -13205,11 +13283,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m06911",
         "llm_only_ok": true,
         "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 5.7,
+        "seconds": 6.0,
         "searches": [
           "{\"query\": \"man discovers the world is a computer simulation and learns kung fu\", \"within_database_results\": true}"
         ],
@@ -13238,11 +13318,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": true,
+        "repairs": 0,
+        "second_look": true,
         "llm_only": "m08976",
         "llm_only_ok": true,
         "steps": 4,
         "stopped_by": "final_answer",
-        "seconds": 8.4,
+        "seconds": 8.6,
         "searches": [
           "{\"query\": \"Jim Carrey and his ex-girlfriend hire a company to erase memories of each other\"}"
         ],
@@ -13270,11 +13352,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 1,
+        "second_look": false,
         "llm_only": "m17734",
         "llm_only_ok": true,
         "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 6.8,
+        "seconds": 7.0,
         "searches": [
           "{\"query\": \"korean zombie movie on a train\"}"
         ],
@@ -13300,11 +13384,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m04247",
         "llm_only_ok": false,
         "steps": 4,
         "stopped_by": "final_answer",
-        "seconds": 5.1,
+        "seconds": 4.2,
         "searches": [
           "{\"query\": \"kind man travels across the country and is in famous American historical moments\", \"within_database_results\": true}"
         ],
@@ -13334,18 +13420,19 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m07082",
         "llm_only_ok": true,
-        "steps": 4,
+        "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 5.6,
+        "seconds": 5.8,
         "searches": [
           "{\"query\": \"people fight while flying over bamboo trees and a legendary sword is stolen\", \"within_database_results\": true}"
         ],
         "calls": [
           "query_movie_database({\"question\": \"Ang Lee martial arts film\"})",
-          "search_movies({\"query\": \"people fight while flying over bamboo trees and a legendary sword is stolen\", \"within_database_results\": true})",
-          "get_movie({\"movie_id\": \"m07082\"})"
+          "search_movies({\"query\": \"people fight while flying over bamboo trees and a legendary sword is stolen\", \"within_database_results\": true})"
         ],
         "sql": [
           "SELECT movie_id, title, year, director, actors FROM movies WHERE director LIKE '%Ang Lee%'"
@@ -13369,11 +13456,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 0,
+        "second_look": false,
         "llm_only": "m16583",
         "llm_only_ok": true,
         "steps": 4,
         "stopped_by": "final_answer",
-        "seconds": 6.9,
+        "seconds": 4.9,
         "searches": [
           "{\"query\": \"woman drives a war rig across the desert to free the wives of a warlord\", \"within_database_results\": true}"
         ],
@@ -13402,11 +13491,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": false,
+        "repairs": 3,
+        "second_look": false,
         "llm_only": "__not_in_corpus__",
         "llm_only_ok": false,
-        "steps": 5,
-        "stopped_by": "max_steps",
-        "seconds": 29.6,
+        "steps": 4,
+        "stopped_by": "invalid_output",
+        "seconds": 24.1,
         "searches": [
           "{\"query\": \"scientist creates the first atomic bomb in the New Mexico desert\"}"
         ],
@@ -13431,11 +13522,13 @@
         "gold_only_by_title_check": false,
         "top_via": null,
         "used_title_check": true,
+        "repairs": 0,
+        "second_look": true,
         "llm_only": "__not_in_corpus__",
         "llm_only_ok": false,
         "steps": 4,
         "stopped_by": "final_answer",
-        "seconds": 3.3,
+        "seconds": 3.1,
         "searches": [
           "{\"query\": \"a tired laundromat owner jumps between parallel universes where she is a kung fu star and has hot dog fingers\"}"
         ],
@@ -13452,8 +13545,8 @@
           "en",
           "unanswerable"
         ],
-        "status": "not_sure",
-        "outcome": "not sure",
+        "status": "found",
+        "outcome": "found, WRONG",
         "agent_top1": "m00620",
         "agent_ok": false,
         "gold_in_candidates": false,
@@ -13461,11 +13554,13 @@
         "gold_only_by_title_check": false,
         "top_via": "title_check",
         "used_title_check": true,
+        "repairs": 1,
+        "second_look": true,
         "llm_only": "m12772",
         "llm_only_ok": false,
-        "steps": 4,
+        "steps": 5,
         "stopped_by": "final_answer",
-        "seconds": 10.3,
+        "seconds": 12.7,
         "searches": [
           "{\"query\": \"a poor family slowly gets hired one by one into a rich family's modern house by pretending to be strangers\"}"
         ],
@@ -13491,11 +13586,13 @@
         "gold_only_by_title_check": false,
         "top_via": null,
         "used_title_check": true,
+        "repairs": 0,
+        "second_look": true,
         "llm_only": null,
         "llm_only_ok": true,
         "steps": 4,
         "stopped_by": "final_answer",
-        "seconds": 3.0,
+        "seconds": 2.7,
         "searches": [
           "{\"query\": \"penguin opens a bakery in Bangkok and becomes a K-pop idol\"}"
         ],
@@ -13521,17 +13618,19 @@
         "gold_only_by_title_check": false,
         "top_via": null,
         "used_title_check": true,
+        "repairs": 0,
+        "second_look": true,
         "llm_only": null,
         "llm_only_ok": true,
         "steps": 4,
         "stopped_by": "final_answer",
-        "seconds": 2.8,
+        "seconds": 2.7,
         "searches": [
           "{\"query\": \"an elephant becomes Thailand's first astronaut and repairs the space station with its trunk\"}"
         ],
         "calls": [
           "search_movies({\"query\": \"an elephant becomes Thailand's first astronaut and repairs the space station with its trunk\"})",
-          "check_title({\"description\": \"an elephant becomes Thailand's first astronaut and repairs the space station with its trunk\", \"titles\": [\"Gravity\", \"Armageddon\", \"The Space Between Us\"]})"
+          "check_title({\"description\": \"an elephant becomes Thailand's first astronaut and repairs the space station with its trunk\", \"titles\": [\"Elephant in Space\", \"Thai Astronaut Elephant\", \"Space Elephant Thailand\"]})"
         ],
         "sql": []
       },
@@ -13551,11 +13650,13 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": true,
+        "repairs": 1,
+        "second_look": true,
         "llm_only": "m12001",
         "llm_only_ok": false,
         "steps": 5,
-        "stopped_by": "max_steps",
-        "seconds": 22.0,
+        "stopped_by": "final_answer",
+        "seconds": 13.8,
         "searches": [
           "{\"query\": \"a perfect doll leaves its plastic world for the real world and has an existential crisis\"}"
         ],
@@ -13582,18 +13683,20 @@
         "gold_only_by_title_check": false,
         "top_via": "search",
         "used_title_check": true,
+        "repairs": 1,
+        "second_look": true,
         "llm_only": "__not_in_corpus__",
         "llm_only_ok": false,
-        "steps": 5,
-        "stopped_by": "max_steps",
-        "seconds": 11.1,
+        "steps": 6,
+        "stopped_by": "final_answer",
+        "seconds": 10.7,
         "searches": [
           "{\"query\": \"Tom Hanks plays Elvis Presley's manager\", \"within_database_results\": true}"
         ],
         "calls": [
           "query_movie_database({\"question\": \"Tom Hanks movie where he plays Elvis Presley's manager\"})",
           "search_movies({\"query\": \"Tom Hanks plays Elvis Presley's manager\", \"within_database_results\": true})",
-          "check_title({\"description\": \"Tom Hanks plays Elvis Presley's manager\", \"titles\": [\"The Great Buck Howard\", \"Hank Williams First Nation\", \"Elvis Gratton\"]})"
+          "check_title({\"description\": \"Tom Hanks plays Elvis Presley's manager\", \"titles\": [\"Hank Williams First Nation\", \"Elvis Gratton\", \"Heartbreak Hotel\"]})"
         ],
         "sql": [
           "SELECT movie_id, title, year, director, actors FROM movies WHERE actors LIKE '%Tom Hanks%'"
