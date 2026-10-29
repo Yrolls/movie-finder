@@ -55,7 +55,7 @@ Needs Python 3.10+ and the class proxy's API key and base URL. Commands are for 
 PowerShell; on macOS/Linux use `source .venv/bin/activate` and `cp` instead of `copy`.
 
 ```powershell
-git clone <this repo>
+git clone https://github.com/Yrolls/movie-finder.git
 cd movie-finder
 python -m venv .venv
 .venv\Scripts\activate
