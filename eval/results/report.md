@@ -1,22 +1,24 @@
 # Evaluation report
 
-_Generated 2026-10-28 16:57 UTC — 32 answerable + 6 unanswerable queries from `eval/queries.jsonl`._
+_Generated 2026-10-29 03:50 UTC — 32 answerable + 6 unanswerable queries from `eval/queries.jsonl`._
 
 LLM: `gemma-4-E4B-it` · embeddings: `intfloat/multilingual-e5-small` · temperature 0
 
 ## 1. Retrieval (answerable queries)
 
-| index | chunk words | mode | recall@1 | recall@5 | recall@10 | MRR@10 |
-|---|---|---|---|---|---|---|
-| `data/index` | 200 | bm25 (baseline) | 31.2% | 46.9% | 46.9% | 0.376 |
-| `data/index` | 200 | dense | 15.6% | 31.2% | 34.4% | 0.213 |
-| `data/index` | 200 | hybrid | 34.4% | 46.9% | 50.0% | 0.393 |
-| `data/index` | 200 | bm25+rewrite | 37.5% | 62.5% | 75.0% | 0.497 |
-| `data/index` | 200 | dense+rewrite | 18.8% | 31.2% | 37.5% | 0.242 |
-| `data/index` | 200 | hybrid+rewrite | 50.0% | 75.0% | 75.0% | 0.588 |
-| `data/index` | 200 | bm25+multi | 40.6% | 71.9% | 78.1% | 0.541 |
-| `data/index` | 200 | dense+multi | 15.6% | 28.1% | 40.6% | 0.223 |
-| `data/index` | 200 | hybrid+multi | 46.9% | 68.8% | 71.9% | 0.548 |
+Each query has one correct movie (or a few accepted versions), so recall@k = hit rate@k. Precision@k is not reported: with one relevant item it is just recall@k / k. The 95% CI is a bootstrap over queries — with ~30 queries, one query moves recall by ~3 points, so differences inside the CI are not reliable.
+
+| index | chunk words | mode | recall@1 | recall@5 (95% CI) | recall@10 | MRR@10 | nDCG@10 | median rank |
+|---|---|---|---|---|---|---|---|---|
+| `data/index` | 200 | bm25 (baseline) | 31.2% | 46.9% (28.1%–65.6%) | 46.9% | 0.376 | 0.399 | >10 |
+| `data/index` | 200 | dense | 15.6% | 31.2% (15.6%–46.9%) | 34.4% | 0.213 | 0.244 | >10 |
+| `data/index` | 200 | hybrid | 34.4% | 46.9% (28.1%–65.6%) | 50.0% | 0.393 | 0.418 | 10 |
+| `data/index` | 200 | bm25+rewrite | 37.5% | 62.5% (46.9%–78.1%) | 75.0% | 0.497 | 0.557 | 2 |
+| `data/index` | 200 | dense+rewrite | 18.8% | 31.2% (15.6%–50.0%) | 37.5% | 0.242 | 0.274 | >10 |
+| `data/index` | 200 | hybrid+rewrite | 50.0% | 75.0% (59.4%–90.6%) | 75.0% | 0.588 | 0.628 | 1.5 |
+| `data/index` | 200 | bm25+multi | 40.6% | 71.9% (56.2%–87.5%) | 78.1% | 0.541 | 0.600 | 2 |
+| `data/index` | 200 | dense+multi | 15.6% | 28.1% (12.5%–43.8%) | 40.6% | 0.223 | 0.266 | >10 |
+| `data/index` | 200 | hybrid+multi | 46.9% | 68.8% (53.1%–84.4%) | 71.9% | 0.548 | 0.589 | 2 |
 
 ### recall@5 by query tag (`data/index`)
 
@@ -51,6 +53,36 @@ Each pair: recall@5 kept on answerable queries / share of unanswerable queries t
 | 0.82 | 31.2% | 33.3% | 31.2% | 16.7% | 37.5% | 16.7% |
 | 0.84 | 15.6% | 83.3% | 15.6% | 50.0% | 15.6% | 66.7% |
 | 0.86 | 6.2% | 100.0% | 3.1% | 100.0% | 3.1% | 100.0% |
+
+## 3. End-to-end: agent (hybrid retrieval) vs. LLM-only (no retrieval)
+
+| system | top-1 accuracy (answerable) | says not found (unanswerable) |
+|---|---|---|
+| LLM-only baseline | 65.6% | 50.0% |
+| Agent + retrieval | 68.8% | 33.3% |
+
+Average 2.6 model turns and 5.4s per query.
+
+### Where the agent loses answers (answerable queries)
+
+| step | share of answerable queries |
+|---|---|
+| correct movie appeared in any of the agent's searches | 78.1% |
+| correct movie among the agent's ≤3 candidates | 78.1% |
+| correct movie ranked first by the agent | 68.8% |
+
+The gap between the first two rows is a selection error (retrieved but not chosen); the rest is a retrieval error (never retrieved).
+
+Precision of "found": when the agent says it found the movie, it is right 94.7% of the time (19 "found" answers).
+
+| outcome | answerable | unanswerable |
+|---|---|---|
+| found, correct | 18 | 0 |
+| not sure, correct on top | 4 | 0 |
+| not sure, wrong on top | 9 | 0 |
+| found, WRONG | 1 | 0 |
+| not sure | 0 | 4 |
+| said not found | 0 | 2 |
 
 ## Dense misses (rank ≠ 1) — for error analysis
 
