@@ -78,7 +78,7 @@ def get_settings() -> Settings:
         chunk_words=_int("CHUNK_WORDS", 200),
         chunk_overlap=_int("CHUNK_OVERLAP", 50),
         top_k=_int("TOP_K", 5),
-        min_score=_float("MIN_SCORE", 0.82),
+        min_score=_float("MIN_SCORE", 0.78),
         retrieval_mode=os.getenv("RETRIEVAL_MODE", "hybrid"),
         agent_max_steps=_int("AGENT_MAX_STEPS", 5),
     )
