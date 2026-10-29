@@ -1,6 +1,28 @@
-// HELD-OUT set: written AFTER the system was tuned, and never used to tune it.
-// Same format as queries.jsonl. Describe films YOU have seen, from memory, in your own words
-// (English or Thai), then look up the exact title with:  python scripts/find_movie.py "title"
-// Add a few films that are NOT in the corpus (after 2017) with "title": null.
-// Example (delete this line after adding your own):
-// {"id": "h01", "query": "...", "title": "...", "year": 1999, "tags": ["th", "famous"]}
+// HELD-OUT set: written AFTER tuning by a separate agent that was told nothing about how the
+// system works (only: describe films 1980-2017 the way people half-remember them, ~1/3 in Thai,
+// a few with remembered facts, 2 of them wrong, and 4 films NOT in a 1980-2017 collection).
+// Never used to tune the system. Titles were only checked against the corpus; wording unchanged.
+// h12 (Delicatessen, French) and h16 (The Host, Korean 2006) turned out NOT to be in the corpus,
+// so their label was changed to unanswerable (wording untouched). 16 answerable + 6 unanswerable.
+{"id": "h01", "query": "guy goes to prison for killing his wife but he didn't do it. spends like 20 years secretly digging through the wall behind a poster and escapes through a sewer pipe in a storm", "title": "The Shawshank Redemption", "year": 1994, "tags": ["en", "famous"]}
+{"id": "h02", "query": "การ์ตูนที่พ่อปลาการ์ตูนออกตามหาลูกที่โดนนักดำน้ำจับไปไว้ในตู้ปลาที่คลินิกหมอฟัน มีปลาสีฟ้าขี้ลืมไปด้วย", "title": "Finding Nemo", "year": 2003, "tags": ["th", "famous"]}
+{"id": "h03", "query": "80s action movie, bruce willis running around barefoot in an office tower during a christmas party after terrorists take everyone hostage", "title": "Die Hard", "year": 1988, "tags": ["en", "famous", "metadata"]}
+{"id": "h04", "query": "FBI trainee has to interview a creepy cannibal psychiatrist through glass to catch another serial killer who keeps a woman in a pit in his basement", "title": "The Silence of the Lambs", "year": 1991, "tags": ["en", "famous"]}
+{"id": "h05", "query": "หนังที่ตำรวจไปสืบคดีคนไข้หายบนเกาะที่เป็นโรงพยาบาลจิตเวช บรรยากาศหลอนๆ ตอนจบหักมุมว่าตัวเองนั่นแหละที่เป็นคนไข้", "title": "Shutter Island", "year": 2010, "tags": ["th", "famous"]}
+{"id": "h06", "query": "the one where the guy with insomnia goes to cancer support groups to feel something, then starts an underground fighting club with a soap salesman. twist is they're the same person", "title": "Fight Club", "year": 1999, "tags": ["en", "famous"]}
+{"id": "h07", "query": "alien gets left behind and a kid hides it in his closet, bikes flying in front of the moon", "title": "E.T. the Extra-Terrestrial", "year": 1982, "tags": ["en", "famous", "vague"]}
+{"id": "h08", "query": "เด็กผู้ชายอินเดียติดอยู่บนเรือชูชีพกลางทะเลกับเสือเบงกอล ภาพสวยมาก ตอนท้ายมีเล่าอีกเวอร์ชันที่ไม่มีสัตว์", "title": "Life of Pi", "year": 2012, "tags": ["th", "famous"]}
+{"id": "h09", "query": "space movie where julia roberts is an astronaut and debris smashes their shuttle, she ends up floating alone trying to reach another space station. george clooney is in it too for a bit", "title": "Gravity", "year": 2013, "tags": ["en", "famous", "metadata", "wrong_detail"]}
+{"id": "h10", "query": "cute little robot alone collecting garbage, barely any talking for the first half", "title": "WALL-E", "year": 2008, "tags": ["en", "famous", "vague"]}
+{"id": "h11", "query": "Wong Kar-wai movie, a cop keeps buying cans of pineapple that expire on May 1 after his breakup, then a second story where a snack bar girl sneaks into another cop's apartment to clean it. California Dreamin plays nonstop", "title": "Chungking Express", "year": 1994, "tags": ["en", "obscure", "metadata"]}
+{"id": "h12", "query": "weird 70s french movie set in an apartment building after some kind of apocalypse, the butcher downstairs kills people to feed the tenants. an ex-clown moves in and falls for the butcher's daughter", "title": null, "year": null, "tags": ["en", "obscure", "metadata", "wrong_detail", "unanswerable"], "film": "Delicatessen (1991) -- not in the corpus"}
+{"id": "h13", "query": "เด็กผู้ชายเรียนไม่ได้ อ่านหนังสือตัวอักษรเต้นไปมา พ่อเลยส่งไปโรงเรียนประจำ แล้วมีครูศิลปะมาช่วยจนรู้ว่าเด็กเป็นดิสเล็กเซีย ดูแล้วร้องไห้", "title": "Taare Zameen Par", "year": 2007, "tags": ["th", "obscure"]}
+{"id": "h14", "query": "high school girls stuck in summer remedial class deliver lunches to the band, the food goes bad and the band gets food poisoning, so the girls have to take over and learn big band jazz", "title": "Swing Girls", "year": 2004, "tags": ["en", "obscure"]}
+{"id": "h15", "query": "teenage kids on a london council estate fighting off black furry aliens with glowing teeth on bonfire night", "title": "Attack the Block", "year": 2011, "tags": ["en", "obscure"]}
+{"id": "h16", "query": "หนังที่มีสัตว์ประหลาดโผล่ขึ้นมาจากแม่น้ำแล้วคาบเด็กผู้หญิงไป ครอบครัวเธอ มีพ่อที่ดูไม่ค่อยเอาไหน ต้องไปตามหาเอง เพราะรัฐบาลไม่ช่วย", "title": null, "year": null, "tags": ["th", "obscure", "unanswerable"], "film": "The Host (2006) -- not in the corpus"}
+{"id": "h17", "query": "low budget one, friends at a dinner party the night a comet passes, the power goes out and the only other house with lights on down the street is theirs, with the same people inside", "title": "Coherence", "year": 2013, "tags": ["en", "obscure"]}
+{"id": "h18", "query": "truck driver cowboy guy helps a widow make the perfect ramen for her noodle shop, and it keeps cutting away to random little food stories like a gangster in a white suit", "title": "Tampopo", "year": 1985, "tags": ["en", "obscure"]}
+{"id": "h19", "query": "poor family gets hired one by one by a rich family by pretending they don't know each other, then they find out someone's been living in a secret bunker under the house", "title": null, "year": null, "tags": ["en", "famous", "unanswerable"]}
+{"id": "h20", "query": "laundromat lady getting audited for her taxes starts jumping between universes. there's a world where people have hot dog fingers and a giant bagel with everything on it", "title": null, "year": null, "tags": ["en", "famous", "unanswerable"]}
+{"id": "h21", "query": "หนังผีที่ช่างภาพกับแฟนขับรถชนผู้หญิงแล้วหนีไป หลังจากนั้นถ่ายรูปออกมามีเงาขาวๆ ติดทุกรูป ตอนจบเฉลยว่าผีขี่คอเขาอยู่ตลอด", "title": null, "year": null, "tags": ["th", "obscure", "unanswerable"], "note": "Thai original (2004) is not in the corpus; its 2008 US remake 'Shutter' is, with the same story"}
+{"id": "h22", "query": "หนังผีตลก ผู้ชายกลับจากรบมาอยู่กับเมียกับลูก เพื่อนๆ รู้ว่าเมียมันเป็นผีแต่บอกไม่ได้ ตอนท้ายพระเอกรู้มาตลอดแต่ไม่ยอมทิ้งเมีย", "title": null, "year": null, "tags": ["th", "famous", "unanswerable"]}
