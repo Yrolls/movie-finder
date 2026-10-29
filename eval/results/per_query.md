@@ -1,6 +1,6 @@
 # Top-5 retrieved movies per query
 
-_From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie; the number is the dense similarity of its best passage (BM25 rows show the BM25 score)._
+_From `data/index_bge`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie; the number is the dense similarity of its best passage (BM25 rows show the BM25 score)._
 
 ## q01 — Groundhog Day (1993)
 
@@ -14,14 +14,14 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 4. Yowamushi Pedal: Re:GENERATION! (2017) · 0.000
 5. You, Me and Him (2017) · 0.000
 
-**hybrid+rewrite** — correct movie at rank 1
+**hybrid+rewrite** — correct movie at rank 2
 <br>_searched:_ A man wakes up to find that the same day is repeating endlessly in a small town during winter. He is a poorly behaved weather forecaster.
 
-1. ✓ Groundhog Day (1993) · 0.814
-2. Winnie the Pooh: Seasons of Giving (1999) · 0.831
-3. Whitewash (2013) · 0.816
-4. Public Access (1993) · 0.817
-5. 2:22 (2017) · 0.800
+1. Repeaters (2010) · 0.586
+2. ✓ Groundhog Day (1993) · 0.582
+3. Whitewash (2013) · 0.613
+4. Before I Fall (2017) · 0.582
+5. Public Access (1993) · 0.630
 
 ## q02 — Inception (2010)
 
@@ -35,14 +35,14 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 4. Six Pack (1982) · 16.348
 5. Kids From Shaolin (1984) · 16.183
 
-**hybrid+rewrite** — correct movie at rank >10
+**hybrid+rewrite** — correct movie at rank 1
 <br>_searched:_ A team of thieves infiltrates the sleeping mind of a wealthy heir. Instead of stealing an object, the thieves attempt to implant a specific idea into the heir's consciousness.
 
-1. Ninja Terminator (1985) · 0.827
-2. V/H/S/2 (2013) · 0.829
-3. Happy New Year (2014) · 0.820
-4. The Newton Boys (1998) · 0.828
-5. Bombay to Goa (2007) · 0.855
+1. ✓ Inception (2010) · 0.644
+2. Extracted (2012) · 0.639
+3. The Newton Boys (1998) · 0.648
+4. Wheels on Meals (1984) · 0.662
+5. Aravaan (2012) · 0.637
 
 ## q03 — Memento (2000)
 
@@ -59,11 +59,11 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank 1
 <br>_searched:_ A man who is unable to form new memories tattoos notes onto his body to retain information. He then uses Polaroid photographs to track down the person responsible for killing his wife.
 
-1. ✓ Memento (2000) · 0.841
-2. Zakhmi Sher (1984) · 0.820
-3. Gojitmal (1999) · 0.840
-4. Ghajini (2005) · 0.818
-5. The Final Cut (2004) · 0.819
+1. ✓ Memento (2000) · 0.648
+2. Extracted (2012) · 0.610
+3. Gojitmal (1999) · 0.618
+4. The Business of Strangers (2001) · 0.595
+5. The Final Cut (2004) · 0.578
 
 ## q04 — The Truman Show (1998)
 
@@ -77,14 +77,14 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 4. Yowamushi Pedal: Re:GENERATION! (2017) · 0.000
 5. You, Me and Him (2017) · 0.000
 
-**hybrid+rewrite** — correct movie at rank 1
+**hybrid+rewrite** — correct movie at rank 10
 <br>_searched:_ A man gradually realizes that his entire life is a television show, and everyone around him consists of actors.
 
-1. ✓ The Truman Show (1998) · 0.797
-2. Let Me Out (2013) · 0.801
-3. A Modern Twain Story: The Prince and the Pauper (2007) · 0.814
-4. Iti Mrinalini (2011) · 0.795
-5. The Terror Live (2013) · 0.792
+1. Ponniyin Selvan (2005) · 0.581
+2. Muddula Koduku (2005) · 0.581
+3. EDtv (1999) · 0.585
+4. Magnolia (1999) · 0.565
+5. Public Access (1993) · 0.566
 
 ## q05 — Cast Away (2000)
 
@@ -101,11 +101,11 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank 1
 <br>_searched:_ Following a plane crash, a man finds himself stranded on an island. His sole companion in this isolated setting is a volleyball.
 
-1. ✓ Cast Away (2000) · 0.840
-2. The Slayer (1982) · 0.810
-3. Millennium (1989) · 0.810
-4. The Mountain Between Us (2017) · 0.806
-5. Lost in the Pacific (2016) · 0.816
+1. ✓ Cast Away (2000) · 0.651
+2. Teri Bahon Mein (1984) · 0.644
+3. The Slayer (1982) · 0.626
+4. The Breed (2006) · 0.630
+5. Dean (2017) · 0.626
 
 ## q06 — Back to the Future (1985)
 
@@ -122,11 +122,11 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank >10
 <br>_searched:_ A teenager travels back in time using a sports car and accidentally causes their parents to stop being in love. The protagonist must then take steps to ensure both parents meet again.
 
-1. Forever Strong (2008) · 0.833
-2. Unto the Dusk (2015) · 0.844
-3. Manasaare (2009) · 0.836
-4. Project Almanac (2015) · 0.846
-5. Bingo (1991) · 0.841
+1. Forever Strong (2008) · 0.674
+2. The Time Traveler's Wife (2009) · 0.692
+3. The Safety of Objects (2001) · 0.704
+4. Sankham (2009) · 0.534
+5. Ullasa Utsaha (2010) · 0.641
 
 ## q07 — The Sixth Sense (1999)
 
@@ -143,11 +143,11 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank 1
 <br>_searched:_ A child psychologist attempts to help a young boy who claims to see ghosts. The sessions involve the psychologist working with the boy to address his fears and visions. The narrative concludes with a significant revelation regarding the boy's experiences.
 
-1. ✓ The Sixth Sense (1999) · 0.827
-2. Communion (1989) · 0.832
-3. Darna Zaroori Hai (2006) · 0.830
-4. V/H/S/2 (2013) · 0.824
-5. Unto the Dusk (2015) · 0.850
+1. ✓ The Sixth Sense (1999) · 0.609
+2. Flatliners (1990) · 0.615
+3. American Haunting !An American Haunting (2005) · 0.610
+4. Red Lights (2012) · 0.636
+5. Panic (2000) · 0.602
 
 ## q08 — Big (1988)
 
@@ -164,11 +164,11 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank 5
 <br>_searched:_ A young boy makes a wish to a game cabinet and wakes up as an adult. He subsequently goes to work at a toy company.
 
-1. Merlin's Shop of Mystical Wonders (1996) · 0.817
-2. S. J. Surya, Simran, Devayani, Kiran (2004) · 0.804
-3. Stone (2010) · 0.807
-4. Kiki's Delivery Service (1989) · 0.797
-5. ✓ Big (1988) · 0.804
+1. Merlin's Shop of Mystical Wonders (1996) · 0.618
+2. Aby (2017) · 0.639
+3. Silent Night, Deadly Night (1984) · 0.617
+4. S. J. Surya, Simran, Devayani, Kiran (2004) · 0.578
+5. ✓ Big (1988) · 0.598
 
 ## q09 — Liar Liar (1997)
 
@@ -185,11 +185,11 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank 1
 <br>_searched:_ A lawyer who habitually lies finds himself unable to tell a falsehood for an entire day after a wish made by his son on his birthday takes effect.
 
-1. ✓ Liar Liar (1997) · 0.841
-2. Ant Story (2014) · 0.819
-3. Big Daddy (1999) · 0.817
-4. Time Bara Vait (2015) · 0.836
-5. A Little Help (2010) · 0.787
+1. ✓ Liar Liar (1997) · 0.661
+2. Kyo Kii Main Jhuth Nahin Bolta (2001) · 0.625
+3. Ant Story (2014) · 0.628
+4. Yeh Hai Jalwa (2002) · 0.584
+5. Parameshi Prema Prasanga (1985) · 0.571
 
 ## q10 — The Terminal (2004)
 
@@ -206,11 +206,11 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank 1
 <br>_searched:_ A man from Eastern Europe finds himself stranded inside a New York airport for several months after his home country ceases to exist.
 
-1. ✓ The Terminal (2004) · 0.794
-2. Hummingbird (2013) · 0.802
-3. Redirected (2014) · 0.806
-4. Left Behind: The Movie (2000) · 0.784
-5. Spiders 3D (2013) · 0.807
+1. ✓ The Terminal (2004) · 0.641
+2. Redirected (2014) · 0.628
+3. Reds (1981) · 0.622
+4. The Lost City (2005) · 0.607
+5. Blast from the Past (1999) · 0.571
 
 ## q11 — Up (2009)
 
@@ -224,14 +224,14 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 4. Yowamushi Pedal: Re:GENERATION! (2017) · 0.000
 5. You, Me and Him (2017) · 0.000
 
-**hybrid+rewrite** — correct movie at rank 2
+**hybrid+rewrite** — correct movie at rank 1
 <br>_searched:_ An elderly man attaches thousands of balloons to a house and floats it to South America, accompanied by a scout child.
 
-1. Lightning Jack (1994) · 0.798
-2. ✓ Up (2009) · 0.790
-3. Million Dollar Arm (2014) · 0.793
-4. Gojitmal (1999) · 0.787
-5. Thutturi (2006) · 0.811
+1. ✓ Up (2009) · 0.549
+2. Danny Deckchair (2003) · 0.510
+3. Norman's Awesome Experience (1989) · 0.532
+4. The Motorcycle Diaries (2004) · 0.524
+5. Kon-Tiki (2012) · 0.514
 
 ## q12 — Ratatouille (2007)
 
@@ -245,14 +245,14 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 4. Yowamushi Pedal: Re:GENERATION! (2017) · 0.000
 5. You, Me and Him (2017) · 0.000
 
-**hybrid+rewrite** — correct movie at rank 2
+**hybrid+rewrite** — correct movie at rank 1
 <br>_searched:_ A young person aspiring to be a chef secretly controls a young man in a Parisian restaurant kitchen by pulling his hair under his hat.
 
-1. Love Khichdi (2009) · 0.815
-2. ✓ Ratatouille (2007) · 0.804
-3. Cook Up a Storm (2017) · 0.806
-4. Kung Fu Chefs (2009) · 0.795
-5. Naked Kitchen !The Naked Kitchen (2009) · 0.798
+1. ✓ Ratatouille (2007) · 0.641
+2. Love Khichdi (2009) · 0.618
+3. No Reservations (2007) · 0.595
+4. Simply Irresistible (1999) · 0.612
+5. This Is Not What I Expected (2017) · 0.619
 
 ## q13 — Jumanji (1995)
 
@@ -269,11 +269,11 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank 1
 <br>_searched:_ When children discover an old board game, each roll causes jungle animals and a hunter to emerge into their town. This event culminates with a man appearing, who had been trapped inside the game for several years.
 
-1. ✓ Jumanji (1995) · 0.837
-2. Rhubarb Rhubarb (1980) · 0.825
-3. The Hole (2009) · 0.809
-4. Thutturi (2006) · 0.838
-5. Zathura (2005) · 0.790
+1. ✓ Jumanji (1995) · 0.639
+2. The Second Jungle Book: Mowgli & Baloo (1997) · 0.647
+3. The Jungle Book 2 (2003) · 0.633
+4. The Jungle Book (1994) · 0.629
+5. Animal Farm (1999) · 0.660
 
 ## q14 — Home Alone (1990)
 
@@ -287,14 +287,14 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 4. Planes, Trains and Automobiles (1987) · 16.777
 5. ✓ Home Alone (1990) · 16.632
 
-**hybrid+rewrite** — correct movie at rank 3
+**hybrid+rewrite** — correct movie at rank 2
 <br>_searched:_ During the Easter holiday, a young boy finds himself home alone. He defends his residence against two burglars by setting and utilizing various traps.
 
-1. Hari Puttar: A Comedy of Terrors (2008) · 0.810
-2. Forger, TheThe Forger (2012) · 0.824
-3. ✓ Home Alone (1990) · 0.812
-4. The Young Messiah (2016) · 0.820
-5. Thirteen (2003) · 0.801
+1. Hari Puttar: A Comedy of Terrors (2008) · 0.637
+2. ✓ Home Alone (1990) · 0.610
+3. North (1994) · 0.626
+4. Home Alone 2: Lost in New York (1992) · 0.594
+5. The Santa Clause 3: The Escape Clause (2006) · 0.586
 
 ## q15 — Edge of Tomorrow (2014)
 
@@ -308,14 +308,14 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 4. 71: Into the Fire (2010) · 17.858
 5. Yonggary (1999) · 17.792
 
-**hybrid+rewrite** — correct movie at rank >10
+**hybrid+rewrite** — correct movie at rank 1
 <br>_searched:_ A soldier repeatedly dies and awakens on the same day before a battle against aliens. In this recurring loop, the soldier trains alongside a famous female soldier.
 
-1. My Brother's Wedding (1983) · 0.840
-2. Triangle (2009) · 0.827
-3. Decoys 2 (2007) · 0.834
-4. Mani Shankar (2005) · 0.829
-5. Hamburger Hill (1987) · 0.814
+1. ✓ Edge of Tomorrow (2014) · 0.638
+2. Before I Fall (2017) · 0.614
+3. Hamburger Hill (1987) · 0.604
+4. ARQ (2016) · 0.599
+5. Circle (2015) · 0.604
 
 ## q16 — Source Code (2011)
 
@@ -329,14 +329,14 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 4. Ring (1998) · 22.903
 5. Piranha II: The Spawning (1981) · 18.702
 
-**hybrid+rewrite** — correct movie at rank 3
+**hybrid+rewrite** — correct movie at rank 9
 <br>_searched:_ A man awakens inside another person's body while on a commuter train. He finds himself repeatedly reliving the final eight minutes leading up to an explosion.
 
-1. White Noise: The Light (2007) · 0.821
-2. Deadly Eyes (1982) · 0.819
-3. ✓ Source Code (2011) · 0.814
-4. V/H/S (2012) · 0.822
-5. Terror Train (1980) · 0.811
+1. Train to Busan (2016) · 0.618
+2. Mumbai Meri Jaan (2008) · 0.636
+3. Runaway Train (1985) · 0.627
+4. Last Passenger (2013) · 0.682
+5. The Burning Train (1980) · 0.617
 
 ## q17 — Her (2013)
 
@@ -353,11 +353,11 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank 1
 <br>_searched:_ A lonely man who has recently divorced develops an infatuation with an AI operating system on his computer, which communicates solely through a female voice.
 
-1. ✓ Her (2013) · 0.839
-2. Puthiya Niyamam (2016) · 0.817
-3. Shame (2011) · 0.808
-4. Shame (2010) · 0.808
-5. How to Make a Monster (2001) · 0.799
+1. ✓ Her (2013) · 0.676
+2. Moscow Chill (2007) · 0.632
+3. Andromedia (1998) · 0.643
+4. Electric Dreams (1984) · 0.625
+5. The Inerasable (2016) · 0.669
 
 ## q18 — Ex Machina (2014)
 
@@ -374,11 +374,11 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank 1
 <br>_searched:_ A young programmer is invited to a remote house belonging to a billionaire. The purpose of the visit is to test whether a female robot housed at the estate possesses genuine consciousness.
 
-1. ✓ Ex Machina (2015) · 0.845
-2. Robot & Frank (2012) · 0.827
-3. Computer Chess (2013) · 0.822
-4. The House Next Door (2017) · 0.818
-5. Aval (2017) · 0.818
+1. ✓ Ex Machina (2015) · 0.722
+2. Computer Chess (2013) · 0.639
+3. Chappie (2015) · 0.625
+4. Robot & Frank (2012) · 0.626
+5. Robosapien: Rebooted (2013) · 0.683
 
 ## q19 — The Prestige (2006)
 
@@ -395,11 +395,11 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank 1
 <br>_searched:_ Two rival stage magicians compete in old London, vying to outdo one another in their performances. One of the magicians incorporates a strange electric machine into a trick involving teleportation.
 
-1. ✓ The Prestige (2006) · 0.822
-2. Magicians (2007) · 0.817
-3. Summer Time Machine Blues (2005) · 0.816
-4. Incredible Burt Wonderstone, TheThe Incredible Burt Wonderstone (2013) · 0.814
-5. The Fly (1986) · 0.799
+1. ✓ The Prestige (2006) · 0.653
+2. Magicians (2007) · 0.644
+3. Once Upon a Time in China III (1993) · 0.619
+4. Around the World in 80 Days (2004) · 0.636
+5. The Fly (1986) · 0.595
 
 ## q20 — Contact (1997)
 
@@ -416,11 +416,11 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank >10
 <br>_searched:_ A female scientist monitoring signals from space receives a message from another planet. This message contains blueprints for constructing a spacecraft.
 
-1. Mission to Mars (2000) · 0.809
-2. Planet 51 (2009) · 0.804
-3. Alice's Birthday (2009) · 0.814
-4. Without Warning (1994) · 0.814
-5. Oblivion (2013) · 0.807
+1. Interstellar (2014) · 0.645
+2. Dish, TheThe Dish (2000) · 0.594
+3. Titan A.E. (2000) · 0.606
+4. Android (1982) · 0.623
+5. Without Warning (1994) · 0.620
 
 ## q21 — Moon (2009)
 
@@ -437,11 +437,11 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank 1
 <br>_searched:_ Near the conclusion of a three-year contract on a moon base, a solitary worker encounters an alternate version of himself.
 
-1. ✓ Moon (2009) · 0.824
-2. Mr. Nobody (2009) · 0.816
-3. Vanilla Sky (2001) · 0.795
-4. The Devil and Max Devlin (1981) · 0.806
-5. Arrowhead (2016) · 0.816
+1. ✓ Moon (2009) · 0.704
+2. Robotech: The Shadow Chronicles (2006) · 0.631
+3. Airplane II: The Sequel (1982) · 0.671
+4. Source Code (2011) · 0.599
+5. Operation Avalanche (2016) · 0.621
 
 ## q22 — Primer (2004)
 
@@ -455,14 +455,14 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 4. Adhisaya Ulagam (2012) · 17.009
 5. Doraemon: Nobita in the Wan-Nyan Spacetime Odyssey (2004) · 16.957
 
-**hybrid+rewrite** — correct movie at rank 2
+**hybrid+rewrite** — correct movie at rank 1
 <br>_searched:_ Two engineers working in their garage construct a gadget, which unexpectedly results in the invention of a time machine. This invention subsequently causes the timelines to become highly confusing.
 
-1. Doraemon: Nobita no Himitsu Dōgu Museum (2013) · 0.838
-2. ✓ Primer (2004) · 0.861
-3. Doraemon: Nobita's Secret Gadget Museum (2013) · 0.838
-4. Summer Time Machine Blues (2005) · 0.844
-5. Eiga De Tojo-Tamagotchi: Dokidoki! Uchuu no Maigotchi!? (2007) · 0.824
+1. ✓ Primer (2004) · 0.691
+2. Synchronicity (2016) · 0.659
+3. Doraemon: Nobita no Himitsu Dōgu Museum (2013) · 0.641
+4. Doraemon: Nobita's Secret Gadget Museum (2013) · 0.641
+5. Bubble Fiction: Boom or Bust (2007) · 0.659
 
 ## q23 — Lars and the Real Girl (2007)
 
@@ -476,14 +476,14 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 4. Yowamushi Pedal: Re:GENERATION! (2017) · 0.000
 5. You, Me and Him (2017) · 0.000
 
-**hybrid+rewrite** — correct movie at rank 1
+**hybrid+rewrite** — correct movie at rank 2
 <br>_searched:_ A shy man brings a life-sized doll to introduce as his partner, and the entire town begins to participate in the charade.
 
-1. ✓ Lars and the Real Girl (2007) · 0.797
-2. The Witches of Eastwick (1987) · 0.788
-3. CJ7 (2008) · 0.807
-4. The Scarecrow (2000) · 0.794
-5. Kallori (2007) · 0.784
+1. May (2003) · 0.604
+2. ✓ Lars and the Real Girl (2007) · 0.574
+3. The Glass Menagerie (1987) · 0.593
+4. Trilogy of Terror II (1996) · 0.551
+5. Jingle All the Way (1996) · 0.572
 
 ## q24 — The Station Agent (2003)
 
@@ -497,14 +497,14 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 4. Forbidden (1984) · 19.710
 5. The Zombie King (2013) · 19.332
 
-**hybrid+rewrite** — correct movie at rank 5
+**hybrid+rewrite** — correct movie at rank 8
 <br>_searched:_ A quiet man who has a fondness for trains inherits an abandoned small train depot located in the countryside. He begins the process of revitalizing the depot and gradually forms friendships with two unlikely companions.
 
-1. Swaroopam (1992) · 0.806
-2. Black and White (2010) · 0.809
-3. The Patience Stone (2012) · 0.809
-4. Seven O' Clock (2006) · 0.822
-5. ✓ The Station Agent (2003) · 0.783
+1. Taramani (2017) · 0.611
+2. Look Both Ways (2005) · 0.590
+3. Haisiyat (1984) · 0.598
+4. Allari Mogudu Anumanam Pellam (1996) · 0.600
+5. Dekha Pyar Tumhara (1985) · 0.600
 
 ## q25 — The Lobster (2015)
 
@@ -521,11 +521,11 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank 1
 <br>_searched:_ Single individuals are sent to a hotel where they are given 45 days to find a romantic partner. Failure to find a partner within this timeframe results in the participants being transformed into an animal.
 
-1. ✓ The Lobster (2015) · 0.827
-2. Calla (1999) · 0.825
-3. Prem Mhanje Prem Mhanje Prem Asta (2013) · 0.834
-4. Unto the Dusk (2015) · 0.844
-5. The Quiet Room (1996) · 0.843
+1. ✓ The Lobster (2015) · 0.711
+2. Just Married (2003) · 0.671
+3. She's Gotta Have It (1986) · 0.654
+4. Calla (1999) · 0.632
+5. 2046 (2004) · 0.698
 
 ## q26 — Taken (2008)
 
@@ -539,14 +539,14 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 4. Yowamushi Pedal: Re:GENERATION! (2017) · 0.000
 5. You, Me and Him (2017) · 0.000
 
-**hybrid+rewrite** — correct movie at rank 1
+**hybrid+rewrite** — correct movie at rank 2
 <br>_searched:_ A former government agent searches for his teenage daughter who was abducted by a human trafficking gang while on vacation in Europe.
 
-1. ✓ Taken (2008) · 0.817
-2. Karma Yodha (കർമ്മയോദ്ധാ) (2012) · 0.808
-3. Spartan (2004) · 0.807
-4. Hummingbird (2013) · 0.817
-5. Mystery Road (2013) · 0.812
+1. Thira (2013) · 0.629
+2. ✓ Taken (2008) · 0.619
+3. Belly of the Beast (2003) · 0.642
+4. Hummingbird (2013) · 0.622
+5. You Were Never Really Here (2017) · 0.604
 
 ## q27 — Speed (1994)
 
@@ -560,14 +560,14 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 4. Back to the Future Part III (1990) · 20.982
 5. Tezz (2012) · 19.825
 
-**hybrid+rewrite** — correct movie at rank 5
+**hybrid+rewrite** — correct movie at rank 2
 <br>_searched:_ A bomb is discovered on a train with a specific trigger: it will detonate if the train's speed drops below 50 miles per hour. A police officer is tasked with ensuring the train maintains sufficient velocity to prevent the explosion.
 
-1. Broken Arrow (1996) · 0.837
-2. Money Train (1995) · 0.829
-3. The Burning Train (1980) · 0.832
-4. Atomic Train (1999) · 0.817
-5. ✓ Speed (1994) · 0.816
+1. Atomic Train (1999) · 0.665
+2. ✓ Speed (1994) · 0.622
+3. Broken Arrow (1996) · 0.660
+4. Money Train (1995) · 0.648
+5. RED 2 (2013) · 0.628
 
 ## q28 — The Martian (2015)
 
@@ -584,11 +584,11 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank 1
 <br>_searched:_ An astronaut is stranded on Mars after a colleague mistakenly believed them to be dead. To survive in the harsh environment, the astronaut must cultivate potatoes.
 
-1. ✓ The Martian (2015) · 0.842
-2. Mission to Mars (2000) · 0.829
-3. Red Planet (2000) · 0.838
-4. Moontrap (1989) · 0.830
-5. Life (2017) · 0.831
+1. ✓ The Martian (2015) · 0.674
+2. Mission to Mars (2000) · 0.676
+3. The Space Between Us (2017) · 0.660
+4. Species II (1998) · 0.658
+5. RocketMan (1997) · 0.643
 
 ## q29 — 3 Idiots (2009)
 
@@ -605,11 +605,11 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank >10
 <br>_searched:_ Two college friends search for a former classmate from engineering school who vanished after graduation. The search is motivated by the classmate's reputation as a genius.
 
-1. Chat Room (2002) · 0.824
-2. Good Will Hunting (1997) · 0.818
-3. Yeto Vellipoyindhi Manasu (2012) · 0.812
-4. Majnu (2016) · 0.809
-5. Neethaane En Ponvasantham (2012) · 0.808
+1. Class Act (1992) · 0.631
+2. Little Man Tate (1991) · 0.636
+3. Koothara (2014) · 0.628
+4. Good Will Hunting (1997) · 0.605
+5. Happy Days (2007) · 0.598
 
 ## q30 — Departures (2008)
 
@@ -623,14 +623,14 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 4. Yowamushi Pedal: Re:GENERATION! (2017) · 0.000
 5. You, Me and Him (2017) · 0.000
 
-**hybrid+rewrite** — correct movie at rank >10
+**hybrid+rewrite** — correct movie at rank 8
 <br>_searched:_ An unemployed cellist returns to his hometown and finds new work as a funeral preparer before the coffin is sealed. His wife does not accept this new profession.
 
-1. Dev.D (2009) · 0.826
-2. Encounters of the Spooky Kind (1980) · 0.815
-3. Tulip Fever (2017) · 0.823
-4. About Love (2015) · 0.828
-5. Swapno (2006) · 0.820
+1. After.Life (2009) · 0.617
+2. Underneath (1995) · 0.591
+3. Andha Naal (1996) · 0.595
+4. Buried (2010) · 0.589
+5. Heavenly Court (2011) · 0.619
 
 ## q31 — Groundhog Day (1993)
 
@@ -644,14 +644,14 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 4. Tere Mere Sapne (1996) · 15.682
 5. White Valentine (1999) · 14.907
 
-**hybrid+rewrite** — correct movie at rank >10
+**hybrid+rewrite** — correct movie at rank 3
 <br>_searched:_ A man finds himself repeatedly reliving the same day. He attempts to alter the events of this recurring day, leading to a cycle of repetition.
 
-1. About Time (2013) · 0.810
-2. 2:22 (2017) · 0.830
-3. 2:22 (2017) · 0.830
-4. 9/Tenths (2006) · 0.809
-5. Nothing (2004) · 0.804
+1. Before I Fall (2017) · 0.625
+2. About Time (2013) · 0.574
+3. ✓ Groundhog Day (1993) · 0.602
+4. Repeaters (2010) · 0.592
+5. Akalpith (2014) · 0.605
 
 ## q38 — It (2017)
 
@@ -665,14 +665,14 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 4. Yowamushi Pedal: Re:GENERATION! (2017) · 0.000
 5. You, Me and Him (2017) · 0.000
 
-**hybrid+rewrite** — correct movie at rank 4
+**hybrid+rewrite** — correct movie at rank 3
 <br>_searched:_ A clown figure is involved in frightening and tricking children.
 
-1. Clownhouse (1988) · 0.823
-2. Poltergeist (2015) · 0.826
-3. Devil Girl (2007) · 0.821
-4. ✓ It (1990) · 0.809
-5. 13 Moons (2002) · 0.817
+1. Clownhouse (1988) · 0.626
+2. Devil Girl (2007) · 0.637
+3. ✓ It (2017) · 0.587
+4. ✓ It (1990) · 0.562
+5. Bride of Boogedy (1987) · 0.572
 
 ## q39 — Catch Me If You Can (2002)
 
@@ -689,11 +689,11 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank 6
 <br>_searched:_ A young con man pretends to be both a pilot and a doctor while attempting to evade an FBI agent who is pursuing him.
 
-1. To Live and Die in L.A. (1985) · 0.818
-2. Passenger 57 (1992) · 0.814
-3. Snakes on a Plane (2006) · 0.805
-4. Breach (2007) · 0.810
-5. See Spot Run (2001) · 0.803
+1. The Sting II (1983) · 0.639
+2. Criminal (2004) · 0.679
+3. Double Take (2001) · 0.592
+4. The Swindlers (2017) · 0.637
+5. To Live and Die in L.A. (1985) · 0.605
 
 ## q40 — Jurassic Park (1993)
 
@@ -707,14 +707,14 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 4. Ravoyi Chandamama (1999) · 9.880
 5. The Stone Angel (2007) · 9.500
 
-**hybrid+rewrite** — correct movie at rank 3
+**hybrid+rewrite** — correct movie at rank 5
 <br>_searched:_ On an island, scientists attempt to resurrect dinosaurs. However, the dinosaurs escape their containment, leading to conflict.
 
-1. Carnosaur 2 (1995) · 0.871
-2. The Dinosaur Project (2012) · 0.847
-3. ✓ Jurassic Park (1993) · 0.838
-4. The Lost World: Jurassic Park (1997) · 0.832
-5. Jurassic World (2015) · 0.837
+1. Carnosaur 2 (1995) · 0.642
+2. The Dinosaur Project (2012) · 0.633
+3. The Land Before Time V: The Mysterious Island (1997) · 0.646
+4. Abaranger Deluxe (2003) · 0.629
+5. ✓ Jurassic Park (1993) · 0.641
 
 ## q41 — Interstellar (2014)
 
@@ -731,11 +731,11 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank 1
 <br>_searched:_ A farmer father abandons his daughter and travels through a wormhole in an attempt to locate a new planet.
 
-1. ✓ Interstellar (2014) · 0.827
-2. Space Chimps (2008) · 0.819
-3. Superman IV: The Quest for Peace (1987) · 0.830
-4. The Astronaut Farmer (2006) · 0.832
-5. The Ice Pirates (1984) · 0.819
+1. ✓ Interstellar (2014) · 0.690
+2. Thru the Moebius Strip (2006) · 0.629
+3. Thru the Moebius Strip (2005) · 0.629
+4. Thru the Moebius Strip (2015) · 0.629
+5. Palunku (2006) · 0.622
 
 ## q42 — Spirited Away (2001)
 
@@ -752,11 +752,11 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank 1
 <br>_searched:_ After her parents transform into pigs, a young girl finds herself working in a bathhouse dedicated to spirits.
 
-1. ✓ Spirited Away (2001) · 0.818
-2. The Quiet Room (1996) · 0.838
-3. Spirits' Homecoming (2016) · 0.797
-4. S. J. Surya, Simran, Devayani, Kiran (2004) · 0.801
-5. Mermaid Got Married (1994) · 0.810
+1. ✓ Spirited Away (2001) · 0.618
+2. My Sister, the Pig Lady (2015) · 0.615
+3. The Zookeeper's Wife (2017) · 0.626
+4. The Quiet Room (1996) · 0.605
+5. Smile (2005) · 0.619
 
 ## q43 — The Matrix (1999)
 
@@ -773,11 +773,11 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank >10
 <br>_searched:_ In the late 1990s, a character discovers that the world in which he lives is a computer simulation. Upon this realization, he begins to learn kung fu.
 
-1. Iron & Silk (1990) · 0.838
-2. WarGames (1983) · 0.824
-3. The Thirteenth Floor (1999) · 0.820
-4. Legend of a Rabbit: The Martial of Fire (2015) · 0.818
-5. Zegapain ADP (2016) · 0.843
+1. Iron & Silk (1990) · 0.678
+2. The Thirteenth Floor (1999) · 0.632
+3. Legend of a Rabbit: The Martial of Fire (2015) · 0.633
+4. Rise of the Legend (2014) · 0.618
+5. Wing Chun (1994) · 0.615
 
 ## q44 — Eternal Sunshine of the Spotless Mind (2004)
 
@@ -794,11 +794,11 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank 2
 <br>_searched:_ A man and his ex-partner hire a company to erase their memories of each other.
 
-1. Battle of Memories (2017) · 0.830
-2. ✓ Eternal Sunshine of the Spotless Mind (2004) · 0.825
-3. After Life (1998) · 0.827
-4. Global Heresy (2002) · 0.818
-5. Revenge for Love (2017) · 0.823
+1. Battle of Memories (2017) · 0.634
+2. ✓ Eternal Sunshine of the Spotless Mind (2004) · 0.589
+3. The Alibi (2006) · 0.598
+4. Revenge for Love (2017) · 0.655
+5. Keep the Lights On (2012) · 0.604
 
 ## q45 — Train to Busan (2016)
 
@@ -815,11 +815,11 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank 1
 <br>_searched:_ A zombie outbreak occurs while passengers are traveling on a train. The survivors must navigate the infected environment aboard the train to stay alive.
 
-1. ✓ Train to Busan (2016) · 0.862
-2. World War Z (2013) · 0.839
-3. Deadly Eyes (1982) · 0.851
-4. Open Grave (2014) · 0.833
-5. Return of the Living Dead 3 (1993) · 0.828
+1. ✓ Train to Busan (2016) · 0.723
+2. Ravenous (Les Affamés) (2017) · 0.643
+3. World War Z (2013) · 0.647
+4. Dead Rising: Watchtower (2015) · 0.632
+5. World of the Dead: The Zombie Diaries (2011) · 0.637
 
 ## q46 — Forrest Gump (1994)
 
@@ -836,11 +836,11 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank >10
 <br>_searched:_ A kind man travels across the United States, finding himself present during various significant moments in American history.
 
-1. The Young and Prodigious T.S. Spivet (2013) · 0.814
-2. Into the Wild (2007) · 0.799
-3. Born in East L.A. (1987) · 0.781
-4. Get on the Bus (1996) · 0.789
-5. Grey Owl (1999) · 0.786
+1. Green Card Fever (2004) · 0.604
+2. An American Rhapsody (2001) · 0.613
+3. The Young and Prodigious T.S. Spivet (2013) · 0.651
+4. First Family (1980) · 0.612
+5. Moscow on the Hudson (1984) · 0.587
 
 ## q47 — Crouching Tiger, Hidden Dragon (2000)
 
@@ -854,14 +854,14 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 4. Legend of a Fighter (1982) · 24.248
 5. Crouching Tiger, Hidden Dragon: Sword of Destiny (2016) · 24.040
 
-**hybrid+rewrite** — correct movie at rank 1
+**hybrid+rewrite** — correct movie at rank 9
 <br>_searched:_ In a setting featuring bamboo trees, a conflict erupts as individuals engage in aerial martial arts combat. During this action, a legendary sword is stolen from its location.
 
-1. ✓ Crouching Tiger, Hidden Dragon (2000) · 0.818
-2. Wu Dang (2012) · 0.830
-3. The Sword Identity (2012) · 0.839
-4. Coweb (2009) · 0.820
-5. Doordarshan Eti Jantra (2016) · 0.826
+1. Seven Swords (2005) · 0.683
+2. The Sword Identity (2012) · 0.709
+3. Sword Stained with Royal Blood (1982) · 0.656
+4. Wu Dang (2012) · 0.663
+5. Coweb (2009) · 0.670
 
 ## q48 — Mad Max: Fury Road (2015)
 
@@ -878,9 +878,9 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 **hybrid+rewrite** — correct movie at rank 1
 <br>_searched:_ In a desolate desert setting, a woman pilots a war rig across the wasteland. Her objective is to liberate the wives held captive by a local warlord.
 
-1. ✓ Mad Max: Fury Road (2015) · 0.811
-2. ✓ Mad Max: Fury Road (2015) · 0.811
-3. Transit (2006) · 0.811
-4. Roja (1992) · 0.824
-5. Kaatru Veliyidai (2017) · 0.814
+1. ✓ Mad Max: Fury Road (2015) · 0.636
+2. ✓ Mad Max: Fury Road (2015) · 0.636
+3. Transit (2006) · 0.641
+4. Mercenaries (2014) · 0.611
+5. Allied (2016) · 0.611
 

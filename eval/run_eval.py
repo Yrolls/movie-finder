@@ -285,11 +285,21 @@ def pct(x: float) -> str:
     return "n/a" if x != x else f"{100 * x:.1f}%"
 
 
+def _embed_models(res: dict) -> str:
+    """Model each index was built with (from its meta.json), not the EMBED_MODEL setting."""
+    seen = {}
+    for r in res.get("retrieval", []):
+        seen.setdefault(r["index"], (r.get("meta") or {}).get("embed_model", res["config"]["embed_model"]))
+    if not seen:
+        return f"`{res['config']['embed_model']}`"
+    return ", ".join(f"`{m}` (`{i}`)" for i, m in seen.items())
+
+
 def write_report(res: dict) -> str:
     L = [f"# Evaluation report", "",
          f"_Generated {res['generated']} — {res['n_answerable']} answerable + "
          f"{res['n_unanswerable']} unanswerable queries from `eval/queries.jsonl`._", "",
-         f"LLM: `{res['config']['llm_model']}` · embeddings: `{res['config']['embed_model']}` · "
+         f"LLM: `{res['config']['llm_model']}` · embeddings: {_embed_models(res)} · "
          f"reranker: `{res['config'].get('rerank_model') or 'none'}` · temperature 0", "",
          "## 1. Retrieval (answerable queries)", "",
          "Each query has one correct movie (or a few accepted versions), so recall@k = hit rate@k. "
