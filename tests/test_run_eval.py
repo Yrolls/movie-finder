@@ -31,4 +31,25 @@ def test_retrieval_eval_and_report():
         "retrieval": [{"index": "data/index", "meta": {"chunk_words": 12}, "modes": out}],
         "sweep": sweep,
     })
-    assert "| bm25 (baseline) |" in report and "min_score" in report
+    assert "| bm25 (baseline) |" in report and "min_score" in report and "nDCG@10" in report
+
+    agent = {"summary": {"agent_top1_answerable": .5, "llm_only_top1_answerable": .5,
+                         "agent_abstain_unanswerable": 1.0, "llm_only_abstain_unanswerable": 0.0,
+                         "avg_steps": 2.0, "avg_seconds": 3.0, "gold_retrieved_answerable": 1.0,
+                         "gold_in_candidates_answerable": .5, "precision_of_found": 1.0, "n_found": 1,
+                         "outcomes": {"answerable": {"found, correct": 1, "said not found": 1},
+                                      "unanswerable": {"said not found": 1}}}, "rows": []}
+    report = run_eval.write_report({
+        "generated": "now", "n_answerable": 2, "n_unanswerable": 1,
+        "config": {"llm_model": "m", "embed_model": "e", "retrieval_mode": "hybrid"},
+        "retrieval": [{"index": "data/index", "meta": {}, "modes": out}], "agent": agent})
+    assert "Where the agent loses answers" in report and "| found, correct | 1 | 0 |" in report
+
+
+def test_per_query_file(tmp_path):
+    r = make_retriever()
+    out = run_eval.eval_retrieval(r, GOLD, ["bm25", "hybrid"])
+    path = tmp_path / "pq.md"
+    run_eval.write_per_query({"retrieval": [{"index": "data/index", "modes": out}]}, path)
+    text = path.read_text(encoding="utf-8")
+    assert "## q1 — Loop Day (1993)" in text and "1. ✓ Loop Day (1993)" in text

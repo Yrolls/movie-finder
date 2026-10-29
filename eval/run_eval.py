@@ -59,7 +59,7 @@ def eval_retrieval(retriever, gold: list[GoldQuery], modes: list[str],
     answerable = [g for g in gold if g.answerable]
     for mode in modes:
         ranks, per_tag = [], defaultdict(list)
-        misses = []
+        misses, per_query = [], []
         for g in answerable:
             if multi:
                 hits = retriever.search_many(multi[g.query], k=max(KS), mode=mode, min_score=0.0)
@@ -73,10 +73,17 @@ def eval_retrieval(retriever, gold: list[GoldQuery], modes: list[str],
             if r != 1:
                 misses.append({"id": g.qid, "query": g.query, "gold": g.title, "rank": r,
                                "top1": f"{hits[0].title} ({hits[0].year})" if hits else None})
+            per_query.append({
+                "id": g.qid, "query": g.query, "gold": f"{g.title} ({g.year})", "rank": r,
+                "searched": (multi[g.query] if multi else (rewrites[g.query] if rewrites else None)),
+                "top5": [{"title": h.title, "year": h.year, "score": h.score,
+                          "correct": h.movie_id in g.accepted} for h in hits[:5]],
+            })
         out[mode + suffix] = {
             "overall": retrieval_metrics(ranks, KS),
             "per_tag": {t: {"n": len(rs), **retrieval_metrics(rs, KS)} for t, rs in sorted(per_tag.items())},
             "misses": misses,
+            "per_query": per_query,
         }
     return out
 
@@ -201,14 +208,25 @@ def eval_agent(retriever, gold: list[GoldQuery], movies, mode: str) -> dict:
         dt = time.perf_counter() - t0
         top = res.answer.candidates[0].movie_id if res.answer.candidates else None
         base = llm_only_guess(g.query, by_title)
+        status = res.answer.status
         if g.answerable:
-            agent_ok = top in g.accepted and res.answer.status != "not_found"
+            agent_ok = top in g.accepted and status != "not_found"
             base_ok = base in g.accepted
+            if status == "found":
+                outcome = "found, correct" if agent_ok else "found, WRONG"
+            elif status == "not_sure":
+                outcome = "not sure, correct on top" if agent_ok else "not sure, wrong on top"
+            else:
+                outcome = "said not found"
         else:
-            agent_ok = res.answer.status == "not_found"
+            agent_ok = status == "not_found"
             base_ok = base is None
+            outcome = {"not_found": "said not found", "not_sure": "not sure"}.get(status, "found, WRONG")
+        cand_ids = [c.movie_id for c in res.answer.candidates]
         rows.append({"id": g.qid, "answerable": g.answerable, "tags": g.tags,
-                     "status": res.answer.status, "agent_top1": top, "agent_ok": agent_ok,
+                     "status": status, "outcome": outcome, "agent_top1": top, "agent_ok": agent_ok,
+                     "gold_in_candidates": bool(set(cand_ids) & set(g.accepted)),
+                     "gold_retrieved": bool(set(res.retrieved) & set(g.accepted)),
                      "llm_only": base, "llm_only_ok": base_ok,
                      "steps": res.steps, "stopped_by": res.stopped_by, "seconds": round(dt, 1),
                      "searches": [t["arguments"] for t in res.trace if t.get("tool") == "search_movies"]})
@@ -220,8 +238,20 @@ def eval_agent(retriever, gold: list[GoldQuery], movies, mode: str) -> dict:
 
     ans = [r for r in rows if r["answerable"]]
     una = [r for r in rows if not r["answerable"]]
+    found = [r for r in rows if r["status"] == "found"]
+    outcomes = {"answerable": defaultdict(int), "unanswerable": defaultdict(int)}
+    for r in rows:
+        outcomes["answerable" if r["answerable"] else "unanswerable"][r["outcome"]] += 1
     return {
         "summary": {
+            # retrieval vs. selection: was the right movie ever retrieved, and did the agent pick it?
+            "gold_retrieved_answerable": acc(ans, "gold_retrieved"),
+            "gold_in_candidates_answerable": acc(ans, "gold_in_candidates"),
+            # when the agent says "found", how often is it right? (wrong-and-confident is the worst error)
+            "precision_of_found": (sum(r["agent_ok"] and r["answerable"] for r in found) / len(found)
+                                   if found else float("nan")),
+            "n_found": len(found),
+            "outcomes": {k: dict(v) for k, v in outcomes.items()},
             "agent_top1_answerable": acc(ans, "agent_ok"),
             "llm_only_top1_answerable": acc(ans, "llm_only_ok"),
             "agent_abstain_unanswerable": acc(una, "agent_ok"),
@@ -245,14 +275,22 @@ def write_report(res: dict) -> str:
          f"LLM: `{res['config']['llm_model']}` · embeddings: `{res['config']['embed_model']}` · "
          f"temperature 0", "",
          "## 1. Retrieval (answerable queries)", "",
-         "| index | chunk words | mode | recall@1 | recall@5 | recall@10 | MRR@10 |",
-         "|---|---|---|---|---|---|---|"]
+         "Each query has one correct movie (or a few accepted versions), so recall@k = hit rate@k. "
+         "Precision@k is not reported: with one relevant item it is just recall@k / k. "
+         "The 95% CI is a bootstrap over queries — with ~30 queries, one query moves recall by ~3 points, "
+         "so differences inside the CI are not reliable.", "",
+         "| index | chunk words | mode | recall@1 | recall@5 (95% CI) | recall@10 | MRR@10 | nDCG@10 | median rank |",
+         "|---|---|---|---|---|---|---|---|---|"]
     for idx in res["retrieval"]:
         for mode, r in idx["modes"].items():
             o = r["overall"]
+            lo, hi = o.get("recall@5_ci", (float("nan"), float("nan")))
+            mr = o.get("median_rank", float("nan"))
             L.append(f"| `{idx['index']}` | {idx['meta'].get('chunk_words', '?')} | {mode}"
                      f"{' (baseline)' if mode == 'bm25' else ''} | {pct(o['recall@1'])} | "
-                     f"{pct(o['recall@5'])} | {pct(o['recall@10'])} | {o['mrr@10']:.3f} |")
+                     f"{pct(o['recall@5'])} ({pct(lo)}–{pct(hi)}) | {pct(o['recall@10'])} | "
+                     f"{o['mrr@10']:.3f} | {o.get('ndcg@10', float('nan')):.3f} | "
+                     f"{'>10' if mr > 10 else f'{mr:g}'} |")
 
     first = res["retrieval"][0]
     tags = sorted({t for m in first["modes"].values() for t in m["per_tag"]})
@@ -300,6 +338,23 @@ def write_report(res: dict) -> str:
               f"| LLM-only baseline | {pct(s['llm_only_top1_answerable'])} | {pct(s['llm_only_abstain_unanswerable'])} |",
               f"| Agent + retrieval | {pct(s['agent_top1_answerable'])} | {pct(s['agent_abstain_unanswerable'])} |",
               "", f"Average {s['avg_steps']:.1f} model turns and {s['avg_seconds']:.1f}s per query."]
+        if "gold_retrieved_answerable" in s:
+            L += ["", "### Where the agent loses answers (answerable queries)", "",
+                  "| step | share of answerable queries |", "|---|---|",
+                  f"| correct movie appeared in any of the agent's searches | {pct(s['gold_retrieved_answerable'])} |",
+                  f"| correct movie among the agent's ≤3 candidates | {pct(s['gold_in_candidates_answerable'])} |",
+                  f"| correct movie ranked first by the agent | {pct(s['agent_top1_answerable'])} |",
+                  "", "The gap between the first two rows is a selection error (retrieved but not chosen); "
+                  "the rest is a retrieval error (never retrieved).", "",
+                  f"Precision of \"found\": when the agent says it found the movie, it is right "
+                  f"{pct(s['precision_of_found'])} of the time ({s['n_found']} \"found\" answers).", "",
+                  "| outcome | answerable | unanswerable |", "|---|---|---|"]
+            oc = s["outcomes"]
+            for name in ["found, correct", "not sure, correct on top", "not sure, wrong on top",
+                         "found, WRONG", "not sure", "said not found"]:
+                a, u = oc["answerable"].get(name, 0), oc["unanswerable"].get(name, 0)
+                if a or u:
+                    L.append(f"| {name} | {a} | {u} |")
 
     for idx in res["retrieval"][:1]:
         if "dense" in idx["modes"]:
@@ -309,6 +364,30 @@ def write_report(res: dict) -> str:
                 q = m["query"].replace("|", "/")
                 L.append(f"| {m['id']} | {q[:80]} | {m['gold']} | {m['rank'] or '>10'} | {m['top1']} |")
     return "\n".join(L) + "\n"
+
+
+def write_per_query(res: dict, path: Path) -> None:
+    """Top-5 retrieved movies for every query, baseline next to the best configuration."""
+    modes = res["retrieval"][0]["modes"]
+    show = [m for m in ("bm25", "hybrid+rewrite", "hybrid+multi", "hybrid") if m in modes][:2]
+    L = ["# Top-5 retrieved movies per query", "",
+         f"_From `{res['retrieval'][0]['index']}`, modes: {', '.join(f'`{m}`' for m in show)}. "
+         "✓ marks the correct movie; the number is the dense similarity of its best passage "
+         "(BM25 rows show the BM25 score)._", ""]
+    for i, q in enumerate(modes[show[0]]["per_query"]):
+        L += [f"## {q['id']} — {q['gold']}", "", f"> {q['query']}", ""]
+        for m in show:
+            pq = modes[m]["per_query"][i]
+            rank = pq["rank"] if pq["rank"] is not None else ">10"
+            L.append(f"**{m}** — correct movie at rank {rank}")
+            if pq.get("searched"):
+                searched = pq["searched"] if isinstance(pq["searched"], str) else " / ".join(pq["searched"])
+                L.append(f"<br>_searched:_ {searched}")
+            L.append("")
+            for j, h in enumerate(pq["top5"], 1):
+                L.append(f"{j}. {'✓ ' if h['correct'] else ''}{h['title']} ({h['year']}) · {h['score']:.3f}")
+            L.append("")
+    path.write_text("\n".join(L) + "\n", encoding="utf-8")
 
 
 def main() -> None:
@@ -383,6 +462,7 @@ def main() -> None:
 
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     (RESULTS_DIR / "results.json").write_text(json.dumps(res, indent=2, ensure_ascii=False), encoding="utf-8")
+    write_per_query(res, RESULTS_DIR / "per_query.md")
     report = write_report(res)
     (RESULTS_DIR / "report.md").write_text(report, encoding="utf-8")
     print(report)

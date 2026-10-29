@@ -53,6 +53,12 @@
   #steps { list-style: decimal; margin: 36px 0 0; padding-left: 1.4em; color: var(--slate); font-size: .95rem; }
   #steps li { margin: 4px 0; }
   #steps code { font-family: var(--ui); color: var(--ink); }
+  #steps details { margin: 4px 0 8px; }
+  #steps summary { cursor: pointer; color: var(--ink); width: fit-content; }
+  #steps summary:focus-visible { outline: 3px solid var(--marquee); outline-offset: 2px; }
+  .hits { margin: 6px 0 0; padding-left: 1.3em; }
+  .hits li { margin: 2px 0; font-variant-numeric: tabular-nums; }
+  .hits .sc { color: var(--slate); }
 
   #result { margin-top: 28px; }
   .pick { background: var(--sheet); border-radius: 6px; padding: 24px 24px 20px; border-left: 6px solid var(--marquee); }
@@ -160,7 +166,12 @@ function handle(raw) {
     steps.insertAdjacentHTML("beforeend", `<li>${what}</li>`);
   } else if (ev.type === "tool_result" && ev.name === "search_movies") {
     const li = steps.lastElementChild;
-    if (li) li.insertAdjacentHTML("beforeend", ` — ${ev.n_results ? ev.n_results + " close matches" : "nothing close enough"}`);
+    if (!li) return;
+    const hits = ev.hits || [];
+    if (!hits.length) { li.insertAdjacentHTML("beforeend", " — nothing close enough"); return; }
+    li.insertAdjacentHTML("beforeend", `<details><summary>Top ${hits.length} retrieved</summary><ol class="hits">${
+      hits.map((h) => `<li>${esc(h.title)} (${h.year}) <span class="sc">· similarity ${h.score.toFixed(2)}</span></li>`).join("")
+    }</ol></details>`);
   } else if (ev.type === "final") {
     render(ev.answer, ev.evidence || {});
   } else if (ev.type === "error") {

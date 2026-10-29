@@ -62,6 +62,7 @@ class AgentResult:
     stopped_by: str                                   # "final_answer" | "max_steps"
     trace: list[dict[str, Any]] = field(default_factory=list)
     evidence: dict[str, dict[str, Any]] = field(default_factory=dict)   # movie_id -> citation details
+    retrieved: list[str] = field(default_factory=list)  # every movie any search returned (for eval)
 
 
 def run_agent(
@@ -106,10 +107,11 @@ def run_agent(
                 emit({"type": "tool_call", "step": step, "name": c.function.name,
                       "arguments": c.function.arguments})
                 result = box.run(c.function.name, c.function.arguments)
+                hits = _result_hits(result)
                 trace.append({"step": step, "tool": c.function.name,
-                              "arguments": c.function.arguments, "result": result[:500]})
+                              "arguments": c.function.arguments, "hits": hits})
                 emit({"type": "tool_result", "step": step, "name": c.function.name,
-                      "n_results": _count_results(result)})
+                      "n_results": len(hits), "hits": hits})
                 messages.append({"role": "tool", "tool_call_id": c.id, "content": result})
             continue
 
@@ -178,6 +180,7 @@ def _finish(answer, box, steps, stopped_by, trace, emit) -> AgentResult:
     emit({"type": "final", "answer": json.loads(grounded.model_dump_json()), "evidence": evidence,
           "steps": steps, "stopped_by": stopped_by})
     return AgentResult(answer=grounded, steps=steps, stopped_by=stopped_by, trace=trace,
+                       retrieved=list(box.seen_hits),
                        evidence=evidence)
 
 
@@ -196,8 +199,11 @@ def _fallback_from_hits(box: ToolBox) -> FinalAnswer:
     )
 
 
-def _count_results(result: str) -> int:
+def _result_hits(result: str) -> list[dict[str, Any]]:
+    """The ranked movies a search_movies call returned, compactly (for the UI and the trace)."""
     try:
-        return len(json.loads(result).get("results", []))
+        rows = json.loads(result).get("results", [])
     except (ValueError, AttributeError):
-        return 0
+        return []
+    return [{"rank": i, "movie_id": r["movie_id"], "title": r["title"], "year": r["year"],
+             "score": r["score"]} for i, r in enumerate(rows, 1)]

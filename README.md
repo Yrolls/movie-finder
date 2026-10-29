@@ -80,6 +80,7 @@ The gold set is [`eval/queries.jsonl`](eval/queries.jsonl): half-remembered desc
 
 ```bash
 python scripts/find_movie.py "groundhog"     # look up a title when adding a query
+python scripts/search.py "a guy relives the same day" --rewrite   # see the top-5 for any description
 python scripts/check_dense.py                # sanity check: does a plot passage find its own movie?
 python eval/run_eval.py                      # retrieval: BM25 baseline vs dense vs hybrid + min_score sweep
 python eval/run_eval.py --rewrite            # + the same queries after LLM rewriting (cached, calls the LLM)
@@ -92,8 +93,13 @@ python scripts/build_index.py --chunk-words 400 --chunk-overlap 100 --out data/i
 python eval/run_eval.py --index data/index data/index_c100 data/index_c400
 ```
 
-Results are written to [`eval/results/report.md`](eval/results/report.md) (committed) and
-`eval/results/results.json`.
+Results are written to [`eval/results/report.md`](eval/results/report.md) (committed),
+[`eval/results/per_query.md`](eval/results/per_query.md) (the top-5 retrieved movies for every
+query, baseline next to the best configuration) and `eval/results/results.json`.
+
+Metrics: recall@1/5/10 with a 95% bootstrap CI, MRR@10, nDCG@10 and median rank for retrieval;
+for the agent, top-1 accuracy vs. an LLM-only baseline, precision of "found", the share of
+"not found" on unanswerable queries, and a breakdown of retrieval vs. selection errors.
 
 ## Tests
 

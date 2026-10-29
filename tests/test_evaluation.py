@@ -83,3 +83,12 @@ def test_exact_title_breaks_ties(tmp_path):
                                 {"query": "b", "title": "The Contact", "year": 1997}])
     assert resolve_gold(gold, movies) == []
     assert [g.movie_id for g in gold] == ["m00010", "m00011"]
+
+
+def test_rank_metrics():
+    from movie_finder.evaluation import bootstrap_ci, median_rank, ndcg
+    assert ndcg([1, None]) == 0.5
+    assert ndcg([3], k=10) == pytest.approx(0.5)            # 1/log2(4)
+    assert median_rank([1, 2, None]) == 2 and median_rank([1, None]) == 6
+    lo, hi = bootstrap_ci([1.0] * 10 + [0.0] * 10)
+    assert lo < 0.5 < hi and bootstrap_ci([1.0, 0.0]) == bootstrap_ci([1.0, 0.0])   # seeded

@@ -116,7 +116,39 @@ def retrieval_metrics(ranks: Sequence[int | None], ks: Sequence[int] = (1, 5, 10
     kmax = max(ks)
     out = {f"recall@{k}": sum(r is not None and r <= k for r in ranks) / n for k in ks}
     out[f"mrr@{kmax}"] = sum(1 / r for r in ranks if r is not None and r <= kmax) / n
+    out[f"ndcg@{kmax}"] = ndcg(ranks, kmax)
+    out["median_rank"] = median_rank(ranks, kmax + 1)
+    if 5 in ks:
+        out["recall@5_ci"] = bootstrap_ci([float(r is not None and r <= 5) for r in ranks])
     return out
+
+
+def ndcg(ranks: Sequence[int | None], k: int = 10) -> float:
+    """nDCG@k with one relevant movie per query: 1/log2(rank+1) if found within k, else 0.
+    Unlike recall@k it rewards rank 2 more than rank 9."""
+    import math
+
+    return sum(1 / math.log2(r + 1) for r in ranks if r is not None and r <= k) / len(ranks) if ranks else float("nan")
+
+
+def median_rank(ranks: Sequence[int | None], miss: int = 11) -> float:
+    """Median rank of the correct movie, counting a miss (not in top 10) as `miss`."""
+    vals = sorted(r if r is not None else miss for r in ranks)
+    n = len(vals)
+    return float("nan") if n == 0 else (vals[n // 2] if n % 2 else (vals[n // 2 - 1] + vals[n // 2]) / 2)
+
+
+def bootstrap_ci(values: Sequence[float], n_boot: int = 2000, seed: int = 0, alpha: float = 0.05) -> tuple[float, float]:
+    """95% bootstrap confidence interval of the mean (fixed seed -> reproducible).
+    With ~30 queries one query is ~3 points, so differences smaller than the CI are noise."""
+    import random
+
+    if not values:
+        return (float("nan"), float("nan"))
+    rng = random.Random(seed)
+    n = len(values)
+    means = sorted(sum(values[rng.randrange(n)] for _ in range(n)) / n for _ in range(n_boot))
+    return means[int(n_boot * alpha / 2)], means[int(n_boot * (1 - alpha / 2)) - 1]
 
 
 def abstain_rate(result_counts: Sequence[int]) -> float:
