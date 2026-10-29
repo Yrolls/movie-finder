@@ -1,6 +1,6 @@
 # Evaluation report
 
-_Generated 2026-10-29 04:16 UTC — 42 answerable + 7 unanswerable queries from `eval/queries.jsonl`._
+_Generated 2026-10-29 04:27 UTC — 42 answerable + 7 unanswerable queries from `eval/queries.jsonl`._
 
 LLM: `gemma-4-E4B-it` · embeddings: `intfloat/multilingual-e5-small` · temperature 0
 
@@ -59,47 +59,47 @@ Each pair: recall@5 kept on answerable queries / share of unanswerable queries t
 
 | system | top-1 accuracy (answerable) | says not found (unanswerable) |
 |---|---|---|
-| LLM-only baseline | 71.4% | 28.6% |
+| LLM-only baseline | 69.0% | 28.6% |
 | Agent + retrieval | 73.8% | 42.9% |
 
-Average 3.1 model turns and 4.3s per query.
+Average 2.4 model turns and 4.3s per query.
 
 ### Where the agent loses answers (answerable queries)
 
 | step | share of answerable queries |
 |---|---|
-| correct movie appeared in any of the agent's searches | 76.2% |
-| correct movie among the agent's ≤3 candidates | 76.2% |
+| correct movie appeared in any of the agent's searches | 85.7% |
+| correct movie among the agent's ≤3 candidates | 85.7% |
 | correct movie ranked first by the agent | 73.8% |
 
 100% minus the first row is a retrieval error (the right movie was never retrieved); the drop from the first row to the last is a selection error (retrieved, but not ranked first).
 
-Precision of "found": when the agent says it found the movie, it is right 93.3% of the time (30 "found" answers).
+Precision of "found": when the agent says it found the movie, it is right 92.0% of the time (25 "found" answers).
 
 | outcome | answerable | unanswerable |
 |---|---|---|
-| found, correct | 28 | 0 |
-| not sure, correct on top | 3 | 0 |
-| not sure, wrong on top | 8 | 0 |
+| found, correct | 23 | 0 |
+| not sure, correct on top | 8 | 0 |
+| not sure, wrong on top | 9 | 0 |
 | found, WRONG | 2 | 0 |
 | not sure | 0 | 4 |
-| said not found | 1 | 3 |
+| said not found | 0 | 3 |
 
-How runs ended — final_answer: 44, max_steps: 4, no_progress: 1. Queries where the agent used the metadata database (text-to-SQL): 7.
+How runs ended — final_answer: 49. Queries where the agent used the metadata database (text-to-SQL): 7.
 
 ### Top-1 accuracy by query tag (answerable)
 
 | tag | n | agent | LLM-only |
 |---|---|---|---|
-| confusable | 3 | 66.7% | 100.0% |
-| en | 27 | 81.5% | 74.1% |
-| famous | 34 | 76.5% | 79.4% |
-| metadata | 10 | 80.0% | 80.0% |
+| confusable | 3 | 100.0% | 100.0% |
+| en | 27 | 92.6% | 74.1% |
+| famous | 34 | 76.5% | 76.5% |
+| metadata | 10 | 100.0% | 80.0% |
 | obscure | 8 | 62.5% | 37.5% |
 | partial | 2 | 50.0% | 50.0% |
-| plain | 24 | 75.0% | 66.7% |
-| th | 15 | 60.0% | 66.7% |
-| vague | 3 | 33.3% | 66.7% |
+| plain | 24 | 66.7% | 62.5% |
+| th | 15 | 40.0% | 60.0% |
+| vague | 3 | 66.7% | 66.7% |
 | wrong_detail | 3 | 66.7% | 100.0% |
 
 ## Dense misses (rank ≠ 1) — for error analysis

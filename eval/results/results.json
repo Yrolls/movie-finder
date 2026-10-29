@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-29 04:16 UTC",
+  "generated": "2026-10-29 04:27 UTC",
   "n_answerable": 42,
   "n_unanswerable": 7,
   "config": {
@@ -1395,7 +1395,7 @@
                 {
                   "title": "Speed",
                   "year": 1994,
-                  "score": 37.3072,
+                  "score": 37.3073,
                   "correct": true
                 },
                 {
@@ -6388,7 +6388,7 @@
                 {
                   "title": "Groundhog Day",
                   "year": 1993,
-                  "score": 23.5457,
+                  "score": 23.5458,
                   "correct": true
                 },
                 {
@@ -6829,7 +6829,7 @@
                 {
                   "title": "Cook Up a Storm",
                   "year": 2017,
-                  "score": 20.3431,
+                  "score": 20.3432,
                   "correct": false
                 },
                 {
@@ -12790,7 +12790,7 @@
                 {
                   "title": "Cook Up a Storm",
                   "year": 2017,
-                  "score": 20.3431,
+                  "score": 20.3432,
                   "correct": false
                 },
                 {
@@ -18570,17 +18570,16 @@
   ],
   "agent": {
     "summary": {
-      "gold_retrieved_answerable": 0.7619047619047619,
-      "gold_in_candidates_answerable": 0.7619047619047619,
-      "precision_of_found": 0.9333333333333333,
-      "n_found": 30,
+      "gold_retrieved_answerable": 0.8571428571428571,
+      "gold_in_candidates_answerable": 0.8571428571428571,
+      "precision_of_found": 0.92,
+      "n_found": 25,
       "outcomes": {
         "answerable": {
-          "found, correct": 28,
-          "said not found": 1,
-          "not sure, wrong on top": 8,
-          "not sure, correct on top": 3,
-          "found, WRONG": 2
+          "found, WRONG": 2,
+          "not sure, correct on top": 8,
+          "found, correct": 23,
+          "not sure, wrong on top": 9
         },
         "unanswerable": {
           "not sure": 4,
@@ -18588,30 +18587,28 @@
         }
       },
       "stopped_by": {
-        "final_answer": 44,
-        "max_steps": 4,
-        "no_progress": 1
+        "final_answer": 49
       },
       "used_sql": 7,
       "per_tag": {
         "confusable": {
           "n": 3,
-          "agent": 0.6666666666666666,
+          "agent": 1.0,
           "llm_only": 1.0
         },
         "en": {
           "n": 27,
-          "agent": 0.8148148148148148,
+          "agent": 0.9259259259259259,
           "llm_only": 0.7407407407407407
         },
         "famous": {
           "n": 34,
           "agent": 0.7647058823529411,
-          "llm_only": 0.7941176470588235
+          "llm_only": 0.7647058823529411
         },
         "metadata": {
           "n": 10,
-          "agent": 0.8,
+          "agent": 1.0,
           "llm_only": 0.8
         },
         "obscure": {
@@ -18626,17 +18623,17 @@
         },
         "plain": {
           "n": 24,
-          "agent": 0.75,
-          "llm_only": 0.6666666666666666
+          "agent": 0.6666666666666666,
+          "llm_only": 0.625
         },
         "th": {
           "n": 15,
-          "agent": 0.6,
-          "llm_only": 0.6666666666666666
+          "agent": 0.4,
+          "llm_only": 0.6
         },
         "vague": {
           "n": 3,
-          "agent": 0.3333333333333333,
+          "agent": 0.6666666666666666,
           "llm_only": 0.6666666666666666
         },
         "wrong_detail": {
@@ -18646,11 +18643,11 @@
         }
       },
       "agent_top1_answerable": 0.7380952380952381,
-      "llm_only_top1_answerable": 0.7142857142857143,
+      "llm_only_top1_answerable": 0.6904761904761905,
       "agent_abstain_unanswerable": 0.42857142857142855,
       "llm_only_abstain_unanswerable": 0.2857142857142857,
-      "avg_steps": 3.122448979591837,
-      "avg_seconds": 4.255102040816326
+      "avg_steps": 2.36734693877551,
+      "avg_seconds": 4.340816326530612
     },
     "rows": [
       {
@@ -18662,21 +18659,21 @@
           "plain"
         ],
         "status": "found",
-        "outcome": "found, correct",
-        "agent_top1": "m04124",
-        "agent_ok": true,
+        "outcome": "found, WRONG",
+        "agent_top1": "m15745",
+        "agent_ok": false,
         "gold_in_candidates": true,
         "gold_retrieved": true,
         "llm_only": "m04124",
         "llm_only_ok": true,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 5.1,
+        "seconds": 6.4,
         "searches": [
-          "{\"query\": \"A grumpy weather forecaster wakes up to find the same day repeating in a small town during winter\"}"
+          "{\"query\": \"A grumpy weather forecaster in a small town keeps reliving the same day in winter\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"A grumpy weather forecaster wakes up to find the same day repeating in a small town during winter\"})"
+          "search_movies({\"query\": \"A grumpy weather forecaster in a small town keeps reliving the same day in winter\"})"
         ],
         "sql": []
       },
@@ -18688,26 +18685,22 @@
           "famous",
           "plain"
         ],
-        "status": "not_found",
-        "outcome": "said not found",
-        "agent_top1": null,
-        "agent_ok": false,
-        "gold_in_candidates": false,
-        "gold_retrieved": false,
+        "status": "not_sure",
+        "outcome": "not sure, correct on top",
+        "agent_top1": "m12804",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
         "llm_only": "m12804",
         "llm_only_ok": true,
-        "steps": 5,
-        "stopped_by": "max_steps",
-        "seconds": 3.0,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 3.2,
         "searches": [
-          "{\"query\": \"thieves break into a rich heir's mind while he sleeps to plant an idea instead of stealing one\"}"
+          "{\"query\": \"thieves break into a rich heir's mind while he sleeps to plant an idea\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"thieves break into a rich heir's mind while he sleeps to plant an idea instead of stealing one\"})",
-          "get_movie({\"movie_id\": \"m01923\"})",
-          "get_movie({\"movie_id\": \"m04373\"})",
-          "get_movie({\"movie_id\": \"m06497\"})",
-          "get_movie({\"movie_id\": \"m01876\"})"
+          "search_movies({\"query\": \"thieves break into a rich heir's mind while he sleeps to plant an idea\"})"
         ],
         "sql": []
       },
@@ -18727,15 +18720,14 @@
         "gold_retrieved": true,
         "llm_only": "m07215",
         "llm_only_ok": true,
-        "steps": 3,
+        "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 2.5,
+        "seconds": 4.1,
         "searches": [
-          "{\"query\": \"a man who cannot make new memories tattoos notes on his body and uses polaroid photos to find his wife's killer\"}"
+          "{\"query\": \"man who cannot make new memories tattoos notes on his body and uses polaroid photos to find his wife's killer\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"a man who cannot make new memories tattoos notes on his body and uses polaroid photos to find his wife's killer\"})",
-          "get_movie({\"movie_id\": \"m07215\"})"
+          "search_movies({\"query\": \"man who cannot make new memories tattoos notes on his body and uses polaroid photos to find his wife's killer\"})"
         ],
         "sql": []
       },
@@ -18757,7 +18749,7 @@
         "llm_only_ok": true,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 2.1,
+        "seconds": 2.3,
         "searches": [
           "{\"query\": \"a man slowly realizes his entire life is a television show and everyone around him are actors\"}"
         ],
@@ -18784,7 +18776,7 @@
         "llm_only_ok": true,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 2.0,
+        "seconds": 3.4,
         "searches": [
           "{\"query\": \"man stranded on an island after a plane crash whose only companion is a volleyball\"}"
         ],
@@ -18803,24 +18795,20 @@
         ],
         "status": "not_sure",
         "outcome": "not sure, wrong on top",
-        "agent_top1": "m16955",
+        "agent_top1": "m03292",
         "agent_ok": false,
         "gold_in_candidates": false,
         "gold_retrieved": false,
         "llm_only": "m14883",
         "llm_only_ok": false,
-        "steps": 5,
+        "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 4.9,
+        "seconds": 7.6,
         "searches": [
-          "{\"query\": \"teenager time travels in a sports car and accidentally causes their parents to stop loving each other, and they must fix it so the parents meet again\"}",
-          "{\"query\": \"teenager time travel sports car parents breakup fix relationship\"}"
+          "{\"query\": \"teenager time travels in a sports car and accidentally causes their parents to stop loving each other, so they must fix it so both parents meet again\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"teenager time travels in a sports car and accidentally causes their parents to stop loving each other, and they must fix it so the parents meet again\"})",
-          "search_movies({\"query\": \"teenager time travel sports car parents breakup fix relationship\"})",
-          "get_movie({\"movie_id\": \"m16955\"})",
-          "get_movie({\"movie_id\": \"m07964\"})"
+          "search_movies({\"query\": \"teenager time travels in a sports car and accidentally causes their parents to stop loving each other, so they must fix it so both parents meet again\"})"
         ],
         "sql": []
       },
@@ -18840,15 +18828,14 @@
         "gold_retrieved": true,
         "llm_only": "m06923",
         "llm_only_ok": true,
-        "steps": 3,
+        "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 2.7,
+        "seconds": 2.2,
         "searches": [
           "{\"query\": \"a child psychologist tries to help a scared little boy who says he can see ghosts with a big twist at the end\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"a child psychologist tries to help a scared little boy who says he can see ghosts with a big twist at the end\"})",
-          "get_movie({\"movie_id\": \"m06923\"})"
+          "search_movies({\"query\": \"a child psychologist tries to help a scared little boy who says he can see ghosts with a big twist at the end\"})"
         ],
         "sql": []
       },
@@ -18868,15 +18855,14 @@
         "gold_retrieved": true,
         "llm_only": "__not_in_corpus__",
         "llm_only_ok": false,
-        "steps": 3,
+        "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 4.3,
+        "seconds": 3.5,
         "searches": [
           "{\"query\": \"a boy makes a wish to a game cabinet and wakes up as an adult who works at a toy company\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"a boy makes a wish to a game cabinet and wakes up as an adult who works at a toy company\"})",
-          "get_movie({\"movie_id\": \"m02208\"})"
+          "search_movies({\"query\": \"a boy makes a wish to a game cabinet and wakes up as an adult who works at a toy company\"})"
         ],
         "sql": []
       },
@@ -18888,23 +18874,22 @@
           "famous",
           "plain"
         ],
-        "status": "found",
-        "outcome": "found, correct",
+        "status": "not_sure",
+        "outcome": "not sure, correct on top",
         "agent_top1": "m05945",
         "agent_ok": true,
         "gold_in_candidates": true,
         "gold_retrieved": true,
         "llm_only": "m10454",
         "llm_only_ok": false,
-        "steps": 3,
+        "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 4.9,
+        "seconds": 3.3,
         "searches": [
           "{\"query\": \"a lawyer who always lies suddenly cannot tell a lie for a whole day because of his son's birthday wish\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"a lawyer who always lies suddenly cannot tell a lie for a whole day because of his son's birthday wish\"})",
-          "get_movie({\"movie_id\": \"m05945\"})"
+          "search_movies({\"query\": \"a lawyer who always lies suddenly cannot tell a lie for a whole day because of his son's birthday wish\"})"
         ],
         "sql": []
       },
@@ -18926,7 +18911,7 @@
         "llm_only_ok": true,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 4.2,
+        "seconds": 4.0,
         "searches": [
           "{\"query\": \"a man from eastern europe gets stuck living inside a new york airport for months because his country stops existing\"}"
         ],
@@ -18943,23 +18928,22 @@
           "famous",
           "plain"
         ],
-        "status": "found",
-        "outcome": "found, correct",
-        "agent_top1": "m12463",
-        "agent_ok": true,
+        "status": "not_sure",
+        "outcome": "not sure, wrong on top",
+        "agent_top1": "m10516",
+        "agent_ok": false,
         "gold_in_candidates": true,
         "gold_retrieved": true,
         "llm_only": "m12463",
         "llm_only_ok": true,
         "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 2.7,
+        "seconds": 8.7,
         "searches": [
-          "{\"query\": \"An old man ties thousands of balloons to a house and floats to South America with a scout child\"}"
+          "{\"query\": \"an old man ties thousands of balloons to a house and floats to South America with a scout child\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"An old man ties thousands of balloons to a house and floats to South America with a scout child\"})",
-          "get_movie({\"movie_id\": \"m12463\"})"
+          "search_movies({\"query\": \"an old man ties thousands of balloons to a house and floats to South America with a scout child\"})"
         ],
         "sql": []
       },
@@ -18981,7 +18965,7 @@
         "llm_only_ok": true,
         "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 8.1,
+        "seconds": 7.8,
         "searches": [
           "{\"query\": \"a girl who wants to be a chef secretly controls a young man in a Parisian restaurant kitchen by pulling his hair under his hat\"}"
         ],
@@ -19006,16 +18990,14 @@
         "gold_retrieved": true,
         "llm_only": "m06102",
         "llm_only_ok": false,
-        "steps": 4,
+        "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 4.5,
+        "seconds": 3.3,
         "searches": [
           "{\"query\": \"kids find an old board game that releases jungle animals and a hunter into their town, and a man trapped inside for years appears\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"kids find an old board game that releases jungle animals and a hunter into their town, and a man trapped inside for years appears\"})",
-          "get_movie({\"movie_id\": \"m05031\"})",
-          "get_movie({\"movie_id\": \"m18055\"})"
+          "search_movies({\"query\": \"kids find an old board game that releases jungle animals and a hunter into their town, and a man trapped inside for years appears\"})"
         ],
         "sql": []
       },
@@ -19027,23 +19009,22 @@
           "famous",
           "wrong_detail"
         ],
-        "status": "found",
-        "outcome": "found, correct",
-        "agent_top1": "m03016",
-        "agent_ok": true,
+        "status": "not_sure",
+        "outcome": "not sure, wrong on top",
+        "agent_top1": "m03056",
+        "agent_ok": false,
         "gold_in_candidates": true,
         "gold_retrieved": true,
         "llm_only": "m03016",
         "llm_only_ok": true,
-        "steps": 3,
+        "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 3.3,
+        "seconds": 4.1,
         "searches": [
           "{\"query\": \"a boy is left home alone during Easter holiday and fights off two burglars with traps\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"a boy is left home alone during Easter holiday and fights off two burglars with traps\"})",
-          "get_movie({\"movie_id\": \"m03016\"})"
+          "search_movies({\"query\": \"a boy is left home alone during Easter holiday and fights off two burglars with traps\"})"
         ],
         "sql": []
       },
@@ -19063,15 +19044,14 @@
         "gold_retrieved": true,
         "llm_only": "m15986",
         "llm_only_ok": true,
-        "steps": 3,
+        "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 4.3,
+        "seconds": 3.3,
         "searches": [
           "{\"query\": \"soldier fighting aliens keeps dying and waking up on the same day before the battle, training with a famous female soldier\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"soldier fighting aliens keeps dying and waking up on the same day before the battle, training with a famous female soldier\"})",
-          "get_movie({\"movie_id\": \"m15986\"})"
+          "search_movies({\"query\": \"soldier fighting aliens keeps dying and waking up on the same day before the battle, training with a famous female soldier\"})"
         ],
         "sql": []
       },
@@ -19083,23 +19063,22 @@
           "obscure",
           "confusable"
         ],
-        "status": "found",
-        "outcome": "found, correct",
+        "status": "not_sure",
+        "outcome": "not sure, correct on top",
         "agent_top1": "m13839",
         "agent_ok": true,
         "gold_in_candidates": true,
         "gold_retrieved": true,
         "llm_only": "m13839",
         "llm_only_ok": true,
-        "steps": 3,
+        "steps": 2,
         "stopped_by": "final_answer",
         "seconds": 4.1,
         "searches": [
           "{\"query\": \"a man wakes up in someone else's body on a commuter train and keeps reliving the last 8 minutes before it explodes\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"a man wakes up in someone else's body on a commuter train and keeps reliving the last 8 minutes before it explodes\"})",
-          "get_movie({\"movie_id\": \"m13839\"})"
+          "search_movies({\"query\": \"a man wakes up in someone else's body on a commuter train and keeps reliving the last 8 minutes before it explodes\"})"
         ],
         "sql": []
       },
@@ -19117,16 +19096,16 @@
         "agent_ok": true,
         "gold_in_candidates": true,
         "gold_retrieved": true,
-        "llm_only": "m15182",
-        "llm_only_ok": true,
+        "llm_only": null,
+        "llm_only_ok": false,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 4.5,
+        "seconds": 4.2,
         "searches": [
-          "{\"query\": \"lonely divorced man falls in love with a female voice AI operating system in a computer\"}"
+          "{\"query\": \"lonely divorced man falls in love with a female voice AI operating system on a computer\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"lonely divorced man falls in love with a female voice AI operating system in a computer\"})"
+          "search_movies({\"query\": \"lonely divorced man falls in love with a female voice AI operating system on a computer\"})"
         ],
         "sql": []
       },
@@ -19146,15 +19125,14 @@
         "gold_retrieved": true,
         "llm_only": "m16728",
         "llm_only_ok": true,
-        "steps": 3,
+        "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 3.7,
+        "seconds": 2.0,
         "searches": [
           "{\"query\": \"young programmer is invited to a billionaire's remote house to test a female robot's consciousness\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"young programmer is invited to a billionaire's remote house to test a female robot's consciousness\"})",
-          "get_movie({\"movie_id\": \"m16728\"})"
+          "search_movies({\"query\": \"young programmer is invited to a billionaire's remote house to test a female robot's consciousness\"})"
         ],
         "sql": []
       },
@@ -19166,23 +19144,22 @@
           "famous",
           "plain"
         ],
-        "status": "found",
-        "outcome": "found, correct",
+        "status": "not_sure",
+        "outcome": "not sure, correct on top",
         "agent_top1": "m10488",
         "agent_ok": true,
         "gold_in_candidates": true,
         "gold_retrieved": true,
         "llm_only": "m10488",
         "llm_only_ok": true,
-        "steps": 3,
+        "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 4.1,
+        "seconds": 4.2,
         "searches": [
           "{\"query\": \"two rival stage magicians in old london try to outdo each other, one uses a strange electric machine for a teleport trick\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"two rival stage magicians in old london try to outdo each other, one uses a strange electric machine for a teleport trick\"})",
-          "get_movie({\"movie_id\": \"m10488\"})"
+          "search_movies({\"query\": \"two rival stage magicians in old london try to outdo each other, one uses a strange electric machine for a teleport trick\"})"
         ],
         "sql": []
       },
@@ -19195,25 +19172,21 @@
           "plain"
         ],
         "status": "not_sure",
-        "outcome": "not sure, correct on top",
-        "agent_top1": "m05805",
-        "agent_ok": true,
-        "gold_in_candidates": true,
-        "gold_retrieved": true,
+        "outcome": "not sure, wrong on top",
+        "agent_top1": "m11899",
+        "agent_ok": false,
+        "gold_in_candidates": false,
+        "gold_retrieved": false,
         "llm_only": "m05805",
         "llm_only_ok": true,
-        "steps": 5,
-        "stopped_by": "no_progress",
-        "seconds": 5.9,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 4.2,
         "searches": [
-          "{\"query\": \"female scientist receives a signal from space containing blueprints for a spaceship\"}"
+          "{\"query\": \"female scientist receives extraterrestrial signal with blueprints for a spaceship\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"female scientist receives a signal from space containing blueprints for a spaceship\"})",
-          "get_movie({\"movie_id\": \"m05805\"})",
-          "get_movie({\"movie_id\": \"m01761\"})",
-          "get_movie({\"movie_id\": \"m05805\"})",
-          "get_movie({\"movie_id\": \"m01761\"})"
+          "search_movies({\"query\": \"female scientist receives extraterrestrial signal with blueprints for a spaceship\"})"
         ],
         "sql": []
       },
@@ -19233,15 +19206,14 @@
         "gold_retrieved": true,
         "llm_only": "m12221",
         "llm_only_ok": true,
-        "steps": 3,
+        "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 2.9,
+        "seconds": 3.7,
         "searches": [
-          "{\"query\": \"a lonely worker on a moon base near the end of a three year contract finds another version of himself\"}"
+          "{\"query\": \"lonely worker on a moon base finds another version of himself near the end of a three year contract\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"a lonely worker on a moon base near the end of a three year contract finds another version of himself\"})",
-          "get_movie({\"movie_id\": \"m12221\"})"
+          "search_movies({\"query\": \"lonely worker on a moon base finds another version of himself near the end of a three year contract\"})"
         ],
         "sql": []
       },
@@ -19261,18 +19233,14 @@
         "gold_retrieved": true,
         "llm_only": "m09158",
         "llm_only_ok": true,
-        "steps": 5,
-        "stopped_by": "max_steps",
-        "seconds": 7.0,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 4.6,
         "searches": [
-          "{\"query\": \"two engineers build a gadget in their garage that accidentally invents a time machine and causes timeline confusion\"}"
+          "{\"query\": \"two engineers in a garage accidentally invent a time machine and cause timeline confusion\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"two engineers build a gadget in their garage that accidentally invents a time machine and causes timeline confusion\"})",
-          "get_movie({\"movie_id\": \"m09158\"})",
-          "get_movie({\"movie_id\": \"m16955\"})",
-          "get_movie({\"movie_id\": \"m16772\"})",
-          "get_movie({\"movie_id\": \"m04800\"})"
+          "search_movies({\"query\": \"two engineers in a garage accidentally invent a time machine and cause timeline confusion\"})"
         ],
         "sql": []
       },
@@ -19284,22 +19252,22 @@
           "obscure",
           "plain"
         ],
-        "status": "not_sure",
-        "outcome": "not sure, wrong on top",
+        "status": "found",
+        "outcome": "found, WRONG",
         "agent_top1": "m11307",
         "agent_ok": false,
-        "gold_in_candidates": false,
-        "gold_retrieved": false,
-        "llm_only": "m15182",
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m06518",
         "llm_only_ok": false,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 4.5,
+        "seconds": 4.2,
         "searches": [
-          "{\"query\": \"shy man brings a life-sized doll and introduces it as his girlfriend, and the whole town plays along\"}"
+          "{\"query\": \"shy man brings a life-sized doll to introduce as his girlfriend and the whole town plays along\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"shy man brings a life-sized doll and introduces it as his girlfriend, and the whole town plays along\"})"
+          "search_movies({\"query\": \"shy man brings a life-sized doll to introduce as his girlfriend and the whole town plays along\"})"
         ],
         "sql": []
       },
@@ -19311,23 +19279,22 @@
           "obscure",
           "plain"
         ],
-        "status": "found",
-        "outcome": "found, correct",
+        "status": "not_sure",
+        "outcome": "not sure, correct on top",
         "agent_top1": "m08761",
         "agent_ok": true,
         "gold_in_candidates": true,
         "gold_retrieved": true,
         "llm_only": "__not_in_corpus__",
         "llm_only_ok": false,
-        "steps": 3,
+        "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 3.8,
+        "seconds": 3.3,
         "searches": [
           "{\"query\": \"a quiet man who loves trains inherits an abandoned train depot in the countryside and makes two unlikely friends\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"a quiet man who loves trains inherits an abandoned train depot in the countryside and makes two unlikely friends\"})",
-          "get_movie({\"movie_id\": \"m08761\"})"
+          "search_movies({\"query\": \"a quiet man who loves trains inherits an abandoned train depot in the countryside and makes two unlikely friends\"})"
         ],
         "sql": []
       },
@@ -19347,15 +19314,14 @@
         "gold_retrieved": true,
         "llm_only": "__not_in_corpus__",
         "llm_only_ok": false,
-        "steps": 3,
+        "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 3.8,
+        "seconds": 2.1,
         "searches": [
           "{\"query\": \"single people are sent to a hotel and must find a partner in 45 days or they get turned into an animal\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"single people are sent to a hotel and must find a partner in 45 days or they get turned into an animal\"})",
-          "get_movie({\"movie_id\": \"m17066\"})"
+          "search_movies({\"query\": \"single people are sent to a hotel and must find a partner in 45 days or they get turned into an animal\"})"
         ],
         "sql": []
       },
@@ -19367,23 +19333,22 @@
           "famous",
           "plain"
         ],
-        "status": "found",
-        "outcome": "found, WRONG",
+        "status": "not_sure",
+        "outcome": "not sure, wrong on top",
         "agent_top1": "m15672",
         "agent_ok": false,
         "gold_in_candidates": false,
         "gold_retrieved": false,
         "llm_only": "m11691",
         "llm_only_ok": true,
-        "steps": 3,
+        "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 3.9,
+        "seconds": 4.5,
         "searches": [
-          "{\"query\": \"a former government spy searches for his teenage daughter who was kidnapped by a human trafficking gang while traveling in Europe\"}"
+          "{\"query\": \"A former government spy searches for his teenage daughter who was kidnapped by a human trafficking gang while traveling in Europe\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"a former government spy searches for his teenage daughter who was kidnapped by a human trafficking gang while traveling in Europe\"})",
-          "get_movie({\"movie_id\": \"m15672\"})"
+          "search_movies({\"query\": \"A former government spy searches for his teenage daughter who was kidnapped by a human trafficking gang while traveling in Europe\"})"
         ],
         "sql": []
       },
@@ -19403,17 +19368,15 @@
         "gold_retrieved": true,
         "llm_only": "m04725",
         "llm_only_ok": true,
-        "steps": 5,
+        "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 5.4,
+        "seconds": 3.7,
         "searches": [
           "{\"query\": \"a bomb is on a train and it will explode if it goes below 50 miles per hour, so a police officer must keep it moving\"}"
         ],
         "calls": [
           "search_movies({\"query\": \"a bomb is on a train and it will explode if it goes below 50 miles per hour, so a police officer must keep it moving\"})",
-          "get_movie({\"movie_id\": \"m04725\"})",
-          "get_movie({\"movie_id\": \"m00158\"})",
-          "get_movie({\"movie_id\": \"m15673\"})"
+          "get_movie({\"movie_id\": \"m04725\"})"
         ],
         "sql": []
       },
@@ -19433,15 +19396,14 @@
         "gold_retrieved": true,
         "llm_only": "m17072",
         "llm_only_ok": true,
-        "steps": 3,
+        "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 3.9,
+        "seconds": 4.1,
         "searches": [
-          "{\"query\": \"astronaut stranded on Mars because a friend thought he was dead and must grow potatoes to survive\"}"
+          "{\"query\": \"astronaut stranded on Mars after friends think he is dead and must grow potatoes to survive\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"astronaut stranded on Mars because a friend thought he was dead and must grow potatoes to survive\"})",
-          "get_movie({\"movie_id\": \"m17072\"})"
+          "search_movies({\"query\": \"astronaut stranded on Mars after friends think he is dead and must grow potatoes to survive\"})"
         ],
         "sql": []
       },
@@ -19461,15 +19423,14 @@
         "gold_retrieved": false,
         "llm_only": "m13184",
         "llm_only_ok": false,
-        "steps": 3,
+        "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 5.2,
+        "seconds": 4.2,
         "searches": [
-          "{\"query\": \"two college friends search for their old genius classmate from engineering school who disappeared after graduation\"}"
+          "{\"query\": \"two college friends search for their missing genius classmate from engineering school\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"two college friends search for their old genius classmate from engineering school who disappeared after graduation\"})",
-          "get_movie({\"movie_id\": \"m05875\"})"
+          "search_movies({\"query\": \"two college friends search for their missing genius classmate from engineering school\"})"
         ],
         "sql": []
       },
@@ -19491,13 +19452,12 @@
         "llm_only_ok": false,
         "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 3.7,
+        "seconds": 8.3,
         "searches": [
-          "{\"query\": \"A cello player who loses his job returns to his hometown and gets a new job as a funeral preparer before the coffin is closed, and his wife does not accept it\"}"
+          "{\"query\": \"A cello player who loses his job returns to his hometown and gets a new job as a funeral preparer before the coffin, and his wife does not accept it\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"A cello player who loses his job returns to his hometown and gets a new job as a funeral preparer before the coffin is closed, and his wife does not accept it\"})",
-          "get_movie({\"movie_id\": \"m12431\"})"
+          "search_movies({\"query\": \"A cello player who loses his job returns to his hometown and gets a new job as a funeral preparer before the coffin, and his wife does not accept it\"})"
         ],
         "sql": []
       },
@@ -19510,22 +19470,23 @@
           "vague",
           "confusable"
         ],
-        "status": "not_sure",
-        "outcome": "not sure, wrong on top",
-        "agent_top1": "m04227",
-        "agent_ok": false,
-        "gold_in_candidates": false,
-        "gold_retrieved": false,
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m04124",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
         "llm_only": "m04124",
         "llm_only_ok": true,
-        "steps": 2,
+        "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 4.5,
+        "seconds": 3.8,
         "searches": [
-          "{\"query\": \"a guy keeps living the same day over and over\", \"year_from\": 1980, \"year_to\": 1999}"
+          "{\"query\": \"a man repeatedly lives the same day over and over\", \"year_from\": 1980, \"year_to\": 1999}"
         ],
         "calls": [
-          "search_movies({\"query\": \"a guy keeps living the same day over and over\", \"year_from\": 1980, \"year_to\": 1999})"
+          "search_movies({\"query\": \"a man repeatedly lives the same day over and over\", \"year_from\": 1980, \"year_to\": 1999})",
+          "get_movie({\"movie_id\": \"m04124\"})"
         ],
         "sql": []
       },
@@ -19547,7 +19508,7 @@
         "llm_only_ok": false,
         "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 9.7,
+        "seconds": 7.5,
         "searches": [
           "{\"query\": \"a scary movie with a clown that tricks children\"}"
         ],
@@ -19572,16 +19533,15 @@
         "gold_retrieved": true,
         "llm_only": "m07953",
         "llm_only_ok": true,
-        "steps": 4,
+        "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 3.9,
+        "seconds": 5.3,
         "searches": [
           "{\"query\": \"young con man pretends to be a pilot and a doctor while an FBI agent chases him\", \"within_database_results\": true}"
         ],
         "calls": [
           "query_movie_database({\"question\": \"Leonardo DiCaprio movie\"})",
-          "search_movies({\"query\": \"young con man pretends to be a pilot and a doctor while an FBI agent chases him\", \"within_database_results\": true})",
-          "get_movie({\"movie_id\": \"m07953\"})"
+          "search_movies({\"query\": \"young con man pretends to be a pilot and a doctor while an FBI agent chases him\", \"within_database_results\": true})"
         ],
         "sql": [
           "SELECT movie_id, title, year, director, actors FROM movies WHERE actors LIKE '%Leonardo DiCaprio%'"
@@ -19635,12 +19595,12 @@
         "llm_only_ok": false,
         "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 4.2,
+        "seconds": 2.5,
         "searches": [
-          "{\"query\": \"Christopher Nolan movie where a farmer dad leaves his daughter and flies through a wormhole to find a new planet\"}"
+          "{\"query\": \"farmer dad leaves daughter and flies through a wormhole to find a new planet\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"Christopher Nolan movie where a farmer dad leaves his daughter and flies through a wormhole to find a new planet\"})",
+          "search_movies({\"query\": \"farmer dad leaves daughter and flies through a wormhole to find a new planet\"})",
           "get_movie({\"movie_id\": \"m16091\"})"
         ],
         "sql": []
@@ -19661,15 +19621,14 @@
         "gold_retrieved": true,
         "llm_only": "m07760",
         "llm_only_ok": true,
-        "steps": 3,
+        "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 3.5,
+        "seconds": 3.1,
         "searches": [
           "{\"query\": \"anime by Miyazaki where a girl works in a bathhouse for spirits after her parents turn into pigs\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"anime by Miyazaki where a girl works in a bathhouse for spirits after her parents turn into pigs\"})",
-          "get_movie({\"movie_id\": \"m07760\"})"
+          "search_movies({\"query\": \"anime by Miyazaki where a girl works in a bathhouse for spirits after her parents turn into pigs\"})"
         ],
         "sql": []
       },
@@ -19689,16 +19648,15 @@
         "gold_retrieved": true,
         "llm_only": "m06911",
         "llm_only_ok": true,
-        "steps": 4,
+        "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 4.5,
+        "seconds": 5.0,
         "searches": [
           "{\"query\": \"man finds out the world is a computer simulation and learns kung fu\", \"within_database_results\": true}"
         ],
         "calls": [
-          "query_movie_database({\"question\": \"Keanu Reeves movie in the late 90s\"})",
-          "search_movies({\"query\": \"man finds out the world is a computer simulation and learns kung fu\", \"within_database_results\": true})",
-          "get_movie({\"movie_id\": \"m06911\"})"
+          "query_movie_database({\"question\": \"Keanu Reeves movie from the late 90s\"})",
+          "search_movies({\"query\": \"man finds out the world is a computer simulation and learns kung fu\", \"within_database_results\": true})"
         ],
         "sql": [
           "SELECT movie_id, title, year, director, actors FROM movies WHERE actors LIKE '%Keanu Reeves%' AND year BETWEEN 1997 AND 2000"
@@ -19712,8 +19670,8 @@
           "famous",
           "metadata"
         ],
-        "status": "found",
-        "outcome": "found, correct",
+        "status": "not_sure",
+        "outcome": "not sure, correct on top",
         "agent_top1": "m08976",
         "agent_ok": true,
         "gold_in_candidates": true,
@@ -19722,13 +19680,12 @@
         "llm_only_ok": true,
         "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 5.1,
+        "seconds": 6.8,
         "searches": [
           "{\"query\": \"Jim Carrey and his ex-girlfriend hire a company to erase memories of each other\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"Jim Carrey and his ex-girlfriend hire a company to erase memories of each other\"})",
-          "get_movie({\"movie_id\": \"m08976\"})"
+          "search_movies({\"query\": \"Jim Carrey and his ex-girlfriend hire a company to erase memories of each other\"})"
         ],
         "sql": []
       },
@@ -19751,7 +19708,7 @@
         "llm_only_ok": true,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 4.2,
+        "seconds": 3.7,
         "searches": [
           "{\"query\": \"korean zombie movie set on a train\"}"
         ],
@@ -19776,7 +19733,7 @@
         "gold_retrieved": true,
         "llm_only": "m04247",
         "llm_only_ok": false,
-        "steps": 4,
+        "steps": 3,
         "stopped_by": "final_answer",
         "seconds": 5.2,
         "searches": [
@@ -19784,8 +19741,7 @@
         ],
         "calls": [
           "query_movie_database({\"question\": \"Tom Hanks movies\"})",
-          "search_movies({\"query\": \"kind man travels across the country and is involved in famous American historical moments\", \"within_database_results\": true})",
-          "get_movie({\"movie_id\": \"m04534\"})"
+          "search_movies({\"query\": \"kind man travels across the country and is involved in famous American historical moments\", \"within_database_results\": true})"
         ],
         "sql": [
           "SELECT movie_id, title, year, director, actors FROM movies WHERE actors LIKE '%Tom Hanks%'"
@@ -19799,29 +19755,26 @@
           "famous",
           "metadata"
         ],
-        "status": "not_sure",
-        "outcome": "not sure, wrong on top",
-        "agent_top1": "m14824",
-        "agent_ok": false,
-        "gold_in_candidates": false,
-        "gold_retrieved": false,
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m07082",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
         "llm_only": "m07082",
         "llm_only_ok": true,
-        "steps": 5,
-        "stopped_by": "max_steps",
-        "seconds": 6.9,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 5.5,
         "searches": [
-          "{\"k\": 5, \"query\": \"martial arts film where people fight while flying over bamboo trees and a legendary sword is stolen\"}"
+          "{\"query\": \"people fight while flying over bamboo trees and a legendary sword is stolen\", \"within_database_results\": true}"
         ],
         "calls": [
           "query_movie_database({\"question\": \"Ang Lee martial arts film\"})",
-          "search_movies({\"k\": 5, \"query\": \"martial arts film where people fight while flying over bamboo trees and a legendary sword is stolen\"})",
-          "get_movie({\"movie_id\": \"m17073\"})",
-          "get_movie({\"movie_id\": \"m14824\"})",
-          "get_movie({\"movie_id\": \"m01371\"})"
+          "search_movies({\"query\": \"people fight while flying over bamboo trees and a legendary sword is stolen\", \"within_database_results\": true})"
         ],
         "sql": [
-          "SELECT movie_id, title, year, director, actors FROM movies WHERE director LIKE '%Ang Lee%' AND genre LIKE '%martial arts%'"
+          "SELECT movie_id, title, year, director, actors FROM movies WHERE director LIKE '%Ang Lee%'"
         ]
       },
       {
@@ -19834,23 +19787,23 @@
           "wrong_detail"
         ],
         "status": "found",
-        "outcome": "found, WRONG",
-        "agent_top1": "m00337",
-        "agent_ok": false,
-        "gold_in_candidates": false,
-        "gold_retrieved": false,
+        "outcome": "found, correct",
+        "agent_top1": "m16852",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
         "llm_only": "m16583",
         "llm_only_ok": true,
         "steps": 4,
         "stopped_by": "final_answer",
-        "seconds": 4.5,
+        "seconds": 3.5,
         "searches": [
           "{\"query\": \"a woman drives a war rig across the desert to free the wives of a warlord\", \"within_database_results\": true}"
         ],
         "calls": [
           "query_movie_database({\"question\": \"Mad Max with Mel Gibson\"})",
           "search_movies({\"query\": \"a woman drives a war rig across the desert to free the wives of a warlord\", \"within_database_results\": true})",
-          "get_movie({\"movie_id\": \"m00337\"})"
+          "get_movie({\"movie_id\": \"m16852\"})"
         ],
         "sql": [
           "SELECT movie_id, title, year, director, actors FROM movies WHERE actors LIKE '%Mel Gibson%'"
@@ -19865,15 +19818,15 @@
         ],
         "status": "not_sure",
         "outcome": "not sure",
-        "agent_top1": "m02627",
+        "agent_top1": "m02606",
         "agent_ok": false,
         "gold_in_candidates": false,
         "gold_retrieved": false,
         "llm_only": "__not_in_corpus__",
         "llm_only_ok": false,
-        "steps": 2,
+        "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 4.4,
+        "seconds": 8.7,
         "searches": [
           "{\"query\": \"scientist creates the first atomic bomb in the New Mexico desert\"}"
         ],
@@ -19889,17 +19842,17 @@
           "en",
           "unanswerable"
         ],
-        "status": "not_sure",
-        "outcome": "not sure",
-        "agent_top1": "m12213",
-        "agent_ok": false,
+        "status": "not_found",
+        "outcome": "said not found",
+        "agent_top1": null,
+        "agent_ok": true,
         "gold_in_candidates": false,
         "gold_retrieved": false,
         "llm_only": "__not_in_corpus__",
         "llm_only_ok": false,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 3.2,
+        "seconds": 1.5,
         "searches": [
           "{\"query\": \"a tired laundromat owner jumps between parallel universes where she is a kung fu star and has hot dog fingers\"}"
         ],
@@ -19917,25 +19870,20 @@
         ],
         "status": "not_sure",
         "outcome": "not sure",
-        "agent_top1": "m16070",
+        "agent_top1": "m08455",
         "agent_ok": false,
         "gold_in_candidates": false,
         "gold_retrieved": false,
         "llm_only": "m12772",
         "llm_only_ok": false,
-        "steps": 5,
-        "stopped_by": "max_steps",
-        "seconds": 5.3,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 4.2,
         "searches": [
-          "{\"query\": \"a poor family slowly gets hired one by one into a rich family's modern house by pretending to be strangers\"}",
-          "{\"query\": \"poor family hired into rich family's modern house pretending to be strangers\"}"
+          "{\"query\": \"a poor family slowly gets hired one by one into a rich family's modern house by pretending to be strangers\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"a poor family slowly gets hired one by one into a rich family's modern house by pretending to be strangers\"})",
-          "search_movies({\"query\": \"poor family hired into rich family's modern house pretending to be strangers\"})",
-          "get_movie({\"movie_id\": \"m16070\"})",
-          "get_movie({\"movie_id\": \"m00492\"})",
-          "get_movie({\"movie_id\": \"m08455\"})"
+          "search_movies({\"query\": \"a poor family slowly gets hired one by one into a rich family's modern house by pretending to be strangers\"})"
         ],
         "sql": []
       },
@@ -19956,7 +19904,7 @@
         "llm_only_ok": true,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 1.3,
+        "seconds": 1.2,
         "searches": [
           "{\"query\": \"a penguin opens a bakery in Bangkok and accidentally becomes a K-pop idol\"}"
         ],
@@ -20008,7 +19956,7 @@
         "llm_only_ok": false,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 4.2,
+        "seconds": 4.3,
         "searches": [
           "{\"query\": \"a perfect doll leaves her plastic world for the real world and has an existential crisis\"}"
         ],
@@ -20025,17 +19973,17 @@
           "metadata",
           "unanswerable"
         ],
-        "status": "not_found",
-        "outcome": "said not found",
-        "agent_top1": null,
-        "agent_ok": true,
+        "status": "not_sure",
+        "outcome": "not sure",
+        "agent_top1": "m09009",
+        "agent_ok": false,
         "gold_in_candidates": false,
         "gold_retrieved": false,
         "llm_only": "__not_in_corpus__",
         "llm_only_ok": false,
         "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 2.1,
+        "seconds": 5.5,
         "searches": [
           "{\"query\": \"Tom Hanks plays Elvis Presley's manager\", \"within_database_results\": true}"
         ],
