@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="th">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -86,35 +86,41 @@
   .ask input { width: 100%; padding: 12px 14px; font: 1rem var(--ui); color: var(--ink); background: var(--sheet); border: 2px solid var(--rule); border-radius: 6px; }
   .note { margin-top: 24px; padding: 18px 20px; background: var(--sheet); border-radius: 6px; }
   .error { color: var(--miss); }
+  .badge { display: inline-block; font: 600 .85rem var(--ui); padding: 3px 10px; border-radius: 999px; margin-bottom: 10px; }
+  .badge.found { background: var(--marquee); color: #1A2240; }
+  .badge.unsure { border: 1.5px solid var(--marquee); color: var(--ink); }
+  .badge.none { border: 1.5px solid var(--miss); color: var(--miss); }
+  .note h2 { font-size: 1.15rem; margin: 0 0 6px; }
+  .note p { margin: 6px 0 0; color: var(--slate); }
   footer { margin-top: 64px; color: var(--slate); font-size: .85rem; }
 </style>
 </head>
 <body>
 <main>
-  <h1>What was that movie called?</h1>
-  <p class="lede">Describe whatever you remember — a scene, the premise, roughly when you saw it.
-    English or Thai both work. You'll get the title and the plot passage that matched.</p>
+  <h1>หนังเรื่องนั้นชื่ออะไรนะ?</h1>
+  <p class="lede">เล่าสิ่งที่จำได้ — ฉากใดฉากหนึ่ง เนื้อเรื่องคร่าว ๆ หรือช่วงปีที่ดู พิมพ์ไทยหรืออังกฤษก็ได้
+    แล้วจะได้ชื่อเรื่อง พร้อมข้อความจากเรื่องย่อที่ใช้เป็นหลักฐาน ถ้ายังไม่แน่ใจจะบอกตรง ๆ และถามเพิ่ม</p>
 
   <form id="form">
-    <textarea id="desc" aria-label="What you remember about the movie" required minlength="5" maxlength="2000"
-      placeholder="e.g. a guy keeps waking up on the same day in a snowy little town…"></textarea>
+    <textarea id="desc" aria-label="สิ่งที่จำได้เกี่ยวกับหนัง" required minlength="5" maxlength="2000"
+      placeholder="เช่น ผู้ชายตื่นมาเจอวันเดิมซ้ำไปเรื่อย ๆ ในเมืองเล็ก ๆ ที่หิมะตก…"></textarea>
     <div class="row">
-      <button id="go" type="submit">Find the movie</button>
+      <button id="go" type="submit">ค้นหาหนัง</button>
       <span id="status" role="status" aria-live="polite"></span>
     </div>
   </form>
 
   <div class="examples">
-    <span>Or try one:</span>
+    <span>หรือลองตัวอย่าง:</span>
     <button class="chip" type="button">a magician uses a strange electric machine to beat his rival</button>
     <button class="chip" type="button">คุณตาผูกลูกโป่งเต็มบ้านแล้วบ้านลอยขึ้นฟ้า</button>
     <button class="chip" type="button">a woman scientist hears a message from aliens with plans for a machine</button>
   </div>
 
-  <ol id="steps" aria-label="What the assistant did"></ol>
+  <ol id="steps" aria-label="ขั้นตอนที่ระบบทำ"></ol>
   <section id="result" aria-live="polite"></section>
 
-  <footer>Plots from Wikipedia (CC BY-SA), films 1980–2017. Answers come only from that database.</footer>
+  <footer>เรื่องย่อจาก Wikipedia (CC BY-SA) เฉพาะหนังปี 1980–2017 คำตอบมาจากฐานข้อมูลนี้เท่านั้น</footer>
 </main>
 
 <script>
@@ -132,14 +138,14 @@ function esc(s) { const d = document.createElement("div"); d.textContent = s ?? 
 
 async function run() {
   if (desc.value.trim().length < 5) { desc.focus(); return; }
-  go.disabled = true; statusEl.textContent = "Searching…";
+  go.disabled = true; statusEl.textContent = "กำลังค้นหา…";
   steps.innerHTML = ""; result.innerHTML = "";
   try {
     const res = await fetch("/find/stream", {
       method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ description: desc.value.trim(), history }),
     });
-    if (!res.ok) throw new Error(`Server returned ${res.status}. Check the terminal running uvicorn.`);
+    if (!res.ok) throw new Error(`เซิร์ฟเวอร์ตอบกลับ ${res.status} — ดู error ในเทอร์มินัลที่รัน uvicorn`);
     const reader = res.body.getReader(), dec = new TextDecoder();
     let buf = "";
     for (;;) {
@@ -164,13 +170,13 @@ function handle(raw) {
     let args = {}; try { args = JSON.parse(ev.arguments); } catch {}
     let what;
     if (ev.name === "search_movies") {
-      const scope = args.within_database_results ? " among the films found in the database" : "";
+      const scope = args.within_database_results ? " เฉพาะในหนังที่ค้นเจอจากฐานข้อมูล" : "";
       const years = args.year_from || args.year_to ? ` (${args.year_from ?? "…"}–${args.year_to ?? "…"})` : "";
-      what = `Searched plots for <code>“${esc(args.query)}”</code>${scope}${years}`;
+      what = `ค้นเรื่องย่อด้วย <code>“${esc(args.query)}”</code>${scope}${years}`;
     } else if (ev.name === "query_movie_database") {
-      what = `Looked up films by <code>“${esc(args.question)}”</code>`;
+      what = `ค้นข้อมูลหนัง (นักแสดง/ผู้กำกับ/ปี) ด้วย <code>“${esc(args.question)}”</code>`;
     } else {
-      what = `Checked details of <code>${esc(args.movie_id)}</code>`;
+      what = `ดูรายละเอียดของ <code>${esc(args.movie_id)}</code>`;
     }
     steps.insertAdjacentHTML("beforeend", `<li>${what}</li>`);
   } else if (ev.type === "tool_result" && ev.name !== "get_movie") {
@@ -179,47 +185,65 @@ function handle(raw) {
     if (ev.error) { li.insertAdjacentHTML("beforeend", ` — <span class="sc">${esc(ev.error)}</span>`); return; }
     const hits = ev.hits || [];
     const sql = ev.sql ? `<pre class="sql">${esc(ev.sql)}</pre>` : "";
-    if (!hits.length) { li.insertAdjacentHTML("beforeend", ` — nothing close enough${sql ? `<details><summary>SQL</summary>${sql}</details>` : ""}`); return; }
-    const label = ev.sql ? `${ev.n_matches ?? hits.length} films matched${(ev.n_matches ?? 0) > hits.length ? ` (showing ${hits.length})` : ""}` : `Top ${hits.length} retrieved`;
+    if (!hits.length) { li.insertAdjacentHTML("beforeend", ` — ไม่เจอเรื่องที่ใกล้พอ${sql ? `<details><summary>SQL</summary>${sql}</details>` : ""}`); return; }
+    const label = ev.sql ? `ตรงเงื่อนไข ${ev.n_matches ?? hits.length} เรื่อง${(ev.n_matches ?? 0) > hits.length ? ` (แสดง ${hits.length})` : ""}` : `${hits.length} อันดับแรกที่ค้นเจอ`;
     li.insertAdjacentHTML("beforeend", `<details><summary>${label}</summary>${sql}<ol class="hits">${
-      hits.map((h) => `<li${h.outside ? ' class="outside"' : ""}>${esc(h.title)} (${h.year})${h.score != null ? ` <span class="sc">· similarity ${h.score.toFixed(2)}</span>` : ""}${h.outside ? ' <span class="sc">· outside the database match</span>' : ""}</li>`).join("")
+      hits.map((h) => `<li${h.outside ? ' class="outside"' : ""}>${esc(h.title)} (${h.year})${h.score != null ? ` <span class="sc">· ความคล้าย ${h.score.toFixed(2)}</span>` : ""}${h.outside ? ' <span class="sc">· นอกเงื่อนไขที่ค้นจากฐานข้อมูล</span>' : ""}</li>`).join("")
     }</ol></details>`);
   } else if (ev.type === "final") {
     render(ev.answer, ev.evidence || {});
   } else if (ev.type === "error") {
-    result.innerHTML = `<p class="note error">Something went wrong: ${esc(ev.message)}</p>`;
+    result.innerHTML = `<p class="note error">เกิดข้อผิดพลาด: ${esc(ev.message)}</p>`;
   }
+}
+
+function askForm(q) {
+  return `<form class="ask" id="ask"><h2>${esc(q)}</h2>
+      <input id="reply" required placeholder="คำตอบของคุณ">
+      <div class="row"><button type="submit">ค้นใหม่พร้อมข้อมูลนี้</button></div></form>`;
 }
 
 function render(ans, evidence) {
   const c = ans.candidates || [];
+  const q = ans.follow_up_question;
   if (ans.status === "not_found" || !c.length) {
-    result.innerHTML = `<div class="note"><b>No movie in the database matches that closely enough.</b>
-      <p>It may be newer than 2017 or not on Wikipedia's list. Try adding a scene or detail you remember.</p></div>`;
+    const unsure = ans.status === "not_sure" && q;
+    result.innerHTML = unsure
+      ? `<div class="note"><span class="badge unsure">ยังไม่แน่ใจ</span>
+          <h2>ยังหาไม่เจอเรื่องที่ตรงพอ ขอข้อมูลเพิ่มอีกนิด</h2></div>` + askForm(q)
+      : `<div class="note"><span class="badge none">ไม่มีในฐานข้อมูล</span>
+          <h2>ไม่พบหนังที่ตรงกับคำบรรยายนี้ในฐานข้อมูล</h2>
+          <p>ฐานข้อมูลมีเฉพาะหนังปี 1980–2017 ที่อยู่ในรายการเรื่องย่อของ Wikipedia (ไม่มีหนังไทย)
+             หนังที่ตามหาอาจใหม่กว่านั้นหรือไม่อยู่ในรายการ ถ้าคิดว่าน่าจะมี ลองเล่าฉากหรือรายละเอียดเพิ่ม</p></div>`;
+    bindAsk(ans);
     return;
   }
   const [top, ...rest] = c;
   const ev = evidence[top.movie_id] || {};
+  const badge = ans.status === "found"
+    ? `<span class="badge found">พบแล้ว</span>`
+    : `<span class="badge unsure">ยังไม่แน่ใจ — นี่คือเรื่องที่ใกล้เคียงที่สุด</span>`;
   let html = `<article class="pick focus-in">
+      ${badge}
       <h2 class="title">${esc(top.title)} <span class="year">(${top.year})</span></h2>
       <p class="why">${esc(top.why)}</p>
       ${ev.snippet ? `<blockquote>${esc(ev.snippet)}…</blockquote>
-        <p class="source">Source: ${ev.source === "metadata" ? "film details (cast, director, year) of" : "Wikipedia plot of"} ${ev.wiki_url
+        <p class="source">ที่มา: ${ev.source === "metadata" ? "ข้อมูลหนัง (นักแสดง ผู้กำกับ ปี) ของ" : "เรื่องย่อใน Wikipedia ของ"} ${ev.wiki_url
           ? `<a href="${esc(ev.wiki_url)}" target="_blank" rel="noopener"><cite>${esc(top.title)}</cite></a>`
-          : `<cite>${esc(top.title)}</cite>`}${ev.passage ? `, passage ${ev.passage}` : ""} <span class="year">(${esc(ev.chunk_id)})</span></p>` : ""}
-      ${ev.similarity != null ? `<div class="meta score" title="Cosine similarity between your description and the cited passage">
-        Plot similarity <b>${ev.similarity.toFixed(2)}</b></div>` : ""}
+          : `<cite>${esc(top.title)}</cite>`}${ev.passage ? ` ย่อหน้าที่ ${ev.passage}` : ""} <span class="year">(${esc(ev.chunk_id)})</span></p>` : ""}
+      ${ev.similarity != null ? `<div class="meta score" title="ความคล้าย (cosine similarity) ระหว่างคำบรรยายของคุณกับข้อความที่อ้างอิง">
+        ความคล้ายของเนื้อเรื่อง <b>${ev.similarity.toFixed(2)}</b></div>` : ""}
     </article>`;
   if (rest.length) {
-    html += `<div class="others"><h2>Could also be</h2>` + rest.map((o) =>
+    html += `<div class="others"><h2>อาจเป็นเรื่องนี้ก็ได้</h2>` + rest.map((o) =>
       `<div class="alt"><b>${esc(o.title)}</b> <span class="year">(${o.year})</span><div>${esc(o.why)}</div></div>`).join("") + `</div>`;
   }
-  if (ans.status === "not_sure" && ans.follow_up_question) {
-    html += `<form class="ask" id="ask"><h2>${esc(ans.follow_up_question)}</h2>
-      <input id="reply" required placeholder="Your answer">
-      <div class="row"><button type="submit">Search again with this</button></div></form>`;
-  }
+  if (ans.status === "not_sure" && q) html += askForm(q);
   result.innerHTML = html;
+  bindAsk(ans);
+}
+
+function bindAsk(ans) {
   const ask = $("#ask");
   if (ask) ask.addEventListener("submit", (e) => {
     e.preventDefault();
