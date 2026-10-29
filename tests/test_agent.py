@@ -200,3 +200,17 @@ def test_model_sees_rank_not_similarity(fake_client):
               on_event=events.append)
     hit = next(e for e in events if e["type"] == "tool_result")["hits"][0]
     assert isinstance(hit["score"], float) and hit["rank"] == 1
+
+
+def test_ui_hits_collapse_duplicate_corpus_rows():
+    """The corpus has some films twice under different ids; the UI shows each once."""
+    from types import SimpleNamespace
+    from movie_finder.agent.loop import _box_hits
+    from movie_finder.schemas import SearchHit
+
+    def hit(mid):
+        return SearchHit(movie_id=mid, title="Mad Max: Fury Road", year=2015, score=0.84,
+                         chunk_id=mid + "#1", snippet="war rig")
+    box = SimpleNamespace(last_hits=[], last_outside=[hit("m16583"), hit("m16852")], last_db_sample=[])
+    rows = _box_hits(box)
+    assert len(rows) == 1 and rows[0]["outside"] is True

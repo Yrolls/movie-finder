@@ -239,8 +239,17 @@ def _box_hits(box: ToolBox) -> list[dict[str, Any]]:
     meta = [{"rank": i, "movie_id": mid, "title": box.retriever.get_movie(mid).title,
              "year": box.retriever.get_movie(mid).year, "score": None}
             for i, mid in enumerate(box.last_db_sample, 1)]
-    return ([row(h, i) for i, h in enumerate(box.last_hits, 1)]
+    rows = ([row(h, i) for i, h in enumerate(box.last_hits, 1)]
             + [row(h, None, True) for h in box.last_outside] + meta)
+    # Wikipedia Movie Plots lists some films twice (e.g. Mad Max: Fury Road as an Australian AND an
+    # American row, different movie_ids). Show each title/year once; the model's view is unchanged.
+    out, seen = [], set()
+    for r in rows:
+        key = (r["title"].lower(), r["year"])
+        if key not in seen:
+            seen.add(key)
+            out.append(r)
+    return out
 
 
 def _result_extra(result: str) -> dict[str, Any]:
