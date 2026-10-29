@@ -123,7 +123,7 @@ def run_agent(
                       "arguments": c.function.arguments})
                 result = box.run(c.function.name, c.function.arguments)
                 progress |= box.last_progress
-                hits = _result_hits(result)
+                hits = _box_hits(box)
                 extra = _result_extra(result)
                 trace.append({"step": step, "tool": c.function.name,
                               "arguments": c.function.arguments, "hits": hits, **extra})
@@ -231,18 +231,16 @@ def _fallback_from_hits(box: ToolBox) -> FinalAnswer:
     )
 
 
-def _result_hits(result: str) -> list[dict[str, Any]]:
-    """The ranked movies a search_movies call returned, compactly (for the UI and the trace)."""
-    try:
-        d = json.loads(result)
-        rows = d.get("results", [])
-        outside = d.get("outside_database_results", [])
-    except (ValueError, AttributeError):
-        return []
-    return ([{"rank": i, "movie_id": r["movie_id"], "title": r["title"], "year": r["year"],
-              "score": r.get("score")} for i, r in enumerate(rows, 1)]
-            + [{"rank": None, "movie_id": r["movie_id"], "title": r["title"], "year": r["year"],
-                "score": r.get("score"), "outside": True} for r in outside])
+def _box_hits(box: ToolBox) -> list[dict[str, Any]]:
+    """The ranked movies the last tool call returned, with their similarity (UI and trace)."""
+    def row(h, rank, outside=False):
+        d = {"rank": rank, "movie_id": h.movie_id, "title": h.title, "year": h.year, "score": h.score}
+        return d | ({"outside": True} if outside else {})
+    meta = [{"rank": i, "movie_id": mid, "title": box.retriever.get_movie(mid).title,
+             "year": box.retriever.get_movie(mid).year, "score": None}
+            for i, mid in enumerate(box.last_db_sample, 1)]
+    return ([row(h, i) for i, h in enumerate(box.last_hits, 1)]
+            + [row(h, None, True) for h in box.last_outside] + meta)
 
 
 def _result_extra(result: str) -> dict[str, Any]:

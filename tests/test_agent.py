@@ -187,3 +187,16 @@ def test_search_within_also_shows_outside_matches(fake_client):
     outside = [r["movie_id"] for r in out["outside_database_results"]]
     assert outside[0] == "m00000" and not set(outside) & {"m00001", "m00002"}
     assert "m00000" in box.seen_hits                      # so the agent may answer with it
+
+
+def test_model_sees_rank_not_similarity(fake_client):
+    box = ToolBox(make_retriever())
+    out = json.loads(box.run("search_movies", {"query": "same winter day again"}))
+    assert [r["rank"] for r in out["results"]] == list(range(1, len(out["results"]) + 1))
+    assert all("score" not in r for r in out["results"])          # the model never sees it
+    # ...but the UI / trace still get the similarity
+    events = []
+    run_agent("same day again", make_retriever(), client=fake_client([SEARCH, final()]),
+              on_event=events.append)
+    hit = next(e for e in events if e["type"] == "tool_result")["hits"][0]
+    assert isinstance(hit["score"], float) and hit["rank"] == 1

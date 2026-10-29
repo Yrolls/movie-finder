@@ -117,6 +117,9 @@ class ToolBox:
     # `last_progress` to stop an agent that keeps calling tools without learning anything new
     db_ids: list[str] | None = None                                      # last SQL match set
     detail_calls: int = 0
+    last_hits: list[SearchHit] = field(default_factory=list)            # for the UI / trace only
+    last_outside: list[SearchHit] = field(default_factory=list)
+    last_db_sample: list[str] = field(default_factory=list)
     calls_seen: set[str] = field(default_factory=set)
     repeats: int = 0
     last_progress: bool = False
@@ -127,6 +130,7 @@ class ToolBox:
     def run(self, name: str, raw_args: str | dict | None) -> str:
         """Execute one tool call and return a JSON string for the model. Never raises."""
         self.last_progress = False
+        self.last_hits, self.last_outside, self.last_db_sample = [], [], []
         if name not in ALLOWED_TOOLS:
             return _error(f"unknown tool {name!r}; allowed: {sorted(ALLOWED_TOOLS)}")
         try:
@@ -174,9 +178,11 @@ class ToolBox:
     # ------------------------------------------------------------ tools
     def _search(self, a: SearchMoviesArgs) -> str:
         hits = self._retrieve(a)
+        self.last_hits = hits
         if not hits:
             return json.dumps({"results": [], "note": "no movie matched closely enough"})
-        payload = {"results": [h.model_dump() for h in hits]}
+        payload = {"results": _for_model(hits),
+                   "note": "results are ordered best match first (rank 1 = best)"}
         return _cap(json.dumps(payload, ensure_ascii=False))
 
     def _search_within(self, a: SearchMoviesArgs) -> str:
@@ -190,9 +196,10 @@ class ToolBox:
         ids = set(self.db_ids or [])
         outside = [h for h in self._retrieve(a.model_copy(update={"k": OUTSIDE_K + len(inside)}))
                    if h.movie_id not in ids][:OUTSIDE_K]
+        self.last_hits, self.last_outside = inside, outside
         payload = {
-            "results": [h.model_dump() for h in inside],
-            "outside_database_results": [h.model_dump() for h in outside],
+            "results": _for_model(inside),
+            "outside_database_results": _for_model(outside),
             "note": ("results = films matching the remembered facts; outside_database_results = "
                      "best plot matches without them. If an outside film fits the story clearly "
                      "better, the remembered actor/director/year may be wrong."),
@@ -234,6 +241,7 @@ class ToolBox:
             self.seen_chunks.add(mid + META)
             self.chunk_text[mid + META] = line
             sample.append({"movie_id": mid, "title": m.title, "year": m.year})
+        self.last_db_sample = [r["movie_id"] for r in sample]
         payload = {"sql": res["sql"], "n_matches": len(ids), "results": sample}
         if res.get("relaxed_from"):
             payload["relaxed_from"] = res["relaxed_from"]       # first query matched nothing
@@ -255,6 +263,18 @@ class ToolBox:
             "director": m.director, "cast": m.cast[:200], "plot_start": plot,
         }
         return _cap(json.dumps(payload, ensure_ascii=False))
+
+
+def _for_model(hits: list[SearchHit]) -> list[dict[str, Any]]:
+    """What the model sees of a ranked hit list: the RANK, not the raw similarity.
+
+    The list is ordered by hybrid (BM25 + dense, RRF) rank, but the dense similarity of each hit
+    can disagree with that order. When the score was shown, the model picked the highest score
+    over the top-ranked film (eval: q01 Groundhog Day ranked 1st with 0.814, Whitewash ranked
+    3rd with 0.816 -> the agent answered Whitewash). The UI still shows the similarity.
+    """
+    return [{"rank": i, "movie_id": h.movie_id, "title": h.title, "year": h.year,
+             "chunk_id": h.chunk_id, "snippet": h.snippet} for i, h in enumerate(hits, 1)]
 
 
 def _signature(name: str, args: dict) -> str:
