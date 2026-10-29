@@ -189,7 +189,7 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 2. Ant Story (2014) · 0.819
 3. Big Daddy (1999) · 0.817
 4. Time Bara Vait (2015) · 0.836
-5. Eenadu (2009) · 0.831
+5. A Little Help (2010) · 0.787
 
 ## q10 — The Terminal (2004)
 
@@ -273,7 +273,7 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 2. Rhubarb Rhubarb (1980) · 0.825
 3. The Hole (2009) · 0.809
 4. Thutturi (2006) · 0.838
-5. Howling V: The Rebirth (1989) · 0.836
+5. Zathura (2005) · 0.790
 
 ## q14 — Home Alone (1990)
 
@@ -497,14 +497,14 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 4. Forbidden (1984) · 19.710
 5. The Zombie King (2013) · 19.332
 
-**hybrid+rewrite** — correct movie at rank >10
+**hybrid+rewrite** — correct movie at rank 5
 <br>_searched:_ A quiet man who has a fondness for trains inherits an abandoned small train depot located in the countryside. He begins the process of revitalizing the depot and gradually forms friendships with two unlikely companions.
 
 1. Swaroopam (1992) · 0.806
 2. Black and White (2010) · 0.809
 3. The Patience Stone (2012) · 0.809
 4. Seven O' Clock (2006) · 0.822
-5. Adventures of Omanakuttan (2017) · 0.819
+5. ✓ The Station Agent (2003) · 0.783
 
 ## q25 — The Lobster (2015)
 

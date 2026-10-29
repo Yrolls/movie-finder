@@ -1,8 +1,8 @@
 # Evaluation report
 
-_Generated 2026-10-29 04:37 UTC — 42 answerable + 7 unanswerable queries from `eval/queries.jsonl`._
+_Generated 2026-10-29 05:28 UTC — 42 answerable + 7 unanswerable queries from `eval/queries.jsonl`._
 
-LLM: `gemma-4-E4B-it` · embeddings: `intfloat/multilingual-e5-small` · temperature 0
+LLM: `gemma-4-E4B-it` · embeddings: `intfloat/multilingual-e5-small` · reranker: `cross-encoder/ms-marco-MiniLM-L-6-v2` · temperature 0
 
 ## 1. Retrieval (answerable queries)
 
@@ -15,25 +15,27 @@ Each query has one correct movie (or a few accepted versions), so recall@k = hit
 | `data/index` | 200 | hybrid | 33.3% | 50.0% (35.7%–64.3%) | 52.4% | 0.393 | 0.424 | 7 |
 | `data/index` | 200 | bm25+rewrite | 35.7% | 61.9% (47.6%–76.2%) | 71.4% | 0.482 | 0.538 | 2 |
 | `data/index` | 200 | dense+rewrite | 14.3% | 28.6% (16.7%–42.9%) | 40.5% | 0.211 | 0.256 | >10 |
-| `data/index` | 200 | hybrid+rewrite | 50.0% | 73.8% (59.5%–85.7%) | 76.2% | 0.591 | 0.633 | 1.5 |
+| `data/index` | 200 | hybrid+rewrite | 50.0% | 76.2% (64.3%–88.1%) | 78.6% | 0.596 | 0.642 | 1.5 |
 | `data/index` | 200 | bm25+multi | 42.9% | 71.4% (57.1%–83.3%) | 78.6% | 0.548 | 0.606 | 2 |
 | `data/index` | 200 | dense+multi | 14.3% | 31.0% (16.7%–45.2%) | 42.9% | 0.217 | 0.266 | >10 |
-| `data/index` | 200 | hybrid+multi | 50.0% | 69.0% (54.8%–83.3%) | 73.8% | 0.570 | 0.611 | 1.5 |
+| `data/index` | 200 | hybrid+multi | 54.8% | 83.3% (71.4%–92.9%) | 83.3% | 0.640 | 0.688 | 1 |
+| `data/index` | 200 | bm25+rewrite+rerank | 54.8% | 78.6% (64.3%–90.5%) | 81.0% | 0.657 | 0.695 | 1 |
+| `data/index` | 200 | hybrid+rewrite+rerank | 52.4% | 76.2% (61.9%–88.1%) | 81.0% | 0.641 | 0.683 | 1 |
 
 ### recall@5 by query tag (`data/index`)
 
-| tag | n | bm25 | dense | hybrid | bm25+rewrite | dense+rewrite | hybrid+rewrite | bm25+multi | dense+multi | hybrid+multi |
-|---|---|---|---|---|---|---|---|---|---|---|
-| confusable | 3 | 66.7% | 0.0% | 66.7% | 66.7% | 0.0% | 33.3% | 66.7% | 0.0% | 0.0% |
-| en | 27 | 66.7% | 44.4% | 77.8% | 63.0% | 37.0% | 70.4% | 74.1% | 37.0% | 70.4% |
-| famous | 34 | 38.2% | 29.4% | 50.0% | 64.7% | 29.4% | 76.5% | 70.6% | 32.4% | 73.5% |
-| metadata | 10 | 30.0% | 20.0% | 60.0% | 60.0% | 20.0% | 70.0% | 70.0% | 40.0% | 70.0% |
-| obscure | 8 | 62.5% | 25.0% | 50.0% | 50.0% | 25.0% | 62.5% | 75.0% | 25.0% | 50.0% |
-| partial | 2 | 50.0% | 50.0% | 50.0% | 50.0% | 50.0% | 50.0% | 50.0% | 50.0% | 50.0% |
-| plain | 24 | 41.7% | 37.5% | 41.7% | 62.5% | 37.5% | 79.2% | 70.8% | 33.3% | 75.0% |
-| th | 15 | 0.0% | 0.0% | 0.0% | 60.0% | 13.3% | 80.0% | 66.7% | 20.0% | 66.7% |
-| vague | 3 | 33.3% | 33.3% | 33.3% | 66.7% | 33.3% | 66.7% | 100.0% | 33.3% | 66.7% |
-| wrong_detail | 3 | 100.0% | 0.0% | 100.0% | 66.7% | 0.0% | 100.0% | 100.0% | 33.3% | 100.0% |
+| tag | n | bm25 | dense | hybrid | bm25+rewrite | dense+rewrite | hybrid+rewrite | bm25+multi | dense+multi | hybrid+multi | bm25+rewrite+rerank | hybrid+rewrite+rerank |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| confusable | 3 | 66.7% | 0.0% | 66.7% | 66.7% | 0.0% | 33.3% | 66.7% | 0.0% | 66.7% | 66.7% | 100.0% |
+| en | 27 | 66.7% | 44.4% | 77.8% | 63.0% | 37.0% | 74.1% | 74.1% | 37.0% | 81.5% | 77.8% | 77.8% |
+| famous | 34 | 38.2% | 29.4% | 50.0% | 64.7% | 29.4% | 76.5% | 70.6% | 32.4% | 82.4% | 76.5% | 76.5% |
+| metadata | 10 | 30.0% | 20.0% | 60.0% | 60.0% | 20.0% | 70.0% | 70.0% | 40.0% | 80.0% | 70.0% | 60.0% |
+| obscure | 8 | 62.5% | 25.0% | 50.0% | 50.0% | 25.0% | 75.0% | 75.0% | 25.0% | 87.5% | 87.5% | 75.0% |
+| partial | 2 | 50.0% | 50.0% | 50.0% | 50.0% | 50.0% | 50.0% | 50.0% | 50.0% | 50.0% | 50.0% | 50.0% |
+| plain | 24 | 41.7% | 37.5% | 41.7% | 62.5% | 37.5% | 83.3% | 70.8% | 33.3% | 87.5% | 83.3% | 83.3% |
+| th | 15 | 0.0% | 0.0% | 0.0% | 60.0% | 13.3% | 80.0% | 66.7% | 20.0% | 86.7% | 80.0% | 73.3% |
+| vague | 3 | 33.3% | 33.3% | 33.3% | 66.7% | 33.3% | 66.7% | 100.0% | 33.3% | 100.0% | 66.7% | 100.0% |
+| wrong_detail | 3 | 100.0% | 0.0% | 100.0% | 66.7% | 0.0% | 100.0% | 100.0% | 33.3% | 100.0% | 100.0% | 66.7% |
 
 Rows marked `+rewrite` search the LLM-rewritten query (`eval/results/rewrites.json`). Rewrites that named the gold movie: none.
 
@@ -45,61 +47,15 @@ Each pair: recall@5 kept on answerable queries / share of unanswerable queries t
 
 | min_score | dense, raw: recall@5 | dense, raw: nothing | dense, rewritten: recall@5 | dense, rewritten: nothing | **hybrid, rewritten (as the app runs)**: recall@5 | **hybrid, rewritten (as the app runs)**: nothing |
 |---|---|---|---|---|---|---|
-| 0.00 | 28.6% | 0.0% | 28.6% | 0.0% | 73.8% | 0.0% |
-| 0.70 | 28.6% | 0.0% | 28.6% | 0.0% | 73.8% | 0.0% |
-| 0.74 | 28.6% | 0.0% | 28.6% | 0.0% | 73.8% | 0.0% |
-| 0.76 | 28.6% | 0.0% | 28.6% | 0.0% | 73.8% | 0.0% |
-| 0.78 | 28.6% | 0.0% | 28.6% | 0.0% | 73.8% | 0.0% |
+| 0.00 | 28.6% | 0.0% | 28.6% | 0.0% | 76.2% | 0.0% |
+| 0.70 | 28.6% | 0.0% | 28.6% | 0.0% | 76.2% | 0.0% |
+| 0.74 | 28.6% | 0.0% | 28.6% | 0.0% | 76.2% | 0.0% |
+| 0.76 | 28.6% | 0.0% | 28.6% | 0.0% | 76.2% | 0.0% |
+| 0.78 | 28.6% | 0.0% | 28.6% | 0.0% | 76.2% | 0.0% |
 | 0.80 | 28.6% | 14.3% | 28.6% | 0.0% | 64.3% | 0.0% |
 | 0.82 | 28.6% | 28.6% | 26.2% | 14.3% | 38.1% | 14.3% |
 | 0.84 | 16.7% | 71.4% | 14.3% | 42.9% | 14.3% | 71.4% |
 | 0.86 | 7.1% | 100.0% | 4.8% | 100.0% | 4.8% | 100.0% |
-
-## 3. End-to-end: agent (hybrid retrieval) vs. LLM-only (no retrieval)
-
-| system | top-1 accuracy (answerable) | says not found (unanswerable) |
-|---|---|---|
-| LLM-only baseline | 71.4% | 28.6% |
-| Agent + retrieval | 85.7% | 42.9% |
-
-Average 2.3 model turns and 3.8s per query.
-
-### Where the agent loses answers (answerable queries)
-
-| step | share of answerable queries |
-|---|---|
-| correct movie appeared in any of the agent's searches | 88.1% |
-| correct movie among the agent's ≤3 candidates | 88.1% |
-| correct movie ranked first by the agent | 85.7% |
-
-100% minus the first row is a retrieval error (the right movie was never retrieved); the drop from the first row to the last is a selection error (retrieved, but not ranked first).
-
-Precision of "found": when the agent says it found the movie, it is right 100.0% of the time (32 "found" answers).
-
-| outcome | answerable | unanswerable |
-|---|---|---|
-| found, correct | 32 | 0 |
-| not sure, correct on top | 4 | 0 |
-| not sure, wrong on top | 6 | 0 |
-| not sure | 0 | 4 |
-| said not found | 0 | 3 |
-
-How runs ended — final_answer: 49. Queries where the agent used the metadata database (text-to-SQL): 7.
-
-### Top-1 accuracy by query tag (answerable)
-
-| tag | n | agent | LLM-only |
-|---|---|---|---|
-| confusable | 3 | 100.0% | 100.0% |
-| en | 27 | 92.6% | 74.1% |
-| famous | 34 | 88.2% | 79.4% |
-| metadata | 10 | 100.0% | 80.0% |
-| obscure | 8 | 75.0% | 37.5% |
-| partial | 2 | 50.0% | 50.0% |
-| plain | 24 | 83.3% | 66.7% |
-| th | 15 | 73.3% | 66.7% |
-| vague | 3 | 66.7% | 66.7% |
-| wrong_detail | 3 | 100.0% | 100.0% |
 
 ## Dense misses (rank ≠ 1) — for error analysis
 
