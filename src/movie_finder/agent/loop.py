@@ -71,6 +71,7 @@ FORCE_FINAL = ("Stop searching now. Using only the tool results above, reply wit
                "JSON object described in the instructions.")
 
 NO_PROGRESS_LIMIT = 2            # turns in a row with only repeated / fruitless tool calls
+MAX_REPAIRS = 2                  # invalid final answers sent back for repair, outside the step budget
 
 # One "second look" before giving up. Small models tend to answer "not sure" after a single plot
 # search even when they know the film (eval q31 Groundhog Day, q38 It: LLM-only knew them, the agent
@@ -87,7 +88,7 @@ EventFn = Callable[[dict[str, Any]], None]
 class AgentResult:
     answer: FinalAnswer
     steps: int
-    stopped_by: str                                   # "final_answer" | "no_progress" | "max_steps"
+    stopped_by: str              # "final_answer" | "no_progress" | "max_steps" | "invalid_output"
     trace: list[dict[str, Any]] = field(default_factory=list)
     evidence: dict[str, dict[str, Any]] = field(default_factory=dict)   # movie_id -> citation details
     retrieved: list[str] = field(default_factory=list)  # every movie any tool returned (for eval)
@@ -120,12 +121,19 @@ def run_agent(
 
     stale = 0
     second_look_done = False
+    tool_turns = repairs = 0
     stopped_by, steps = "max_steps", max_steps
-    for step in range(1, max_steps + 1):
+    # `max_steps` budgets TOOL turns. Answer turns that need a JSON repair or the one second look
+    # are not tool work, so they get their own small budget instead of eating the search budget
+    # (eval: q31/q38 ran out of steps after ONE search, spent on repairs).
+    for step in range(1, max_steps + MAX_REPAIRS + 2):
+        if tool_turns >= max_steps:
+            break
         msg = chat(messages, tools=box.specs(), client=client)
         calls = getattr(msg, "tool_calls", None) or []
 
         if calls:
+            tool_turns += 1
             messages.append({
                 "role": "assistant",
                 "content": msg.content or "",
@@ -160,6 +168,11 @@ def run_agent(
         try:
             answer = FinalAnswer.model_validate(extract_json(reply))
         except (ValueError, ValidationError) as e:
+            repairs += 1
+            if repairs > MAX_REPAIRS:
+                trace.append({"step": step, "repair": str(e)[:300]})
+                stopped_by, steps = "invalid_output", step
+                break
             messages += [
                 {"role": "assistant", "content": reply},
                 {"role": "user", "content": f"That was not a valid final JSON object ({str(e)[:300]}). "
@@ -168,7 +181,7 @@ def run_agent(
             trace.append({"step": step, "repair": str(e)[:300]})
             continue
         tried_titles = any(t.get("tool") == "check_title" for t in trace)
-        if answer.status != "found" and not second_look_done and not tried_titles and step < max_steps:
+        if answer.status != "found" and not second_look_done and not tried_titles and tool_turns < max_steps:
             second_look_done = True
             messages += [{"role": "assistant", "content": reply},
                          {"role": "user", "content": SECOND_LOOK}]

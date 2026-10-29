@@ -234,6 +234,8 @@ def eval_agent(retriever, gold: list[GoldQuery], movies, mode: str) -> dict:
                      "gold_only_by_title_check": bool(set(res.title_checked) & set(g.accepted)),
                      "top_via": (res.evidence.get(top, {}).get("via") if top else None),
                      "used_title_check": any(t.get("tool") == "check_title" for t in res.trace),
+                     "repairs": sum("repair" in t for t in res.trace),
+                     "second_look": any("second_look" in t for t in res.trace),
                      "llm_only": base, "llm_only_ok": base_ok,
                      "steps": res.steps, "stopped_by": res.stopped_by, "seconds": round(dt, 1),
                      "searches": [t["arguments"] for t in res.trace if t.get("tool") == "search_movies"],
@@ -264,6 +266,8 @@ def eval_agent(retriever, gold: list[GoldQuery], movies, mode: str) -> dict:
             "stopped_by": dict(Counter(r["stopped_by"] for r in rows)),
             "used_sql": sum(bool(r["sql"]) for r in rows),
             "used_title_check": sum(r.get("used_title_check", False) for r in rows),
+            "repairs": sum(r.get("repairs", 0) for r in rows),
+            "second_looks": sum(r.get("second_look", False) for r in rows),
             "correct_via_title_check": sum(r["agent_ok"] and r["answerable"] and r.get("top_via") == "title_check"
                                            for r in rows),
             "gold_only_by_title_check_answerable": acc(ans, "gold_only_by_title_check"),
@@ -398,7 +402,9 @@ def write_report(res: dict) -> str:
                 L += ["", f"`check_title` (the model names films it knows, the database verifies them): "
                           f"used on {s['used_title_check']} queries; correct answers that came only from it: "
                           f"{s['correct_via_title_check']}; right film reached only through it: "
-                          f"{pct(s['gold_only_by_title_check_answerable'])} of answerable queries."]
+                          f"{pct(s['gold_only_by_title_check_answerable'])} of answerable queries. "
+                          f"Second looks asked: {s.get('second_looks', 0)}; invalid answers repaired: "
+                          f"{s.get('repairs', 0)}."]
         if s.get("per_tag"):
             L += ["", "### Top-1 accuracy by query tag (answerable)", "",
                   "| tag | n | agent | LLM-only |", "|---|---|---|---|"]

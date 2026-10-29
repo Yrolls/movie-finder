@@ -286,3 +286,16 @@ def test_no_second_look_after_title_check(fake_client):
     client = fake_client([check, final(status="not_found")])
     res = run_agent("vague", make_retriever(), client=client)
     assert res.answer.status == "not_found" and len(client.calls) == 2
+
+
+def test_repairs_do_not_eat_the_search_budget(fake_client):
+    client = fake_client(["not json", SEARCH, "still not json", final()])
+    res = run_agent("same day again", make_retriever(), client=client, max_steps=2)
+    assert res.stopped_by == "final_answer" and res.answer.status == "found"
+    assert sum("repair" in t for t in res.trace) == 2
+
+
+def test_endless_invalid_output_stops(fake_client):
+    client = fake_client(["junk"] * 10)
+    res = run_agent("x y z", make_retriever(), client=client, max_steps=5)
+    assert res.stopped_by == "invalid_output" and len(client.calls) <= 6
