@@ -27,7 +27,7 @@ def client(monkeypatch):
 
 def test_health_and_index(client):
     assert client.get("/health").json()["movies"] == 4
-    assert "What was that movie called?" in client.get("/").text
+    assert "หนังเรื่องนั้นชื่ออะไรนะ?" in client.get("/").text
 
 
 def test_search_validates_input(client):
