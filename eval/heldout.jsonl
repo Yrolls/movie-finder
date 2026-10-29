@@ -1,0 +1,6 @@
+// HELD-OUT set: written AFTER the system was tuned, and never used to tune it.
+// Same format as queries.jsonl. Describe films YOU have seen, from memory, in your own words
+// (English or Thai), then look up the exact title with:  python scripts/find_movie.py "title"
+// Add a few films that are NOT in the corpus (after 2017) with "title": null.
+// Example (delete this line after adding your own):
+// {"id": "h01", "query": "...", "title": "...", "year": 1999, "tags": ["th", "famous"]}

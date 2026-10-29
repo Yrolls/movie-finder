@@ -94,6 +94,13 @@ python scripts/build_index.py --chunk-words 400 --chunk-overlap 100 --out data/i
 python eval/run_eval.py --index data/index data/index_c100 data/index_c400
 ```
 
+**Held-out set.** Every change above was measured on `eval/queries.jsonl`, so its numbers are
+optimistic. `eval/heldout.jsonl` was written after tuning and never used to tune:
+
+```bash
+python eval/run_eval.py --gold eval/heldout.jsonl --out eval/results_heldout --rewrite --agent
+```
+
 Results are written to [`eval/results/report.md`](eval/results/report.md) (committed),
 [`eval/results/per_query.md`](eval/results/per_query.md) (the top-5 retrieved movies for every
 query, baseline next to the best configuration) and `eval/results/results.json`.

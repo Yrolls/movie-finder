@@ -5,6 +5,7 @@
     python eval/run_eval.py --rewrite                        # + same queries after LLM rewriting
     python eval/run_eval.py --rewrite --multi                # + 3 phrasings per query fused with RRF
     python eval/run_eval.py --agent                          # + end-to-end agent vs LLM-only
+    python eval/run_eval.py --gold eval/heldout.jsonl --out eval/results_heldout --rewrite --agent
 
 Parts
 1. Retrieval   recall@1/5/10 and MRR@10 on answerable queries, per mode and per index
@@ -416,6 +417,8 @@ def write_per_query(res: dict, path: Path) -> None:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--gold", type=Path, default=ROOT / "eval" / "queries.jsonl")
+    ap.add_argument("--out", type=Path, default=Path("eval") / "results",
+                    help="results folder (use a separate one for a held-out set)")
     ap.add_argument("--index", type=Path, nargs="+", default=[INDEX_DIR])
     ap.add_argument("--modes", nargs="+", default=["bm25", "dense", "hybrid"])
     ap.add_argument("--rewrite", action="store_true", help="also evaluate LLM-rewritten queries (uses the LLM)")
@@ -424,6 +427,10 @@ def main() -> None:
     ap.add_argument("--agent", action="store_true", help="also run the end-to-end agent eval (uses the LLM)")
     ap.add_argument("--no-sweep", action="store_true")
     args = ap.parse_args()
+
+    global RESULTS_DIR, REWRITES_PATH, MULTI_PATH
+    RESULTS_DIR = args.out if args.out.is_absolute() else ROOT / args.out
+    REWRITES_PATH, MULTI_PATH = RESULTS_DIR / "rewrites.json", RESULTS_DIR / "rewrites_multi.json"
 
     s = get_settings()
     movies = load_movies(PROCESSED_DIR / "movies.jsonl")
