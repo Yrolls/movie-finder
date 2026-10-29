@@ -302,5 +302,93 @@
       "A doll leaves her artificial, pink world to confront the realities of the outside world and questions her existence.",
       "The film focuses on the doll's existential crisis after she leaves her pink plastic world for the real world."
     ]
+  },
+  "Leonardo DiCaprio plays a young con man who pretends to be a pilot and a doctor while an FBI agent chases him": {
+    "model": "gemma-4-E4B-it",
+    "plots": [
+      "A young con man, portrayed by Leonardo DiCaprio, assumes the identities of both a pilot and a doctor while evading pursuit by an FBI agent.",
+      "A con man pretends to be a pilot and a doctor while being chased by an FBI agent.",
+      "The film features a young con man pretending to be a pilot and a doctor while an FBI agent chases him."
+    ]
+  },
+  "หนังของ Spielberg ยุค 90 ที่นักวิทยาศาสตร์ชุบชีวิตไดโนเสาร์บนเกาะ แล้วไดโนเสาร์หลุดออกมา": {
+    "model": "gemma-4-E4B-it",
+    "plots": [
+      "A 1990s film by Spielberg involves scientists who resurrect dinosaurs on an island, leading to the dinosaurs escaping.",
+      "Scientists bring dinosaurs back to life on an island, and they subsequently escape.",
+      "The film features dinosaurs that are brought back to life by scientists on an island, after which they break free."
+    ]
+  },
+  "the Christopher Nolan movie where a farmer dad leaves his daughter and flies through a wormhole to find a new planet": {
+    "model": "gemma-4-E4B-it",
+    "plots": [
+      "A farmer father abandons his daughter and travels through a wormhole in an attempt to locate a new planet.",
+      "A father leaves his daughter to journey through a wormhole in search of a new world.",
+      "The film depicts a farmer dad flying through a wormhole to find a new planet after leaving his daughter."
+    ]
+  },
+  "Miyazaki anime where a girl ends up working in a bathhouse for spirits after her parents turn into pigs": {
+    "model": "gemma-4-E4B-it",
+    "plots": [
+      "The narrative follows a girl who comes to work in a bathhouse dedicated to spirits after her parents are transformed into pigs.",
+      "A girl must work in a spirit bathhouse following the transformation of her parents into pigs.",
+      "The film depicts a girl's life after her parents turn into pigs, leading her to work in a bathhouse for spirits."
+    ]
+  },
+  "late 90s Keanu Reeves movie, he finds out the world is a computer simulation and learns kung fu": {
+    "model": "gemma-4-E4B-it",
+    "plots": [
+      "A late 1990s film where the protagonist discovers that reality is a computer simulation and subsequently learns the art of kung fu.",
+      "A man realizes the world is a simulation and trains in kung fu.",
+      "The film features a character who learns kung fu after discovering the world is a computer simulation."
+    ]
+  },
+  "หนังที่ Jim Carrey กับแฟนเก่าไปจ้างบริษัทลบความทรงจำเกี่ยวกับกันและกัน": {
+    "model": "gemma-4-E4B-it",
+    "plots": [
+      "The film centers on a scenario where two former lovers hire a company to erase all memories of each other.",
+      "Two people who used to be in a relationship hire a service to forget their past together.",
+      "A specific plot point involves the couple employing a company whose service is memory erasure regarding their relationship."
+    ]
+  },
+  "korean zombie movie on a train": {
+    "model": "gemma-4-E4B-it",
+    "plots": [
+      "A Korean zombie film set aboard a train.",
+      "In a zombie outbreak, characters are trapped on a train.",
+      "The action takes place on a train during a zombie apocalypse."
+    ]
+  },
+  "Tom Hanks plays a slow but kind man who keeps ending up in famous moments of American history and runs across the country": {
+    "model": "gemma-4-E4B-it",
+    "plots": [
+      "The film follows a slow but kind man who repeatedly finds himself in significant moments of American history while traveling across the country.",
+      "A kind man travels across America, encountering various famous historical events along the way.",
+      "The narrative focuses on a slow but kind man's journey across the country, punctuated by his presence at famous American historical moments."
+    ]
+  },
+  "Ang Lee martial arts film, people fight while flying over bamboo trees and a legendary sword is stolen": {
+    "model": "gemma-4-E4B-it",
+    "plots": [
+      "The film depicts a martial arts sequence where individuals engage in combat while airborne above bamboo trees, coinciding with the theft of a legendary sword.",
+      "A group of people fights in the air above bamboo trees because a legendary sword has been stolen.",
+      "The central action involves people fighting while flying over bamboo trees immediately following the theft of a legendary sword."
+    ]
+  },
+  "the Mad Max with Mel Gibson where a woman drives a war rig across the desert to free the wives of a warlord": {
+    "model": "gemma-4-E4B-it",
+    "plots": [
+      "In a post-apocalyptic desert setting, a woman pilots a war rig across the wasteland with the objective of liberating the wives held captive by a warlord.",
+      "A woman travels through the desert in a war rig to rescue the wives of a warlord.",
+      "The film features a woman driving a war rig across the desert to free the wives of a warlord."
+    ]
+  },
+  "a Tom Hanks movie where he plays Elvis Presley's manager": {
+    "model": "gemma-4-E4B-it",
+    "plots": [
+      "The film features a portrayal of Elvis Presley's manager, played by Tom Hanks.",
+      "A manager is involved in the life of Elvis Presley.",
+      "The movie centers on a specific role: the manager of Elvis Presley."
+    ]
   }
 }

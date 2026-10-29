@@ -150,5 +150,49 @@
   "a perfect doll leaves her pink plastic world for the real world and has an existential crisis": {
     "model": "gemma-4-E4B-it",
     "plot": "A perfect doll departs from her pink plastic environment and enters the real world. Upon arrival, the doll experiences an existential crisis regarding her existence."
+  },
+  "Leonardo DiCaprio plays a young con man who pretends to be a pilot and a doctor while an FBI agent chases him": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A young con man pretends to be both a pilot and a doctor while attempting to evade an FBI agent who is pursuing him."
+  },
+  "หนังของ Spielberg ยุค 90 ที่นักวิทยาศาสตร์ชุบชีวิตไดโนเสาร์บนเกาะ แล้วไดโนเสาร์หลุดออกมา": {
+    "model": "gemma-4-E4B-it",
+    "plot": "On an island, scientists attempt to resurrect dinosaurs. However, the dinosaurs escape their containment, leading to conflict."
+  },
+  "the Christopher Nolan movie where a farmer dad leaves his daughter and flies through a wormhole to find a new planet": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A farmer father abandons his daughter and travels through a wormhole in an attempt to locate a new planet."
+  },
+  "Miyazaki anime where a girl ends up working in a bathhouse for spirits after her parents turn into pigs": {
+    "model": "gemma-4-E4B-it",
+    "plot": "After her parents transform into pigs, a young girl finds herself working in a bathhouse dedicated to spirits."
+  },
+  "late 90s Keanu Reeves movie, he finds out the world is a computer simulation and learns kung fu": {
+    "model": "gemma-4-E4B-it",
+    "plot": "In the late 1990s, a character discovers that the world in which he lives is a computer simulation. Upon this realization, he begins to learn kung fu."
+  },
+  "หนังที่ Jim Carrey กับแฟนเก่าไปจ้างบริษัทลบความทรงจำเกี่ยวกับกันและกัน": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A man and his ex-partner hire a company to erase their memories of each other."
+  },
+  "korean zombie movie on a train": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A zombie outbreak occurs while passengers are traveling on a train. The survivors must navigate the infected environment aboard the train to stay alive."
+  },
+  "Tom Hanks plays a slow but kind man who keeps ending up in famous moments of American history and runs across the country": {
+    "model": "gemma-4-E4B-it",
+    "plot": "A kind man travels across the United States, finding himself present during various significant moments in American history."
+  },
+  "Ang Lee martial arts film, people fight while flying over bamboo trees and a legendary sword is stolen": {
+    "model": "gemma-4-E4B-it",
+    "plot": "In a setting featuring bamboo trees, a conflict erupts as individuals engage in aerial martial arts combat. During this action, a legendary sword is stolen from its location."
+  },
+  "the Mad Max with Mel Gibson where a woman drives a war rig across the desert to free the wives of a warlord": {
+    "model": "gemma-4-E4B-it",
+    "plot": "In a desolate desert setting, a woman pilots a war rig across the wasteland. Her objective is to liberate the wives held captive by a local warlord."
+  },
+  "a Tom Hanks movie where he plays Elvis Presley's manager": {
+    "model": "gemma-4-E4B-it",
+    "plot": "The film centers on the manager of Elvis Presley. The narrative follows the professional life and dealings surrounding the famous musician."
   }
 }

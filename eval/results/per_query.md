@@ -674,3 +674,213 @@ _From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie
 4. ✓ It (1990) · 0.809
 5. 13 Moons (2002) · 0.817
 
+## q39 — Catch Me If You Can (2002)
+
+> Leonardo DiCaprio plays a young con man who pretends to be a pilot and a doctor while an FBI agent chases him
+
+**bm25** — correct movie at rank >10
+
+1. Marvin's Room (1996) · 24.003
+2. Double Take (2001) · 22.038
+3. Donnie Brasco (1997) · 19.018
+4. The Basketball Diaries (1995) · 18.728
+5. What's Eating Gilbert Grape (1993) · 18.142
+
+**hybrid+rewrite** — correct movie at rank 6
+<br>_searched:_ A young con man pretends to be both a pilot and a doctor while attempting to evade an FBI agent who is pursuing him.
+
+1. To Live and Die in L.A. (1985) · 0.818
+2. Passenger 57 (1992) · 0.814
+3. Snakes on a Plane (2006) · 0.805
+4. Breach (2007) · 0.810
+5. See Spot Run (2001) · 0.803
+
+## q40 — Jurassic Park (1993)
+
+> หนังของ Spielberg ยุค 90 ที่นักวิทยาศาสตร์ชุบชีวิตไดโนเสาร์บนเกาะ แล้วไดโนเสาร์หลุดออกมา
+
+**bm25** — correct movie at rank >10
+
+1. The Groomsmen (2006) · 11.473
+2. Austin Powers in Goldmember (2002) · 9.988
+3. Sanam Tere Hain Hum (2000) · 9.880
+4. Ravoyi Chandamama (1999) · 9.880
+5. The Stone Angel (2007) · 9.500
+
+**hybrid+rewrite** — correct movie at rank 3
+<br>_searched:_ On an island, scientists attempt to resurrect dinosaurs. However, the dinosaurs escape their containment, leading to conflict.
+
+1. Carnosaur 2 (1995) · 0.871
+2. The Dinosaur Project (2012) · 0.847
+3. ✓ Jurassic Park (1993) · 0.838
+4. The Lost World: Jurassic Park (1997) · 0.832
+5. Jurassic World (2015) · 0.837
+
+## q41 — Interstellar (2014)
+
+> the Christopher Nolan movie where a farmer dad leaves his daughter and flies through a wormhole to find a new planet
+
+**bm25** — correct movie at rank 6
+
+1. Hours (2013) · 21.727
+2. Stargate (1994) · 20.969
+3. Space Chimps (2008) · 18.455
+4. Spark (2016) · 17.628
+5. Spark (2017) · 17.628
+
+**hybrid+rewrite** — correct movie at rank 1
+<br>_searched:_ A farmer father abandons his daughter and travels through a wormhole in an attempt to locate a new planet.
+
+1. ✓ Interstellar (2014) · 0.827
+2. Space Chimps (2008) · 0.819
+3. Superman IV: The Quest for Peace (1987) · 0.830
+4. The Astronaut Farmer (2006) · 0.832
+5. The Ice Pirates (1984) · 0.819
+
+## q42 — Spirited Away (2001)
+
+> Miyazaki anime where a girl ends up working in a bathhouse for spirits after her parents turn into pigs
+
+**bm25** — correct movie at rank 1
+
+1. ✓ Spirited Away (2001) · 34.635
+2. Brave Witches: The Great Petersburg Strategy (2017) · 17.202
+3. Strike Witches (2012) · 17.202
+4. Hotarubi no Mori e (2011) · 17.043
+5. Shower (1999) · 16.773
+
+**hybrid+rewrite** — correct movie at rank 1
+<br>_searched:_ After her parents transform into pigs, a young girl finds herself working in a bathhouse dedicated to spirits.
+
+1. ✓ Spirited Away (2001) · 0.818
+2. The Quiet Room (1996) · 0.838
+3. Spirits' Homecoming (2016) · 0.797
+4. S. J. Surya, Simran, Devayani, Kiran (2004) · 0.801
+5. Mermaid Got Married (1994) · 0.810
+
+## q43 — The Matrix (1999)
+
+> late 90s Keanu Reeves movie, he finds out the world is a computer simulation and learns kung fu
+
+**bm25** — correct movie at rank >10
+
+1. Iron & Silk (1990) · 30.189
+2. Shaolin Temple (1982) · 25.650
+3. Legend of a Rabbit: The Martial of Fire (2015) · 25.225
+4. Keanu (2016) · 23.146
+5. The Watcher (2000) · 22.054
+
+**hybrid+rewrite** — correct movie at rank >10
+<br>_searched:_ In the late 1990s, a character discovers that the world in which he lives is a computer simulation. Upon this realization, he begins to learn kung fu.
+
+1. Iron & Silk (1990) · 0.838
+2. WarGames (1983) · 0.824
+3. The Thirteenth Floor (1999) · 0.820
+4. Legend of a Rabbit: The Martial of Fire (2015) · 0.818
+5. Zegapain ADP (2016) · 0.843
+
+## q44 — Eternal Sunshine of the Spotless Mind (2004)
+
+> หนังที่ Jim Carrey กับแฟนเก่าไปจ้างบริษัทลบความทรงจำเกี่ยวกับกันและกัน
+
+**bm25** — correct movie at rank >10
+
+1. The Tie That Binds (1995) · 15.064
+2. The Bad Batch (2017) · 12.705
+3. Bruce Almighty (2003) · 12.142
+4. Dumb and Dumber (1994) · 12.098
+5. Mr. Popper's Penguins (2011) · 12.098
+
+**hybrid+rewrite** — correct movie at rank 2
+<br>_searched:_ A man and his ex-partner hire a company to erase their memories of each other.
+
+1. Battle of Memories (2017) · 0.830
+2. ✓ Eternal Sunshine of the Spotless Mind (2004) · 0.825
+3. After Life (1998) · 0.827
+4. Global Heresy (2002) · 0.818
+5. Revenge for Love (2017) · 0.823
+
+## q45 — Train to Busan (2016)
+
+> korean zombie movie on a train
+
+**bm25** — correct movie at rank 1
+
+1. ✓ Train to Busan (2016) · 15.800
+2. Northern Limit Line (2015) · 14.347
+3. Super 8 (2011) · 13.958
+4. Otto; or Up with Dead People (2008) · 12.549
+5. Le Grand Chef 2: Kimchi Battle (2010) · 12.009
+
+**hybrid+rewrite** — correct movie at rank 1
+<br>_searched:_ A zombie outbreak occurs while passengers are traveling on a train. The survivors must navigate the infected environment aboard the train to stay alive.
+
+1. ✓ Train to Busan (2016) · 0.862
+2. World War Z (2013) · 0.839
+3. Deadly Eyes (1982) · 0.851
+4. Open Grave (2014) · 0.833
+5. Return of the Living Dead 3 (1993) · 0.828
+
+## q46 — Forrest Gump (1994)
+
+> Tom Hanks plays a slow but kind man who keeps ending up in famous moments of American history and runs across the country
+
+**bm25** — correct movie at rank >10
+
+1. Festival in Cannes (2001) · 24.073
+2. Every Time We Say Goodbye (1986) · 17.436
+3. The Right Stuff (1983) · 17.026
+4. Miss March (2009) · 16.895
+5. Hard Rain (1998) · 16.626
+
+**hybrid+rewrite** — correct movie at rank >10
+<br>_searched:_ A kind man travels across the United States, finding himself present during various significant moments in American history.
+
+1. The Young and Prodigious T.S. Spivet (2013) · 0.814
+2. Into the Wild (2007) · 0.799
+3. Born in East L.A. (1987) · 0.781
+4. Get on the Bus (1996) · 0.789
+5. Grey Owl (1999) · 0.786
+
+## q47 — Crouching Tiger, Hidden Dragon (2000)
+
+> Ang Lee martial arts film, people fight while flying over bamboo trees and a legendary sword is stolen
+
+**bm25** — correct movie at rank >10
+
+1. Last Dragon, The (1985) · 28.045
+2. Love on Delivery (1994) · 27.253
+3. Wu Dang (2012) · 25.479
+4. Legend of a Fighter (1982) · 24.248
+5. Crouching Tiger, Hidden Dragon: Sword of Destiny (2016) · 24.040
+
+**hybrid+rewrite** — correct movie at rank 1
+<br>_searched:_ In a setting featuring bamboo trees, a conflict erupts as individuals engage in aerial martial arts combat. During this action, a legendary sword is stolen from its location.
+
+1. ✓ Crouching Tiger, Hidden Dragon (2000) · 0.818
+2. Wu Dang (2012) · 0.830
+3. The Sword Identity (2012) · 0.839
+4. Coweb (2009) · 0.820
+5. Doordarshan Eti Jantra (2016) · 0.826
+
+## q48 — Mad Max: Fury Road (2015)
+
+> the Mad Max with Mel Gibson where a woman drives a war rig across the desert to free the wives of a warlord
+
+**bm25** — correct movie at rank 1
+
+1. ✓ Mad Max: Fury Road (2015) · 41.748
+2. ✓ Mad Max: Fury Road (2015) · 41.748
+3. Flight of the Phoenix (2004) · 24.475
+4. The Forbidden Kingdom (2008) · 19.535
+5. Cradle 2 the Grave (2003) · 18.220
+
+**hybrid+rewrite** — correct movie at rank 1
+<br>_searched:_ In a desolate desert setting, a woman pilots a war rig across the wasteland. Her objective is to liberate the wives held captive by a local warlord.
+
+1. ✓ Mad Max: Fury Road (2015) · 0.811
+2. ✓ Mad Max: Fury Road (2015) · 0.811
+3. Transit (2006) · 0.811
+4. Roja (1992) · 0.824
+5. Kaatru Veliyidai (2017) · 0.814
+
