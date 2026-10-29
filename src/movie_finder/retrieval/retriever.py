@@ -3,9 +3,10 @@
 A movie's score is its BEST chunk's score; that chunk is returned as the citation.
 
 modes
-- "dense"  : multilingual embeddings + cosine, with a `min_score` floor   (the app's default)
-- "bm25"   : keyword BM25 over the same chunks                            (the baseline)
-- "hybrid" : reciprocal-rank fusion of dense + BM25 movie rankings        (an option to evaluate)
+- "dense"  : multilingual embeddings + cosine, with a `min_score` floor
+- "bm25"   : keyword BM25 over the same chunks                            (the baseline; no floor)
+- "hybrid" : reciprocal-rank fusion of dense + BM25 movie rankings        (the app's default,
+             RETRIEVAL_MODE; each hit carries its dense similarity for the floor)
 """
 from __future__ import annotations
 

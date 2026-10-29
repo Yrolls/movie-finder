@@ -298,7 +298,7 @@ def _embed_models(res: dict) -> str:
 def write_report(res: dict) -> str:
     L = [f"# Evaluation report", "",
          f"_Generated {res['generated']} — {res['n_answerable']} answerable + "
-         f"{res['n_unanswerable']} unanswerable queries from `eval/queries.jsonl`._", "",
+         f"{res['n_unanswerable']} unanswerable queries from `{res.get('gold', 'eval/queries.jsonl')}`._", "",
          f"LLM: `{res['config']['llm_model']}` · embeddings: {_embed_models(res)} · "
          f"reranker: `{res['config'].get('rerank_model') or 'none'}` · temperature 0", "",
          "## 1. Retrieval (answerable queries)", "",
@@ -461,6 +461,8 @@ def main() -> None:
     res: dict = {
         "generated": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
         "n_answerable": n_ans, "n_unanswerable": len(gold) - n_ans,
+        "gold": (args.gold.resolve().relative_to(ROOT).as_posix()
+                 if args.gold.resolve().is_relative_to(ROOT) else str(args.gold)),
         "config": {"llm_model": s.llm_model, "embed_model": s.embed_model, "min_score": s.min_score,
                    "retrieval_mode": s.retrieval_mode, "agent_max_steps": s.agent_max_steps,
                    "rerank_model": args.rerank if args.rerank is not None else s.rerank_model},
