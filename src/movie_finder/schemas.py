@@ -2,7 +2,8 @@
 
 - corpus records       (Movie, Chunk)
 - retrieval results    (SearchHit)
-- tool arguments       (SearchMoviesArgs, GetMovieArgs)  -> validated BEFORE a tool runs
+- tool arguments       (SearchMoviesArgs, QueryDatabaseArgs, CheckTitleArgs, GetMovieArgs)
+                                                         -> validated BEFORE a tool runs
 - the agent's answer   (FinalAnswer)                     -> validated AFTER the LLM replies
 - the HTTP API         (FindRequest)
 """

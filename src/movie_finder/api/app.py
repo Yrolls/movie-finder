@@ -34,8 +34,8 @@ STATIC = Path(__file__).parent / "static"
 
 class SearchRequest(BaseModel):
     query: str = Field(min_length=3, max_length=500)
-    k: int = Field(default=5, ge=1, le=10)
-    mode: Literal["dense", "bm25", "hybrid"] = "dense"
+    k: int | None = Field(default=None, ge=1, le=10)                   # default: TOP_K
+    mode: Literal["dense", "bm25", "hybrid"] | None = None             # default: RETRIEVAL_MODE
     year_from: int | None = Field(default=None, ge=1890, le=2030)
     year_to: int | None = Field(default=None, ge=1890, le=2030)
 
@@ -78,7 +78,8 @@ def create_app(retriever: Retriever | None = None) -> FastAPI:
 
     @app.post("/search", response_model=list[SearchHit])
     def search(body: SearchRequest, request: Request):
-        return _r(request).search(body.query, k=body.k, mode=body.mode,
+        s = get_settings()
+        return _r(request).search(body.query, k=body.k or s.top_k, mode=body.mode or s.retrieval_mode,
                                   year_from=body.year_from, year_to=body.year_to)
 
     @app.post("/find", response_model=FindResponse)

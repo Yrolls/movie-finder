@@ -6,6 +6,7 @@
     python eval/run_eval.py --rewrite --multi                # + 3 phrasings per query fused with RRF
     python eval/run_eval.py --agent                          # + end-to-end agent vs LLM-only
     python eval/run_eval.py --gold eval/heldout.jsonl --out eval/results_heldout --rewrite --agent
+    python eval/run_eval.py --gold eval/heldout2.jsonl --out eval/results_heldout2 --rewrite --agent
 
 Parts
 1. Retrieval   recall@1/5/10 and MRR@10 on answerable queries, per mode and per index
@@ -15,7 +16,8 @@ Parts
 3. Rewrite     (--rewrite, calls the LLM once per query, cached in eval/results/rewrites.json)
                every mode again on the LLM-rewritten English plot-style query.
 4. Agent       (--agent, calls the LLM) top-1 accuracy of the full app vs. a no-retrieval
-               baseline where the model guesses the title from its own memory.
+               baseline where the model guesses the title from its own memory, plus where the
+               agent loses answers, precision of "found", and how often check_title was used.
 """
 from __future__ import annotations
 

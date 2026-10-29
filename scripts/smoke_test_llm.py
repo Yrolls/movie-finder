@@ -95,8 +95,7 @@ def main() -> None:
         probe("3. native tool calling", tool_calling),
     ]
     if not results[2]:
-        print("Note: if (3) fails but (2) passes, the agent will use JSON-action mode instead "
-              "of native tool calls -- tell me and I'll switch it.")
+        print("Note: (3) failed -- the agent needs native tool calling (`tools=`) from the proxy.")
     sys.exit(0 if all(results[:2]) else 1)
 
 

@@ -14,6 +14,7 @@ from typing import Any
 
 from pydantic import ValidationError
 
+from ..config import get_settings
 from ..data.moviedb import MovieDB
 from ..retrieval.retriever import Mode, Retriever
 from ..schemas import CheckTitleArgs, GetMovieArgs, QueryDatabaseArgs, SearchHit, SearchMoviesArgs
@@ -188,6 +189,7 @@ class ToolBox:
         try:
             if name == "search_movies":
                 within = bool(args.pop("within_database_results", False))
+                args.setdefault("k", get_settings().top_k)           # TOP_K unless the model asks
                 a = SearchMoviesArgs.model_validate(args)
                 if within:
                     if not self.db_ids:
