@@ -93,7 +93,14 @@ python eval/run_eval.py --rewrite --multi --agent   # + end-to-end agent vs LLM-
 python scripts/build_index.py --chunk-words 100 --chunk-overlap 25 --out data/index_c100
 python scripts/build_index.py --chunk-words 400 --chunk-overlap 100 --out data/index_c400
 python eval/run_eval.py --index data/index data/index_c100 data/index_c400
+
+# embedder experiment: an English model (queries are rewritten to English first)
+python scripts/build_index.py --embed-model BAAI/bge-small-en-v1.5 --out data/index_bge
+python eval/run_eval.py --index data/index_bge data/index --rewrite --rerank cross-encoder/ms-marco-MiniLM-L-6-v2
 ```
+
+Each index stores its embedding model in `meta.json`, and the app embeds queries with that same
+model, so adopting a winner is just rebuilding `data/index` with `--embed-model`. Similarity scales differ per model, so `MIN_SCORE` is re-picked from the sweep.
 
 **Held-out set.** Every change above was measured on `eval/queries.jsonl`, so its numbers are
 optimistic. `eval/heldout.jsonl` was written after tuning and never used to tune:

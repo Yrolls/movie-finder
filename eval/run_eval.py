@@ -46,7 +46,8 @@ from movie_finder.evaluation import (  # noqa: E402
 from movie_finder.retrieval.loader import load_retriever  # noqa: E402
 
 KS = (1, 5, 10)
-SWEEP = [0.0, 0.70, 0.74, 0.76, 0.78, 0.80, 0.82, 0.84, 0.86]
+# wide range: similarity scales differ per embedding model (e5 ~0.75-0.9, bge ~0.4-0.8)
+SWEEP = [0.0, 0.40, 0.50, 0.55, 0.60, 0.65, 0.70, 0.74, 0.76, 0.78, 0.80, 0.82, 0.84, 0.86]
 RESULTS_DIR = ROOT / "eval" / "results"
 
 

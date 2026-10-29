@@ -3,6 +3,7 @@
     python scripts/build_index.py                         # uses CHUNK_WORDS / CHUNK_OVERLAP from .env
     python scripts/build_index.py --chunk-words 100 --chunk-overlap 25 --out data/index_c100
     python scripts/build_index.py --limit 500             # quick dev run on the first 500 movies
+    python scripts/build_index.py --embed-model BAAI/bge-small-en-v1.5 --out data/index_bge
 
 Separate --out folders let eval/run_eval.py compare chunk sizes side by side.
 """
@@ -28,6 +29,8 @@ def main() -> None:
     ap.add_argument("--chunk-overlap", type=int, default=s.chunk_overlap)
     ap.add_argument("--out", type=Path, default=INDEX_DIR)
     ap.add_argument("--limit", type=int, help="only index the first N movies (dev)")
+    ap.add_argument("--embed-model", default=s.embed_model,
+                    help="sentence-transformers model, e.g. BAAI/bge-small-en-v1.5 (default: EMBED_MODEL)")
     args = ap.parse_args()
     out = args.out if args.out.is_absolute() else PROJECT_ROOT / args.out
 
@@ -39,15 +42,15 @@ def main() -> None:
           f"(words={args.chunk_words}, overlap={args.chunk_overlap})")
 
     t0 = time.perf_counter()
-    emb = SentenceTransformerEmbedder(s.embed_model)
+    emb = SentenceTransformerEmbedder(args.embed_model)
     vectors = emb.embed_passages([c.text for c in chunks])
-    print(f"[index] embedded in {time.perf_counter() - t0:.0f}s with {s.embed_model}")
+    print(f"[index] embedded in {time.perf_counter() - t0:.0f}s with {args.embed_model}")
 
     VectorStore(
         vectors,
         chunks,
         meta={
-            "embed_model": s.embed_model,
+            "embed_model": args.embed_model,
             "chunk_words": args.chunk_words,
             "chunk_overlap": args.chunk_overlap,
             "n_movies": len(movies),

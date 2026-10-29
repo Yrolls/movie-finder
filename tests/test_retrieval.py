@@ -113,3 +113,10 @@ def test_rerank_reorders_but_keeps_similarity(retriever):
 def test_rerank_without_model_is_an_error(retriever):
     with pytest.raises(RuntimeError):
         retriever.search("ship", k=2, rerank=True)
+
+
+def test_model_specific_prefixes():
+    from movie_finder.retrieval.embedder import BGE_QUERY, prefixes_for
+    assert prefixes_for("intfloat/multilingual-e5-small") == ("query: ", "passage: ")
+    assert prefixes_for("BAAI/bge-small-en-v1.5") == (BGE_QUERY, "")
+    assert prefixes_for("sentence-transformers/all-MiniLM-L6-v2") == ("", "")
