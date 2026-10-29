@@ -44,6 +44,8 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("results", nargs="+", type=Path)
     ap.add_argument("--gold", type=Path, default=EVAL_DIR / "queries.jsonl")
+    ap.add_argument("--min-score", type=float, nargs="+", default=None,
+                    help="also replay with these floors, e.g. --min-score 0 0.74 0.76 0.78")
     args = ap.parse_args()
 
     s = get_settings()
@@ -77,7 +79,26 @@ def main() -> None:
                           f"{q.all_queries[0][:90]}")
                     print(f"      current top: {[h.title for h in cur]}")
                     print(f"      legacy  top: {[h.title for h in leg]}")
-        print(f"  searches with the gold film returned: current {cur_ok}/{n}, legacy {leg_ok}/{n}\n")
+        print(f"  searches with the gold film returned: current {cur_ok}/{n}, legacy {leg_ok}/{n}")
+        for floor in args.min_score or []:
+            ok, miss = 0, []
+            for row in rows:
+                g = gold.get(row["id"])
+                if g is None or not g.answerable:
+                    continue
+                for raw in row["searches"]:
+                    a = json.loads(raw)
+                    if a.pop("within_database_results", False):
+                        continue
+                    q = SearchMoviesArgs.model_validate(a)
+                    hits = r.search_many(q.all_queries, k=q.k, mode=s.retrieval_mode, min_score=floor,
+                                         year_from=q.year_from, year_to=q.year_to)
+                    if any(h.movie_id in g.accepted for h in hits):
+                        ok += 1
+                    else:
+                        miss.append(row["id"])
+            print(f"  min_score {floor:.2f}: {ok}/{n}  misses: {' '.join(dict.fromkeys(miss))}")
+        print()
 
 
 if __name__ == "__main__":

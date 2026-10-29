@@ -43,9 +43,10 @@ How to work:
    before anything else. Never repeat a call. Use get_movie only to check ONE or TWO promising
    candidates.
 4. Plot summaries rarely say how things LOOK. If the description is mostly about appearance or
-   feeling (a creepy doll, a costume, a monster's look, a famous image) or is too vague, and you
-   can think of films it might be, call check_title with up to 3 titles and the description in
-   English. Keep a film only if it is in the database AND its passage fits the description.
+   feeling (a creepy doll, a costume, a monster's look, a famous image) or is vague, or the plot
+   search found nothing that fits, and you can think of films it might be, call check_title with
+   up to 3 titles and the description in English. Keep a film only if it is in the database AND
+   its passage fits the description.
 5. When done, reply WITHOUT calling a tool, with ONLY this JSON object:
 {"status": "found" | "not_sure" | "not_found",
  "candidates": [{"movie_id": str, "title": str, "year": int, "confidence": 0.0-1.0,
@@ -70,6 +71,14 @@ FORCE_FINAL = ("Stop searching now. Using only the tool results above, reply wit
                "JSON object described in the instructions.")
 
 NO_PROGRESS_LIMIT = 2            # turns in a row with only repeated / fruitless tool calls
+
+# One "second look" before giving up. Small models tend to answer "not sure" after a single plot
+# search even when they know the film (eval q31 Groundhog Day, q38 It: LLM-only knew them, the agent
+# never tried). Before accepting a not_sure / not_found answer, the loop asks once for check_title
+# (or one more search with different wording). Grounding still applies to whatever comes back.
+SECOND_LOOK = ("Before you settle on that: if you can think of any films that might match, call "
+               "check_title with them now. If you cannot think of any, call search_movies once more "
+               "with different, simpler wording. If you already did both, reply with the same JSON.")
 
 EventFn = Callable[[dict[str, Any]], None]
 
@@ -110,6 +119,7 @@ def run_agent(
     ]
 
     stale = 0
+    second_look_done = False
     stopped_by, steps = "max_steps", max_steps
     for step in range(1, max_steps + 1):
         msg = chat(messages, tools=box.specs(), client=client)
@@ -156,6 +166,13 @@ def run_agent(
                                             "Reply with ONLY the JSON object."},
             ]
             trace.append({"step": step, "repair": str(e)[:300]})
+            continue
+        tried_titles = any(t.get("tool") == "check_title" for t in trace)
+        if answer.status != "found" and not second_look_done and not tried_titles and step < max_steps:
+            second_look_done = True
+            messages += [{"role": "assistant", "content": reply},
+                         {"role": "user", "content": SECOND_LOOK}]
+            trace.append({"step": step, "second_look": answer.status})
             continue
         return _finish(answer, box, step, "final_answer", trace, emit)
 

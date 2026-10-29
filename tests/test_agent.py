@@ -261,3 +261,28 @@ def test_found_by_search_is_labelled_search(fake_client):
     client = fake_client([SEARCH, final()])
     res = run_agent("same day again", make_retriever(), client=client)
     assert res.evidence["m00000"]["via"] == "search"
+
+
+def test_second_look_once_before_settling_for_not_sure(fake_client):
+    check = tool_call("check_title", json.dumps({"titles": ["Loop Day"], "description": "same day"}))
+    client = fake_client([SEARCH, final(status="not_sure", follow_up_question="when?"), check, final()])
+    res = run_agent("some movie where a day repeats", make_retriever(), client=client)
+    assert res.answer.status == "found" and res.answer.candidates[0].title == "Loop Day"
+    assert any("second_look" in t for t in res.trace)
+    from movie_finder.agent.loop import SECOND_LOOK
+    assert sum(m.get("content") == SECOND_LOOK for m in client.calls[-1]["messages"]) == 1
+
+
+def test_second_look_is_asked_only_once(fake_client):
+    unsure = final(status="not_sure", follow_up_question="when?")
+    client = fake_client([SEARCH, unsure, unsure])
+    res = run_agent("vague", make_retriever(), client=client)
+    assert res.answer.status == "not_sure" and len(client.calls) == 3
+    assert sum("second_look" in t for t in res.trace) == 1
+
+
+def test_no_second_look_after_title_check(fake_client):
+    check = tool_call("check_title", json.dumps({"titles": ["Nope"], "description": "x y z"}))
+    client = fake_client([check, final(status="not_found")])
+    res = run_agent("vague", make_retriever(), client=client)
+    assert res.answer.status == "not_found" and len(client.calls) == 2
