@@ -332,7 +332,7 @@ def write_report(res: dict) -> str:
 
     if res.get("rewrite_leaks") is not None:
         leaks = res["rewrite_leaks"]
-        L += ["", f"Rows marked `+rewrite` search the LLM-rewritten query (`eval/results/rewrites.json`). "
+        L += ["", f"Rows marked `+rewrite` search the LLM-rewritten query (`{REWRITES_PATH.relative_to(ROOT).as_posix()}`). "
                   f"Rewrites that named the gold movie: {', '.join(leaks) if leaks else 'none'}."]
     if res.get("multi_leaks") is not None:
         leaks = res["multi_leaks"]

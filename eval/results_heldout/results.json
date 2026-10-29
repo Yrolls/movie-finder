@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-29 05:10 UTC",
+  "generated": "2026-10-29 07:56 UTC",
   "n_answerable": 16,
   "n_unanswerable": 6,
   "config": {
@@ -7,7 +7,8 @@
     "embed_model": "intfloat/multilingual-e5-small",
     "min_score": 0.78,
     "retrieval_mode": "hybrid",
-    "agent_max_steps": 5
+    "agent_max_steps": 5,
+    "rerank_model": ""
   },
   "retrieval": [
     {
@@ -1641,10 +1642,10 @@
           "overall": {
             "recall@1": 0.4375,
             "recall@5": 0.5,
-            "recall@10": 0.5,
-            "mrr@10": 0.45,
-            "ndcg@10": 0.46167830045215885,
-            "median_rank": 8.0,
+            "recall@10": 0.5625,
+            "mrr@10": 0.45625,
+            "ndcg@10": 0.47974485209702683,
+            "median_rank": 7.5,
             "recall@5_ci": [
               0.25,
               0.75
@@ -1655,9 +1656,9 @@
               "n": 12,
               "recall@1": 0.5833333333333334,
               "recall@5": 0.6666666666666666,
-              "recall@10": 0.6666666666666666,
-              "mrr@10": 0.6,
-              "ndcg@10": 0.6155710672695451,
+              "recall@10": 0.75,
+              "mrr@10": 0.6083333333333333,
+              "ndcg@10": 0.6396598027960357,
               "median_rank": 1.0,
               "recall@5_ci": [
                 0.4166666666666667,
@@ -1668,9 +1669,9 @@
               "n": 10,
               "recall@1": 0.3,
               "recall@5": 0.3,
-              "recall@10": 0.3,
-              "mrr@10": 0.3,
-              "ndcg@10": 0.3,
+              "recall@10": 0.4,
+              "mrr@10": 0.31,
+              "ndcg@10": 0.3289064826317888,
               "median_rank": 11.0,
               "recall@5_ci": [
                 0.0,
@@ -1748,7 +1749,7 @@
               "id": "h01",
               "query": "guy goes to prison for killing his wife but he didn't do it. spends like 20 years secretly digging through the wall behind a poster and escapes through a sewer pipe in a storm",
               "gold": "The Shawshank Redemption",
-              "rank": null,
+              "rank": 10,
               "top1": "Stone (2010)"
             },
             {
@@ -1813,7 +1814,7 @@
               "id": "h01",
               "query": "guy goes to prison for killing his wife but he didn't do it. spends like 20 years secretly digging through the wall behind a poster and escapes through a sewer pipe in a storm",
               "gold": "The Shawshank Redemption (1994)",
-              "rank": null,
+              "rank": 10,
               "searched": null,
               "top5": [
                 {
@@ -1862,27 +1863,27 @@
                   "correct": false
                 },
                 {
+                  "title": "iBoy",
+                  "year": 2017,
+                  "score": 0.767,
+                  "correct": false
+                },
+                {
                   "title": "Pachamarathanalil",
                   "year": 2008,
                   "score": 0.8072,
                   "correct": false
                 },
                 {
+                  "title": "Yuki Yuna wa Yūsha-bu Shozoku and Yuki Yuna: Washio Sumi Chapter Series",
+                  "year": 2017,
+                  "score": 0.7415,
+                  "correct": false
+                },
+                {
                   "title": "Unto the Dusk",
                   "year": 2015,
                   "score": 0.8062,
-                  "correct": false
-                },
-                {
-                  "title": "Kidilol Kidilam",
-                  "year": 1995,
-                  "score": 0.8052,
-                  "correct": false
-                },
-                {
-                  "title": "Prison on Fire II",
-                  "year": 1991,
-                  "score": 0.8038,
                   "correct": false
                 }
               ]
@@ -1979,27 +1980,27 @@
                   "correct": false
                 },
                 {
+                  "title": "iBoy",
+                  "year": 2017,
+                  "score": 0.7634,
+                  "correct": false
+                },
+                {
                   "title": "Kidilol Kidilam",
                   "year": 1995,
                   "score": 0.8304,
                   "correct": false
                 },
                 {
+                  "title": "Yuki Yuna wa Yūsha-bu Shozoku and Yuki Yuna: Washio Sumi Chapter Series",
+                  "year": 2017,
+                  "score": 0.7411,
+                  "correct": false
+                },
+                {
                   "title": "Phir Teri Kahani Yaad Aayee",
                   "year": 1993,
                   "score": 0.8286,
-                  "correct": false
-                },
-                {
-                  "title": "Enga Amma Rani",
-                  "year": 2017,
-                  "score": 0.8266,
-                  "correct": false
-                },
-                {
-                  "title": "Sherlock Toms",
-                  "year": 2017,
-                  "score": 0.8257,
                   "correct": false
                 }
               ]
@@ -2096,27 +2097,27 @@
                   "correct": false
                 },
                 {
+                  "title": "iBoy",
+                  "year": 2017,
+                  "score": 0.7334,
+                  "correct": false
+                },
+                {
                   "title": "Carnosaur 3: Primal Species",
                   "year": 1996,
                   "score": 0.8086,
                   "correct": false
                 },
                 {
+                  "title": "Yuki Yuna wa Yūsha-bu Shozoku and Yuki Yuna: Washio Sumi Chapter Series",
+                  "year": 2017,
+                  "score": 0.7275,
+                  "correct": false
+                },
+                {
                   "title": "Rang De Basanti",
                   "year": 2006,
                   "score": 0.8064,
-                  "correct": false
-                },
-                {
-                  "title": "Nim's Island",
-                  "year": 2008,
-                  "score": 0.8061,
-                  "correct": false
-                },
-                {
-                  "title": "Buddies in India",
-                  "year": 2017,
-                  "score": 0.8041,
                   "correct": false
                 }
               ]
@@ -2252,27 +2253,27 @@
                   "correct": false
                 },
                 {
+                  "title": "iBoy",
+                  "year": 2017,
+                  "score": 0.7435,
+                  "correct": false
+                },
+                {
                   "title": "Shala",
                   "year": 2012,
                   "score": 0.8168,
                   "correct": false
                 },
                 {
+                  "title": "Yuki Yuna wa Yūsha-bu Shozoku and Yuki Yuna: Washio Sumi Chapter Series",
+                  "year": 2017,
+                  "score": 0.7326,
+                  "correct": false
+                },
+                {
                   "title": "Udaharanam Sujatha",
                   "year": 2017,
                   "score": 0.812,
-                  "correct": false
-                },
-                {
-                  "title": "Philips and the Monkey Pen",
-                  "year": 2013,
-                  "score": 0.8104,
-                  "correct": false
-                },
-                {
-                  "title": "Cracks",
-                  "year": 2009,
-                  "score": 0.8082,
                   "correct": false
                 }
               ]
@@ -4805,6 +4806,31 @@
       "abstain_unanswerable": 0.0
     },
     {
+      "min_score": 0.4,
+      "recall@5_answerable": 0.4375,
+      "abstain_unanswerable": 0.0
+    },
+    {
+      "min_score": 0.5,
+      "recall@5_answerable": 0.4375,
+      "abstain_unanswerable": 0.0
+    },
+    {
+      "min_score": 0.55,
+      "recall@5_answerable": 0.4375,
+      "abstain_unanswerable": 0.0
+    },
+    {
+      "min_score": 0.6,
+      "recall@5_answerable": 0.4375,
+      "abstain_unanswerable": 0.0
+    },
+    {
+      "min_score": 0.65,
+      "recall@5_answerable": 0.4375,
+      "abstain_unanswerable": 0.0
+    },
+    {
       "min_score": 0.7,
       "recall@5_answerable": 0.4375,
       "abstain_unanswerable": 0.0
@@ -4848,6 +4874,31 @@
   "sweep_rewrite": [
     {
       "min_score": 0.0,
+      "recall@5_answerable": 0.5,
+      "abstain_unanswerable": 0.0
+    },
+    {
+      "min_score": 0.4,
+      "recall@5_answerable": 0.5,
+      "abstain_unanswerable": 0.0
+    },
+    {
+      "min_score": 0.5,
+      "recall@5_answerable": 0.5,
+      "abstain_unanswerable": 0.0
+    },
+    {
+      "min_score": 0.55,
+      "recall@5_answerable": 0.5,
+      "abstain_unanswerable": 0.0
+    },
+    {
+      "min_score": 0.6,
+      "recall@5_answerable": 0.5,
+      "abstain_unanswerable": 0.0
+    },
+    {
+      "min_score": 0.65,
       "recall@5_answerable": 0.5,
       "abstain_unanswerable": 0.0
     },
@@ -4899,6 +4950,31 @@
       "abstain_unanswerable": 0.0
     },
     {
+      "min_score": 0.4,
+      "recall@5_answerable": 0.75,
+      "abstain_unanswerable": 0.0
+    },
+    {
+      "min_score": 0.5,
+      "recall@5_answerable": 0.75,
+      "abstain_unanswerable": 0.0
+    },
+    {
+      "min_score": 0.55,
+      "recall@5_answerable": 0.75,
+      "abstain_unanswerable": 0.0
+    },
+    {
+      "min_score": 0.6,
+      "recall@5_answerable": 0.75,
+      "abstain_unanswerable": 0.0
+    },
+    {
+      "min_score": 0.65,
+      "recall@5_answerable": 0.75,
+      "abstain_unanswerable": 0.0
+    },
+    {
       "min_score": 0.7,
       "recall@5_answerable": 0.75,
       "abstain_unanswerable": 0.0
@@ -4943,25 +5019,23 @@
     "summary": {
       "gold_retrieved_answerable": 0.6875,
       "gold_in_candidates_answerable": 0.6875,
-      "precision_of_found": 0.8888888888888888,
-      "n_found": 9,
+      "precision_of_found": 1.0,
+      "n_found": 8,
       "outcomes": {
         "answerable": {
-          "not sure, wrong on top": 4,
+          "not sure, wrong on top": 5,
           "found, correct": 8,
-          "said not found": 1,
           "not sure, correct on top": 3
         },
         "unanswerable": {
-          "not sure": 4,
           "said not found": 1,
-          "found, WRONG": 1
+          "not sure": 5
         }
       },
       "stopped_by": {
         "final_answer": 22
       },
-      "used_sql": 4,
+      "used_sql": 3,
       "per_tag": {
         "en": {
           "n": 12,
@@ -5003,8 +5077,8 @@
       "llm_only_top1_answerable": 0.5,
       "agent_abstain_unanswerable": 0.16666666666666666,
       "llm_only_abstain_unanswerable": 0.0,
-      "avg_steps": 2.409090909090909,
-      "avg_seconds": 4.140909090909091
+      "avg_steps": 2.3636363636363638,
+      "avg_seconds": 4.390909090909091
     },
     "rows": [
       {
@@ -5024,7 +5098,7 @@
         "llm_only_ok": false,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 3.7,
+        "seconds": 7.2,
         "searches": [
           "{\"query\": \"man wrongly imprisoned for killing his wife spends 20 years digging through a wall to escape through a sewer pipe during a storm\"}"
         ],
@@ -5052,10 +5126,10 @@
         "stopped_by": "final_answer",
         "seconds": 4.4,
         "searches": [
-          "{\"query\": \"a clownfish father searches for his child captured by a diver and kept in a fish tank at a dentist's clinic, accompanied by a forgetful blue fish\"}"
+          "{\"query\": \"a clownfish father searches for his captured child in a dentist's clinic fish tank with a forgetful blue fish\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"a clownfish father searches for his child captured by a diver and kept in a fish tank at a dentist's clinic, accompanied by a forgetful blue fish\"})"
+          "search_movies({\"query\": \"a clownfish father searches for his captured child in a dentist's clinic fish tank with a forgetful blue fish\"})"
         ],
         "sql": []
       },
@@ -5067,29 +5141,27 @@
           "famous",
           "metadata"
         ],
-        "status": "not_found",
-        "outcome": "said not found",
-        "agent_top1": null,
+        "status": "not_sure",
+        "outcome": "not sure, wrong on top",
+        "agent_top1": "m01352",
         "agent_ok": false,
         "gold_in_candidates": false,
         "gold_retrieved": false,
         "llm_only": "m03484",
         "llm_only_ok": false,
-        "steps": 4,
+        "steps": 5,
         "stopped_by": "final_answer",
-        "seconds": 5.0,
+        "seconds": 4.4,
         "searches": [
-          "{\"k\": 5, \"query\": \"action movie where Bruce Willis runs barefoot in an office tower during a Christmas party after terrorists take everyone hostage\"}",
-          "{\"k\": 5, \"query\": \"action movie with Bruce Willis in an office tower during a Christmas party after terrorists take everyone hostage\"}"
+          "{\"query\": \"action movie where Bruce Willis runs barefoot in an office tower during a Christmas party after terrorists take everyone hostage\", \"year_from\": 1980, \"year_to\": 1989}"
         ],
         "calls": [
-          "query_movie_database({\"question\": \"80s action movie with Bruce Willis\"})",
-          "search_movies({\"k\": 5, \"query\": \"action movie where Bruce Willis runs barefoot in an office tower during a Christmas party after terrorists take everyone hostage\"})",
-          "search_movies({\"k\": 5, \"query\": \"action movie with Bruce Willis in an office tower during a Christmas party after terrorists take everyone hostage\"})"
+          "search_movies({\"query\": \"action movie where Bruce Willis runs barefoot in an office tower during a Christmas party after terrorists take everyone hostage\", \"year_from\": 1980, \"year_to\": 1989})",
+          "get_movie({\"movie_id\": \"m01352\"})",
+          "get_movie({\"movie_id\": \"m02100\"})",
+          "get_movie({\"movie_id\": \"m01150\"})"
         ],
-        "sql": [
-          "SELECT movie_id, title, year, director, actors FROM movies WHERE actors LIKE '%Bruce Willis%FS"
-        ]
+        "sql": []
       },
       {
         "id": "h04",
@@ -5108,7 +5180,7 @@
         "llm_only_ok": true,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 3.4,
+        "seconds": 4.2,
         "searches": [
           "{\"query\": \"FBI trainee interviews a creepy cannibal psychiatrist through glass to catch a serial killer who keeps a woman in a basement pit\"}"
         ],
@@ -5126,7 +5198,7 @@
         ],
         "status": "not_sure",
         "outcome": "not sure, wrong on top",
-        "agent_top1": "m17303",
+        "agent_top1": "m15874",
         "agent_ok": false,
         "gold_in_candidates": false,
         "gold_retrieved": false,
@@ -5160,7 +5232,7 @@
         "llm_only_ok": true,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 2.3,
+        "seconds": 2.6,
         "searches": [
           "{\"query\": \"man with insomnia attends cancer support groups to feel emotion, then starts underground fighting club with a soap salesman who is actually the same person\"}"
         ],
@@ -5187,7 +5259,7 @@
         "llm_only_ok": true,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 3.2,
+        "seconds": 3.3,
         "searches": [
           "{\"query\": \"alien is left behind and a child hides it in his closet, with flying bikes in front of the moon\"}"
         ],
@@ -5213,7 +5285,7 @@
         "llm_only_ok": true,
         "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 3.2,
+        "seconds": 3.1,
         "searches": [
           "{\"query\": \"Indian boy stranded on a life raft in the ocean with a Bengal tiger, beautiful cinematography, with an alternate version without the animal at the end\"}"
         ],
@@ -5242,13 +5314,13 @@
         "llm_only_ok": true,
         "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 6.4,
+        "seconds": 6.7,
         "searches": [
-          "{\"k\": 5, \"query\": \"astronaut in space shuttle debris smashes shuttle floats alone trying to reach another space station with George Clooney\"}"
+          "{\"k\": 5, \"query\": \"astronaut in space shuttle debris smashes and floats alone trying to reach another space station with George Clooney\"}"
         ],
         "calls": [
           "query_movie_database({\"question\": \"space movie with Julia Roberts and George Clooney\"})",
-          "search_movies({\"k\": 5, \"query\": \"astronaut in space shuttle debris smashes shuttle floats alone trying to reach another space station with George Clooney\"})"
+          "search_movies({\"k\": 5, \"query\": \"astronaut in space shuttle debris smashes and floats alone trying to reach another space station with George Clooney\"})"
         ],
         "sql": [
           "SELECT movie_id, title, year, director, actors FROM movies WHERE actors LIKE '%Julia Roberts%' AND actors LIKE '%George Clooney%ler'"
@@ -5272,7 +5344,7 @@
         "llm_only_ok": true,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 4.4,
+        "seconds": 4.1,
         "searches": [
           "{\"query\": \"cute little robot alone collecting garbage with minimal dialogue in the first half\"}"
         ],
@@ -5299,7 +5371,7 @@
         "llm_only_ok": false,
         "steps": 3,
         "stopped_by": "final_answer",
-        "seconds": 4.8,
+        "seconds": 5.4,
         "searches": [
           "{\"query\": \"A cop buys expiring pineapple cans after a breakup, and a snack bar girl cleans another cop's apartment while California Dreamin plays\", \"within_database_results\": true}"
         ],
@@ -5321,27 +5393,28 @@
           "wrong_detail",
           "unanswerable"
         ],
-        "status": "not_sure",
-        "outcome": "not sure",
-        "agent_top1": "m16757",
-        "agent_ok": false,
+        "status": "not_found",
+        "outcome": "said not found",
+        "agent_top1": null,
+        "agent_ok": true,
         "gold_in_candidates": false,
         "gold_retrieved": false,
         "llm_only": "__not_in_corpus__",
         "llm_only_ok": false,
         "steps": 4,
         "stopped_by": "final_answer",
-        "seconds": 5.1,
+        "seconds": 5.3,
         "searches": [
-          "{\"k\": 5, \"query\": \"apartment building after apocalypse butcher downstairs kills tenants and an ex-clown falls for the butcher's daughter\"}"
+          "{\"k\": 5, \"query\": \"apartment building after apocalypse where the butcher downstairs kills tenants to feed them and an ex-clown falls for the butcher's daughter\"}",
+          "{\"k\": 5, \"query\": \"apartment building where the butcher downstairs kills tenants to feed them and an ex-clown falls for the butcher's daughter\"}"
         ],
         "calls": [
           "query_movie_database({\"question\": \"weird 70s french movie set in an apartment building after some kind of apocalypse\"})",
-          "search_movies({\"k\": 5, \"query\": \"apartment building after apocalypse butcher downstairs kills tenants and an ex-clown falls for the butcher's daughter\"})",
-          "get_movie({\"movie_id\": \"m16757\"})"
+          "search_movies({\"k\": 5, \"query\": \"apartment building after apocalypse where the butcher downstairs kills tenants to feed them and an ex-clown falls for the butcher's daughter\"})",
+          "search_movies({\"k\": 5, \"query\": \"apartment building where the butcher downstairs kills tenants to feed them and an ex-clown falls for the butcher's daughter\"})"
         ],
         "sql": [
-          "SELECT movie_id, title, year, director, actors FROM movies WHERE origin LIKE '%French%FS'"
+          "SELECT movie_id, title, year, director, actors FROM movies WHERE origin LIKE '%French%and year BETWEEN 1968 AND 1978'"
         ]
       },
       {
@@ -5361,7 +5434,7 @@
         "llm_only_ok": false,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 3.4,
+        "seconds": 3.7,
         "searches": [
           "{\"query\": \"a boy who struggles to read and his father sends him to boarding school, where an art teacher helps him discover he has dyslexia\"}"
         ],
@@ -5387,7 +5460,7 @@
         "llm_only_ok": false,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 3.3,
+        "seconds": 3.6,
         "searches": [
           "{\"query\": \"high school girls stuck in summer remedial class deliver lunches to a band, the food spoils, causing food poisoning, so the girls must learn big band jazz\"}"
         ],
@@ -5413,7 +5486,7 @@
         "llm_only_ok": false,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 3.2,
+        "seconds": 3.4,
         "searches": [
           "{\"query\": \"teenage kids on a london council estate fighting off black furry aliens with glowing teeth on bonfire night\"}"
         ],
@@ -5440,7 +5513,7 @@
         "llm_only_ok": false,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 5.0,
+        "seconds": 5.3,
         "searches": [
           "{\"query\": \"a monster emerges from a river and carries away a girl, her irresponsible father must search for her because the government won't help\"}"
         ],
@@ -5468,10 +5541,10 @@
         "stopped_by": "final_answer",
         "seconds": 3.8,
         "searches": [
-          "{\"query\": \"friends at a dinner party when a comet passes and the power goes out, with only one other house down the street having lights on with the same people inside\"}"
+          "{\"query\": \"friends at a dinner party when a comet passes and the power goes out, with only one other house with lights on down the street\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"friends at a dinner party when a comet passes and the power goes out, with only one other house down the street having lights on with the same people inside\"})"
+          "search_movies({\"query\": \"friends at a dinner party when a comet passes and the power goes out, with only one other house with lights on down the street\"})"
         ],
         "sql": []
       },
@@ -5492,7 +5565,7 @@
         "llm_only_ok": false,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 3.2,
+        "seconds": 3.4,
         "searches": [
           "{\"query\": \"truck driver cowboy helps a widow make ramen for her noodle shop with random food stories like a gangster in a white suit\"}"
         ],
@@ -5519,7 +5592,7 @@
         "llm_only_ok": false,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 3.8,
+        "seconds": 5.1,
         "searches": [
           "{\"query\": \"poor family members are hired by a rich family pretending not to know each other, and they discover a secret bunker under the house\"}"
         ],
@@ -5536,22 +5609,22 @@
           "famous",
           "unanswerable"
         ],
-        "status": "not_found",
-        "outcome": "said not found",
-        "agent_top1": null,
-        "agent_ok": true,
+        "status": "not_sure",
+        "outcome": "not sure",
+        "agent_top1": "m01826",
+        "agent_ok": false,
         "gold_in_candidates": false,
         "gold_retrieved": false,
         "llm_only": "__not_in_corpus__",
         "llm_only_ok": false,
         "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 1.5,
+        "seconds": 4.8,
         "searches": [
-          "{\"query\": \"woman from a laundromat gets audited and jumps between different universes, including one with hot dog fingers and a giant bagel\"}"
+          "{\"query\": \"woman from a laundromat gets audited for taxes and jumps between different universes, including one with people having hot dog fingers and a giant bagel\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"woman from a laundromat gets audited and jumps between different universes, including one with hot dog fingers and a giant bagel\"})"
+          "search_movies({\"query\": \"woman from a laundromat gets audited for taxes and jumps between different universes, including one with people having hot dog fingers and a giant bagel\"})"
         ],
         "sql": []
       },
@@ -5563,23 +5636,22 @@
           "obscure",
           "unanswerable"
         ],
-        "status": "found",
-        "outcome": "found, WRONG",
-        "agent_top1": "m11044",
+        "status": "not_sure",
+        "outcome": "not sure",
+        "agent_top1": "m12647",
         "agent_ok": false,
         "gold_in_candidates": false,
         "gold_retrieved": false,
         "llm_only": "m09270",
         "llm_only_ok": false,
-        "steps": 3,
+        "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 5.6,
+        "seconds": 4.7,
         "searches": [
-          "{\"query\": \"photographer and his girlfriend hit a woman with their car and flee, then white shadows appear in all their photos, and the ending reveals a ghost riding on their necks the whole time\"}"
+          "{\"query\": \"photographer and girlfriend hit a woman with their car and flee, then white shadows appear in all their photos, and the ending reveals a ghost riding on their necks the whole time\"}"
         ],
         "calls": [
-          "search_movies({\"query\": \"photographer and his girlfriend hit a woman with their car and flee, then white shadows appear in all their photos, and the ending reveals a ghost riding on their necks the whole time\"})",
-          "get_movie({\"movie_id\": \"m11044\"})"
+          "search_movies({\"query\": \"photographer and girlfriend hit a woman with their car and flee, then white shadows appear in all their photos, and the ending reveals a ghost riding on their necks the whole time\"})"
         ],
         "sql": []
       },
@@ -5599,9 +5671,9 @@
         "gold_retrieved": false,
         "llm_only": "__not_in_corpus__",
         "llm_only_ok": false,
-        "steps": 3,
+        "steps": 2,
         "stopped_by": "final_answer",
-        "seconds": 8.6,
+        "seconds": 4.3,
         "searches": [
           "{\"query\": \"A man returns from war to live with his wife and child. His friends know his wife is a ghost but they cannot tell him. In the end, the protagonist knew all along but refuses to leave his wife.\"}"
         ],

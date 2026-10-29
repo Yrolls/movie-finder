@@ -1,8 +1,8 @@
 # Evaluation report
 
-_Generated 2026-10-29 05:10 UTC — 16 answerable + 6 unanswerable queries from `eval/queries.jsonl`._
+_Generated 2026-10-29 07:56 UTC — 16 answerable + 6 unanswerable queries from `eval/heldout.jsonl`._
 
-LLM: `gemma-4-E4B-it` · embeddings: `intfloat/multilingual-e5-small` · temperature 0
+LLM: `gemma-4-E4B-it` · embeddings: `intfloat/multilingual-e5-small` (`data/index`) · reranker: `none` · temperature 0
 
 ## 1. Retrieval (answerable queries)
 
@@ -12,7 +12,7 @@ Each query has one correct movie (or a few accepted versions), so recall@k = hit
 |---|---|---|---|---|---|---|---|---|
 | `data/index` | 200 | bm25 (baseline) | 56.2% | 56.2% (31.2%–81.2%) | 56.2% | 0.562 | 0.562 | 1 |
 | `data/index` | 200 | dense | 12.5% | 43.8% (18.8%–68.8%) | 50.0% | 0.219 | 0.285 | 10 |
-| `data/index` | 200 | hybrid | 43.8% | 50.0% (25.0%–75.0%) | 50.0% | 0.450 | 0.462 | 8 |
+| `data/index` | 200 | hybrid | 43.8% | 50.0% (25.0%–75.0%) | 56.2% | 0.456 | 0.480 | 7.5 |
 | `data/index` | 200 | bm25+rewrite | 68.8% | 81.2% (62.5%–100.0%) | 81.2% | 0.721 | 0.743 | 1 |
 | `data/index` | 200 | dense+rewrite | 37.5% | 50.0% (25.0%–75.0%) | 56.2% | 0.438 | 0.468 | 4.5 |
 | `data/index` | 200 | hybrid+rewrite | 56.2% | 75.0% (50.0%–93.8%) | 81.2% | 0.638 | 0.680 | 1 |
@@ -29,7 +29,7 @@ Each query has one correct movie (or a few accepted versions), so recall@k = hit
 | vague | 2 | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
 | wrong_detail | 1 | 100.0% | 100.0% | 100.0% | 100.0% | 0.0% | 100.0% |
 
-Rows marked `+rewrite` search the LLM-rewritten query (`eval/results/rewrites.json`). Rewrites that named the gold movie: none.
+Rows marked `+rewrite` search the LLM-rewritten query (`eval/results_heldout/rewrites.json`). Rewrites that named the gold movie: none.
 
 ## 2. `min_score` floor on the dense similarity
 
@@ -38,6 +38,11 @@ Each pair: recall@5 kept on answerable queries / share of unanswerable queries t
 | min_score | dense, raw: recall@5 | dense, raw: nothing | dense, rewritten: recall@5 | dense, rewritten: nothing | **hybrid, rewritten (as the app runs)**: recall@5 | **hybrid, rewritten (as the app runs)**: nothing |
 |---|---|---|---|---|---|---|
 | 0.00 | 43.8% | 0.0% | 50.0% | 0.0% | 75.0% | 0.0% |
+| 0.40 | 43.8% | 0.0% | 50.0% | 0.0% | 75.0% | 0.0% |
+| 0.50 | 43.8% | 0.0% | 50.0% | 0.0% | 75.0% | 0.0% |
+| 0.55 | 43.8% | 0.0% | 50.0% | 0.0% | 75.0% | 0.0% |
+| 0.60 | 43.8% | 0.0% | 50.0% | 0.0% | 75.0% | 0.0% |
+| 0.65 | 43.8% | 0.0% | 50.0% | 0.0% | 75.0% | 0.0% |
 | 0.70 | 43.8% | 0.0% | 50.0% | 0.0% | 75.0% | 0.0% |
 | 0.74 | 43.8% | 0.0% | 50.0% | 0.0% | 75.0% | 0.0% |
 | 0.76 | 43.8% | 0.0% | 50.0% | 0.0% | 75.0% | 0.0% |
@@ -54,7 +59,7 @@ Each pair: recall@5 kept on answerable queries / share of unanswerable queries t
 | LLM-only baseline | 50.0% | 0.0% |
 | Agent + retrieval | 68.8% | 16.7% |
 
-Average 2.4 model turns and 4.1s per query.
+Average 2.4 model turns and 4.4s per query.
 
 ### Where the agent loses answers (answerable queries)
 
@@ -66,18 +71,17 @@ Average 2.4 model turns and 4.1s per query.
 
 100% minus the first row is a retrieval error (the right movie was never retrieved); the drop from the first row to the last is a selection error (retrieved, but not ranked first).
 
-Precision of "found": when the agent says it found the movie, it is right 88.9% of the time (9 "found" answers).
+Precision of "found": when the agent says it found the movie, it is right 100.0% of the time (8 "found" answers).
 
 | outcome | answerable | unanswerable |
 |---|---|---|
 | found, correct | 8 | 0 |
 | not sure, correct on top | 3 | 0 |
-| not sure, wrong on top | 4 | 0 |
-| found, WRONG | 0 | 1 |
-| not sure | 0 | 4 |
-| said not found | 1 | 1 |
+| not sure, wrong on top | 5 | 0 |
+| not sure | 0 | 5 |
+| said not found | 0 | 1 |
 
-How runs ended — final_answer: 22. Queries where the agent used the metadata database (text-to-SQL): 4.
+How runs ended — final_answer: 22. Queries where the agent used the metadata database (text-to-SQL): 3.
 
 ### Top-1 accuracy by query tag (answerable)
 
