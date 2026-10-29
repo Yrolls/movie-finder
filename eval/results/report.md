@@ -1,6 +1,6 @@
 # Evaluation report
 
-_Generated 2026-10-28 16:49 UTC — 32 answerable + 6 unanswerable queries from `eval/queries.jsonl`._
+_Generated 2026-10-28 16:57 UTC — 32 answerable + 6 unanswerable queries from `eval/queries.jsonl`._
 
 LLM: `gemma-4-E4B-it` · embeddings: `intfloat/multilingual-e5-small` · temperature 0
 
@@ -36,27 +36,21 @@ Rows marked `+rewrite` search the LLM-rewritten query (`eval/results/rewrites.js
 
 Rows marked `+multi` search 3 LLM phrasings per query fused with RRF (`eval/results/rewrites_multi.json`). Phrasings that named the gold movie: none.
 
-## 2. `min_score` floor (dense)
+## 2. `min_score` floor on the dense similarity
 
-| min_score | recall@5 kept (answerable) | returns nothing (unanswerable) | recall@5 kept, rewritten | returns nothing, rewritten |
-|---|---|---|---|---|
-| 0.00 | 31.2% | 0.0% | 31.2% | 0.0% |
-| 0.76 | 31.2% | 0.0% | 31.2% | 0.0% |
-| 0.78 | 31.2% | 0.0% | 31.2% | 0.0% |
-| 0.80 | 31.2% | 16.7% | 31.2% | 0.0% |
-| 0.82 | 31.2% | 33.3% | 31.2% | 16.7% |
-| 0.84 | 15.6% | 83.3% | 15.6% | 50.0% |
-| 0.86 | 6.2% | 100.0% | 3.1% | 100.0% |
-| 0.88 | 0.0% | 100.0% | 0.0% | 100.0% |
+Each pair: recall@5 kept on answerable queries / share of unanswerable queries that return nothing.
 
-## 3. End-to-end: agent (hybrid retrieval) vs. LLM-only (no retrieval)
-
-| system | top-1 accuracy (answerable) | says not found (unanswerable) |
-|---|---|---|
-| LLM-only baseline | 68.8% | 33.3% |
-| Agent + retrieval | 59.4% | 33.3% |
-
-Average 3.2 model turns and 6.7s per query.
+| min_score | dense, raw: recall@5 | dense, raw: nothing | dense, rewritten: recall@5 | dense, rewritten: nothing | **hybrid, rewritten (as the app runs)**: recall@5 | **hybrid, rewritten (as the app runs)**: nothing |
+|---|---|---|---|---|---|---|
+| 0.00 | 31.2% | 0.0% | 31.2% | 0.0% | 75.0% | 0.0% |
+| 0.70 | 31.2% | 0.0% | 31.2% | 0.0% | 75.0% | 0.0% |
+| 0.74 | 31.2% | 0.0% | 31.2% | 0.0% | 75.0% | 0.0% |
+| 0.76 | 31.2% | 0.0% | 31.2% | 0.0% | 75.0% | 0.0% |
+| 0.78 | 31.2% | 0.0% | 31.2% | 0.0% | 75.0% | 0.0% |
+| 0.80 | 31.2% | 16.7% | 31.2% | 0.0% | 62.5% | 0.0% |
+| 0.82 | 31.2% | 33.3% | 31.2% | 16.7% | 37.5% | 16.7% |
+| 0.84 | 15.6% | 83.3% | 15.6% | 50.0% | 15.6% | 66.7% |
+| 0.86 | 6.2% | 100.0% | 3.1% | 100.0% | 3.1% | 100.0% |
 
 ## Dense misses (rank ≠ 1) — for error analysis
 
