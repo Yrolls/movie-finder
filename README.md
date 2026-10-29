@@ -86,6 +86,7 @@ python scripts/check_dense.py                # sanity check: does a plot passage
 python eval/run_eval.py                      # retrieval: BM25 baseline vs dense vs hybrid + min_score sweep
 python eval/run_eval.py --rewrite            # + the same queries after LLM rewriting (cached, calls the LLM)
 python eval/run_eval.py --rewrite --multi    # + 3 phrasings per query fused with RRF (cached, calls the LLM)
+python eval/run_eval.py --rewrite --rerank cross-encoder/ms-marco-MiniLM-L-6-v2   # + cross-encoder rerank rows
 python eval/run_eval.py --rewrite --multi --agent   # + end-to-end agent vs LLM-only baseline
 
 # chunk-size experiment: build extra indexes, then compare them in one report

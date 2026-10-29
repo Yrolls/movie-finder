@@ -54,6 +54,7 @@ class Settings:
     top_k: int
     min_score: float
     retrieval_mode: str
+    rerank_model: str              # "" = no reranking
     # agent
     agent_max_steps: int
 
@@ -80,6 +81,7 @@ def get_settings() -> Settings:
         top_k=_int("TOP_K", 5),
         min_score=_float("MIN_SCORE", 0.78),
         retrieval_mode=os.getenv("RETRIEVAL_MODE", "hybrid"),
+        rerank_model=os.getenv("RERANK_MODEL", "").strip(),
         agent_max_steps=_int("AGENT_MAX_STEPS", 5),
     )
     if s.chunk_overlap >= s.chunk_words:

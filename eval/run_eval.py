@@ -53,7 +53,7 @@ RESULTS_DIR = ROOT / "eval" / "results"
 # ---------------------------------------------------------------- retrieval
 def eval_retrieval(retriever, gold: list[GoldQuery], modes: list[str],
                    rewrites: dict[str, str] | None = None, suffix: str = "",
-                   multi: dict[str, list[str]] | None = None) -> dict:
+                   multi: dict[str, list[str]] | None = None, rerank: bool = False) -> dict:
     """`rewrites` maps original query -> text actually searched (None = search the raw query);
     `multi` maps original query -> several phrasings, searched together and fused with RRF."""
     out = {}
@@ -63,10 +63,11 @@ def eval_retrieval(retriever, gold: list[GoldQuery], modes: list[str],
         misses, per_query = [], []
         for g in answerable:
             if multi:
-                hits = retriever.search_many(multi[g.query], k=max(KS), mode=mode, min_score=0.0)
+                hits = retriever.search_many(multi[g.query], k=max(KS), mode=mode, min_score=0.0,
+                                             rerank=rerank)
             else:
                 text = rewrites[g.query] if rewrites else g.query
-                hits = retriever.search(text, k=max(KS), mode=mode, min_score=0.0)
+                hits = retriever.search(text, k=max(KS), mode=mode, min_score=0.0, rerank=rerank)
             r = rank_of(g.accepted, [h.movie_id for h in hits])
             ranks.append(r)
             for t in g.tags:
@@ -96,7 +97,7 @@ def sweep_min_score(retriever, gold: list[GoldQuery], rewrites: dict[str, str] |
     scored = []
     for g in gold:
         text = rewrites[g.query] if rewrites else g.query
-        hits = retriever.search(text, k=5, mode=mode, min_score=0.0)
+        hits = retriever.search(text, k=5, mode=mode, min_score=0.0, rerank=False)
         scored.append((g, [(h.movie_id, h.score) for h in hits]))
 
     rows = []
@@ -288,7 +289,7 @@ def write_report(res: dict) -> str:
          f"_Generated {res['generated']} — {res['n_answerable']} answerable + "
          f"{res['n_unanswerable']} unanswerable queries from `eval/queries.jsonl`._", "",
          f"LLM: `{res['config']['llm_model']}` · embeddings: `{res['config']['embed_model']}` · "
-         f"temperature 0", "",
+         f"reranker: `{res['config'].get('rerank_model') or 'none'}` · temperature 0", "",
          "## 1. Retrieval (answerable queries)", "",
          "Each query has one correct movie (or a few accepted versions), so recall@k = hit rate@k. "
          "Precision@k is not reported: with one relevant item it is just recall@k / k. "
@@ -425,6 +426,9 @@ def main() -> None:
     ap.add_argument("--multi", action="store_true",
                     help="also evaluate 3 rewritten phrasings per query fused with RRF (uses the LLM)")
     ap.add_argument("--agent", action="store_true", help="also run the end-to-end agent eval (uses the LLM)")
+    ap.add_argument("--rerank", metavar="MODEL", default=None,
+                    help="cross-encoder for '+rerank' rows and for the agent, "
+                         "e.g. cross-encoder/ms-marco-MiniLM-L-6-v2 (default: RERANK_MODEL from .env)")
     ap.add_argument("--no-sweep", action="store_true")
     args = ap.parse_args()
 
@@ -447,7 +451,8 @@ def main() -> None:
         "generated": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
         "n_answerable": n_ans, "n_unanswerable": len(gold) - n_ans,
         "config": {"llm_model": s.llm_model, "embed_model": s.embed_model, "min_score": s.min_score,
-                   "retrieval_mode": s.retrieval_mode, "agent_max_steps": s.agent_max_steps},
+                   "retrieval_mode": s.retrieval_mode, "agent_max_steps": s.agent_max_steps,
+                   "rerank_model": args.rerank if args.rerank is not None else s.rerank_model},
         "retrieval": [],
     }
     rewrites = None
@@ -467,13 +472,17 @@ def main() -> None:
     for idx in args.index:
         idx = idx if idx.is_absolute() else ROOT / idx
         print(f"[eval] retrieval on {idx.name} ...")
-        r = load_retriever(idx, movies=movies, min_score=0.0)
+        r = load_retriever(idx, movies=movies, min_score=0.0, rerank_model=args.rerank)
         first_retriever = first_retriever or r
-        modes = eval_retrieval(r, gold, args.modes)
+        modes = eval_retrieval(r, gold, args.modes, rerank=False)
         if rewrites:
-            modes |= eval_retrieval(r, gold, args.modes, rewrites=rewrites, suffix="+rewrite")
+            modes |= eval_retrieval(r, gold, args.modes, rewrites=rewrites, suffix="+rewrite", rerank=False)
         if multi:
-            modes |= eval_retrieval(r, gold, args.modes, multi=multi, suffix="+multi")
+            modes |= eval_retrieval(r, gold, args.modes, multi=multi, suffix="+multi", rerank=False)
+        if r.reranker is not None:
+            rr_modes = [m for m in args.modes if m != "dense"]
+            modes |= eval_retrieval(r, gold, rr_modes, rewrites=rewrites,
+                                    suffix=("+rewrite" if rewrites else "") + "+rerank", rerank=True)
         res["retrieval"].append({"index": str(idx.relative_to(ROOT).as_posix()), "meta": r.store.meta,
                                  "modes": modes})
 

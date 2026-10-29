@@ -17,11 +17,13 @@ import numpy as np
 from ..schemas import Movie, SearchHit
 from .bm25 import BM25Index
 from .embedder import Embedder
+from .reranker import rerank as _rerank
 from .vector_store import VectorStore
 
 Mode = Literal["dense", "bm25", "hybrid"]
 _RRF_K = 60          # standard RRF constant
 _POOL = 200          # how many top chunks to look at before collapsing to movies
+RERANK_DEPTH = 30    # shortlist size the cross-encoder reorders
 
 
 class Retriever:
@@ -33,11 +35,14 @@ class Retriever:
         *,
         min_score: float = 0.0,
         build_bm25: bool = True,
+        reranker=None,
     ):
         self.movies = {m.movie_id: m for m in movies}
         self.store = store
         self.embedder = embedder
         self.min_score = min_score
+        self.reranker = reranker                      # optional cross-encoder (see reranker.py)
+        self._chunk_text = {c.chunk_id: c.text for c in store.chunks}
         self._chunk_movie = np.array([c.movie_id for c in store.chunks])
         self._chunk_year = np.array([self.movies[c.movie_id].year for c in store.chunks])
         self._chunks_of: dict[str, list[int]] = {}
@@ -56,7 +61,19 @@ class Retriever:
         year_to: int | None = None,
         min_score: float | None = None,
         movie_ids: Sequence[str] | None = None,
+        rerank: bool | None = None,
     ) -> list[SearchHit]:
+        """`rerank` (default: on if a reranker is configured) reorders a RERANK_DEPTH shortlist
+        with the cross-encoder before cutting to k."""
+        use_rerank = (self.reranker is not None) if rerank is None else rerank
+        if use_rerank:
+            if self.reranker is None:
+                raise RuntimeError("rerank=True but no reranker is configured")
+            wide = self.search(query, k=max(k, RERANK_DEPTH), mode=mode, year_from=year_from,
+                               year_to=year_to, min_score=min_score, movie_ids=movie_ids,
+                               rerank=False)
+            passages = [self._chunk_text[h.chunk_id] for h in wide]
+            return _rerank(self.reranker, query, wide, passages)[:k]
         floor = self.min_score if min_score is None else min_score
         mask = self._year_mask(year_from, year_to, movie_ids)
 
@@ -76,12 +93,24 @@ class Retriever:
                 for rank, h in enumerate(ranked):
                     fused[h.movie_id] = fused.get(h.movie_id, 0.0) + 1.0 / (_RRF_K + rank + 1)
             dense_by_id = {h.movie_id: h for h in d_hits}
+            bm25_by_id = {h.movie_id: h for h in b_hits}
             order = sorted(fused, key=fused.get, reverse=True)
-            # report the dense hit (its similarity + citation) and keep the min_score floor on it,
-            # so a query that matches nothing semantically still returns nothing
-            out = [dense_by_id[m] for m in order
-                   if m in dense_by_id and dense_by_id[m].score >= floor]
-            return out[:k]
+            # Each hit reports a dense similarity (for the min_score floor and the UI). A film
+            # found only by BM25 gets the dense similarity of its best chunk computed directly.
+            # (Bug fixed here: it used to be dropped whenever dense retrieval missed it, which
+            # threw away BM25 rank-1 answers -- eval q15, q24, q30.)
+            out: list[SearchHit] = []
+            for mid in order:
+                h = dense_by_id.get(mid)
+                if h is None:
+                    idx = self._chunks_of[mid]
+                    best = float(dense[idx].max())
+                    h = bm25_by_id[mid].model_copy(update={"score": round(best, 4)})
+                if h.score >= floor:
+                    out.append(h)
+                if len(out) == k:
+                    break
+            return out
 
         raise ValueError(f"unknown mode {mode!r}")
 
@@ -96,6 +125,7 @@ class Retriever:
         min_score: float | None = None,
         depth: int = 50,
         movie_ids: Sequence[str] | None = None,
+        rerank: bool | None = None,
     ) -> list[SearchHit]:
         """Multi-query search: run each phrasing, then fuse the movie rankings with RRF.
 
@@ -105,12 +135,14 @@ class Retriever:
         queries = [q for q in dict.fromkeys(q.strip() for q in queries) if q]   # dedupe, keep order
         if len(queries) == 1:
             return self.search(queries[0], k=k, mode=mode, year_from=year_from,
-                               year_to=year_to, min_score=min_score, movie_ids=movie_ids)
+                               year_to=year_to, min_score=min_score, movie_ids=movie_ids,
+                               rerank=rerank)
         fused: dict[str, float] = {}
         best: dict[str, SearchHit] = {}
         for q in queries:
             hits = self.search(q, k=depth, mode=mode, year_from=year_from,
-                               year_to=year_to, min_score=min_score, movie_ids=movie_ids)
+                               year_to=year_to, min_score=min_score, movie_ids=movie_ids,
+                               rerank=rerank)
             for rank, h in enumerate(hits):
                 fused[h.movie_id] = fused.get(h.movie_id, 0.0) + 1.0 / (_RRF_K + rank + 1)
                 if h.movie_id not in best or h.score > best[h.movie_id].score:

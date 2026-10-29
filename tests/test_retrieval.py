@@ -61,3 +61,55 @@ def test_search_many_single_query_equals_search(retriever):
     a = retriever.search("ship ice cold", k=3)
     b = retriever.search_many(["ship ice cold", "ship ice cold "], k=3)   # duplicate collapses
     assert [h.movie_id for h in a] == [h.movie_id for h in b]
+
+
+def test_hybrid_keeps_bm25_only_hits():
+    """A film BM25 finds but dense misses must survive fusion (regression: eval q15/q24/q30)."""
+    from movie_finder.retrieval.retriever import Retriever
+    from tests.fixtures import MOVIES, HashEmbedder
+    from movie_finder.data.corpus import chunk_corpus
+
+    class BlindDense(HashEmbedder):          # dense "never" ranks m00002 (all its chunks score -1)
+        pass
+
+    chunks = chunk_corpus(MOVIES, words=12, overlap=4)
+    emb = BlindDense()
+    vecs = emb.embed_passages([c.text for c in chunks])
+    for i, c in enumerate(chunks):
+        if c.movie_id == "m00002":
+            vecs[i] = -vecs[i]
+    r = Retriever(MOVIES, VectorStore(vecs, chunks), emb, min_score=-1.0)
+    import movie_finder.retrieval.retriever as R
+    old = R._POOL
+    R._POOL = 2                               # dense pool too small to contain m00002
+    try:
+        hits = r.search("iceberg ocean liner sinks atlantic", k=3, mode="hybrid")
+    finally:
+        R._POOL = old
+    assert "m00002" in [h.movie_id for h in hits]
+
+
+class KeywordReranker:
+    """Fake cross-encoder: scores a passage by how many query words it contains."""
+    def scores(self, query, passages):
+        q = set(query.lower().split())
+        return [float(len(q & set(p.lower().split()))) for p in passages]
+
+
+def test_rerank_reorders_but_keeps_similarity(retriever):
+    base = retriever.search("ship cold winter", k=4, mode="bm25", rerank=False)
+    retriever.reranker = KeywordReranker()
+    try:
+        rr = retriever.search("ship cold winter", k=4, mode="bm25")          # on by default now
+        off = retriever.search("ship cold winter", k=4, mode="bm25", rerank=False)
+    finally:
+        retriever.reranker = None
+    assert {h.movie_id for h in rr} == {h.movie_id for h in base}
+    assert [h.movie_id for h in off] == [h.movie_id for h in base]
+    by_id = {h.movie_id: h.score for h in base}
+    assert all(h.score == by_id[h.movie_id] for h in rr)                     # order changes only
+
+
+def test_rerank_without_model_is_an_error(retriever):
+    with pytest.raises(RuntimeError):
+        retriever.search("ship", k=2, rerank=True)
