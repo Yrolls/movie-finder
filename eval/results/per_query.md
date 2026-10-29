@@ -1,6 +1,6 @@
 # Top-5 retrieved movies per query
 
-_From `data/index_bge`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie; the number is the dense similarity of its best passage (BM25 rows show the BM25 score)._
+_From `data/index`, modes: `bm25`, `hybrid+rewrite`. ✓ marks the correct movie; the number is the dense similarity of its best passage (BM25 rows show the BM25 score)._
 
 ## q01 — Groundhog Day (1993)
 

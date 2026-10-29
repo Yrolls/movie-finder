@@ -1,18 +1,18 @@
 {
-  "generated": "2026-10-29 07:03 UTC",
+  "generated": "2026-10-29 07:18 UTC",
   "n_answerable": 42,
   "n_unanswerable": 7,
   "config": {
     "llm_model": "gemma-4-E4B-it",
-    "embed_model": "intfloat/multilingual-e5-small",
-    "min_score": 0.78,
+    "embed_model": "BAAI/bge-small-en-v1.5",
+    "min_score": 0.5,
     "retrieval_mode": "hybrid",
     "agent_max_steps": 5,
     "rerank_model": "cross-encoder/ms-marco-MiniLM-L-6-v2"
   },
   "retrieval": [
     {
-      "index": "data/index_bge",
+      "index": "data/index",
       "meta": {
         "embed_model": "BAAI/bge-small-en-v1.5",
         "chunk_words": 200,
@@ -1396,7 +1396,7 @@
                 {
                   "title": "Speed",
                   "year": 1994,
-                  "score": 37.3073,
+                  "score": 37.3072,
                   "correct": true
                 },
                 {
@@ -7472,7 +7472,7 @@
                 {
                   "title": "Dracula 2000",
                   "year": 2000,
-                  "score": 21.5254,
+                  "score": 21.5253,
                   "correct": false
                 },
                 {
@@ -13353,7 +13353,7 @@
                 {
                   "title": "Dracula 2000",
                   "year": 2000,
-                  "score": 21.5254,
+                  "score": 21.5253,
                   "correct": false
                 },
                 {
@@ -15756,7 +15756,7 @@
       }
     },
     {
-      "index": "data/index",
+      "index": "data/index_e5",
       "meta": {
         "embed_model": "intfloat/multilingual-e5-small",
         "chunk_words": 200,
@@ -17140,7 +17140,7 @@
                 {
                   "title": "Speed",
                   "year": 1994,
-                  "score": 37.3073,
+                  "score": 37.3072,
                   "correct": true
                 },
                 {
@@ -23258,7 +23258,7 @@
                 {
                   "title": "Dracula 2000",
                   "year": 2000,
-                  "score": 21.5254,
+                  "score": 21.5253,
                   "correct": false
                 },
                 {
@@ -29160,7 +29160,7 @@
                 {
                   "title": "Dracula 2000",
                   "year": 2000,
-                  "score": 21.5254,
+                  "score": 21.5253,
                   "correct": false
                 },
                 {
@@ -31800,5 +31800,1434 @@
       "recall@5_answerable": 0.0,
       "abstain_unanswerable": 1.0
     }
-  ]
+  ],
+  "agent": {
+    "summary": {
+      "gold_retrieved_answerable": 0.8333333333333334,
+      "gold_in_candidates_answerable": 0.8333333333333334,
+      "precision_of_found": 0.9310344827586207,
+      "n_found": 29,
+      "outcomes": {
+        "answerable": {
+          "not sure, correct on top": 8,
+          "found, correct": 27,
+          "not sure, wrong on top": 6,
+          "found, WRONG": 1
+        },
+        "unanswerable": {
+          "found, WRONG": 1,
+          "not sure": 3,
+          "said not found": 3
+        }
+      },
+      "stopped_by": {
+        "final_answer": 49
+      },
+      "used_sql": 7,
+      "per_tag": {
+        "confusable": {
+          "n": 3,
+          "agent": 0.6666666666666666,
+          "llm_only": 1.0
+        },
+        "en": {
+          "n": 27,
+          "agent": 0.8518518518518519,
+          "llm_only": 0.7407407407407407
+        },
+        "famous": {
+          "n": 34,
+          "agent": 0.8235294117647058,
+          "llm_only": 0.7941176470588235
+        },
+        "metadata": {
+          "n": 10,
+          "agent": 1.0,
+          "llm_only": 0.8
+        },
+        "obscure": {
+          "n": 8,
+          "agent": 0.875,
+          "llm_only": 0.375
+        },
+        "partial": {
+          "n": 2,
+          "agent": 0.5,
+          "llm_only": 0.5
+        },
+        "plain": {
+          "n": 24,
+          "agent": 0.875,
+          "llm_only": 0.6666666666666666
+        },
+        "th": {
+          "n": 15,
+          "agent": 0.8,
+          "llm_only": 0.6666666666666666
+        },
+        "vague": {
+          "n": 3,
+          "agent": 0.3333333333333333,
+          "llm_only": 0.6666666666666666
+        },
+        "wrong_detail": {
+          "n": 3,
+          "agent": 0.6666666666666666,
+          "llm_only": 1.0
+        }
+      },
+      "agent_top1_answerable": 0.8333333333333334,
+      "llm_only_top1_answerable": 0.7142857142857143,
+      "agent_abstain_unanswerable": 0.42857142857142855,
+      "llm_only_abstain_unanswerable": 0.2857142857142857,
+      "avg_steps": 2.3469387755102042,
+      "avg_seconds": 6.875510204081632
+    },
+    "rows": [
+      {
+        "id": "q01",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "plain"
+        ],
+        "status": "not_sure",
+        "outcome": "not sure, correct on top",
+        "agent_top1": "m04124",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m04124",
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 11.1,
+        "searches": [
+          "{\"query\": \"A grumpy weather forecaster wakes up to find the same day repeating in a small town during winter\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"A grumpy weather forecaster wakes up to find the same day repeating in a small town during winter\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q02",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "plain"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m12804",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m12804",
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 4.4,
+        "searches": [
+          "{\"query\": \"thieves break into a rich heir's mind while he sleeps to plant an idea\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"thieves break into a rich heir's mind while he sleeps to plant an idea\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q03",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "plain"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m07215",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m07215",
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 6.6,
+        "searches": [
+          "{\"query\": \"man who cannot make new memories tattoos notes on his body and uses polaroid photos to find his wife's killer\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"man who cannot make new memories tattoos notes on his body and uses polaroid photos to find his wife's killer\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q04",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "plain"
+        ],
+        "status": "not_sure",
+        "outcome": "not sure, wrong on top",
+        "agent_top1": "m06750",
+        "agent_ok": false,
+        "gold_in_candidates": false,
+        "gold_retrieved": false,
+        "llm_only": "m06518",
+        "llm_only_ok": true,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 9.5,
+        "searches": [
+          "{\"query\": \"a man slowly realizes his entire life is a television show and everyone around him are actors\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"a man slowly realizes his entire life is a television show and everyone around him are actors\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q05",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "partial"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m06987",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m06987",
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 4.5,
+        "searches": [
+          "{\"query\": \"man stranded on an island after a plane crash whose only companion is a volleyball\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"man stranded on an island after a plane crash whose only companion is a volleyball\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q06",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "plain"
+        ],
+        "status": "not_sure",
+        "outcome": "not sure, wrong on top",
+        "agent_top1": "m12434",
+        "agent_ok": false,
+        "gold_in_candidates": false,
+        "gold_retrieved": false,
+        "llm_only": "m14883",
+        "llm_only_ok": false,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 6.7,
+        "searches": [
+          "{\"query\": \"teenager time travels in a sports car and accidentally causes their parents to stop loving each other, so they must fix it so both parents meet again\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"teenager time travels in a sports car and accidentally causes their parents to stop loving each other, so they must fix it so both parents meet again\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q07",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "plain"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m06923",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m06923",
+        "llm_only_ok": true,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 5.1,
+        "searches": [
+          "{\"query\": \"a child psychologist tries to help a scared little boy who says he can see ghosts with a big twist at the end\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"a child psychologist tries to help a scared little boy who says he can see ghosts with a big twist at the end\"})",
+          "get_movie({\"movie_id\": \"m06923\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q08",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "plain"
+        ],
+        "status": "not_sure",
+        "outcome": "not sure, correct on top",
+        "agent_top1": "m02208",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "__not_in_corpus__",
+        "llm_only_ok": false,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 9.8,
+        "searches": [
+          "{\"query\": \"a boy makes a wish to a game cabinet and wakes up as an adult who works at a toy company\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"a boy makes a wish to a game cabinet and wakes up as an adult who works at a toy company\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q09",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "plain"
+        ],
+        "status": "not_sure",
+        "outcome": "not sure, correct on top",
+        "agent_top1": "m05945",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m10454",
+        "llm_only_ok": false,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 6.8,
+        "searches": [
+          "{\"query\": \"a lawyer who always lies suddenly cannot tell a lie for a whole day because of his son's birthday wish\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"a lawyer who always lies suddenly cannot tell a lie for a whole day because of his son's birthday wish\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q10",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "plain"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m09291",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m09291",
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 6.0,
+        "searches": [
+          "{\"query\": \"a man from eastern europe gets stuck living inside a new york airport for months because his country stops existing\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"a man from eastern europe gets stuck living inside a new york airport for months because his country stops existing\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q11",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "plain"
+        ],
+        "status": "not_sure",
+        "outcome": "not sure, correct on top",
+        "agent_top1": "m12463",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m12463",
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 5.9,
+        "searches": [
+          "{\"query\": \"an old man ties thousands of balloons to a house and floats to South America with a scout child\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"an old man ties thousands of balloons to a house and floats to South America with a scout child\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q12",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "plain"
+        ],
+        "status": "not_sure",
+        "outcome": "not sure, correct on top",
+        "agent_top1": "m10578",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m10578",
+        "llm_only_ok": true,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 10.2,
+        "searches": [
+          "{\"query\": \"a girl who wants to be a chef secretly controls a young man in a Parisian restaurant kitchen by pulling his hair under his hat\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"a girl who wants to be a chef secretly controls a young man in a Parisian restaurant kitchen by pulling his hair under his hat\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q13",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "plain"
+        ],
+        "status": "found",
+        "outcome": "found, WRONG",
+        "agent_top1": "m18055",
+        "agent_ok": false,
+        "gold_in_candidates": false,
+        "gold_retrieved": false,
+        "llm_only": "m06102",
+        "llm_only_ok": false,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 5.7,
+        "searches": [
+          "{\"query\": \"kids find an old board game that releases jungle animals and a hunter into their town, and a man trapped inside for years appears\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"kids find an old board game that releases jungle animals and a hunter into their town, and a man trapped inside for years appears\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q14",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "wrong_detail"
+        ],
+        "status": "not_sure",
+        "outcome": "not sure, wrong on top",
+        "agent_top1": "m11416",
+        "agent_ok": false,
+        "gold_in_candidates": false,
+        "gold_retrieved": false,
+        "llm_only": "m03016",
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 5.8,
+        "searches": [
+          "{\"query\": \"a boy is left home alone during Easter holiday and fights off two burglars with traps\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"a boy is left home alone during Easter holiday and fights off two burglars with traps\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q15",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "confusable"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m15986",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m15986",
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 6.8,
+        "searches": [
+          "{\"query\": \"soldier fighting aliens keeps dying and waking up on the same day before the battle, training with a famous female soldier\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"soldier fighting aliens keeps dying and waking up on the same day before the battle, training with a famous female soldier\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q16",
+        "answerable": true,
+        "tags": [
+          "en",
+          "obscure",
+          "confusable"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m13839",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m13839",
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 6.7,
+        "searches": [
+          "{\"query\": \"a man wakes up in someone else's body on a commuter train and keeps reliving the last 8 minutes before it explodes\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"a man wakes up in someone else's body on a commuter train and keeps reliving the last 8 minutes before it explodes\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q17",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "plain"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m15182",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m15182",
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 6.7,
+        "searches": [
+          "{\"query\": \"lonely divorced man falls in love with a female voice AI operating system on a computer\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"lonely divorced man falls in love with a female voice AI operating system on a computer\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q18",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "plain"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m16728",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m16728",
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 6.5,
+        "searches": [
+          "{\"query\": \"young programmer is invited to a billionaire's remote house to test a female robot's consciousness\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"young programmer is invited to a billionaire's remote house to test a female robot's consciousness\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q19",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "plain"
+        ],
+        "status": "not_sure",
+        "outcome": "not sure, correct on top",
+        "agent_top1": "m10488",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m10488",
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 7.1,
+        "searches": [
+          "{\"query\": \"two rival stage magicians in old london try to outdo each other, one uses a strange electric machine for a teleport trick\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"two rival stage magicians in old london try to outdo each other, one uses a strange electric machine for a teleport trick\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q20",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "plain"
+        ],
+        "status": "not_sure",
+        "outcome": "not sure, correct on top",
+        "agent_top1": "m05805",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m05805",
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 6.9,
+        "searches": [
+          "{\"query\": \"female scientist receives extraterrestrial signal with blueprints for a spaceship\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"female scientist receives extraterrestrial signal with blueprints for a spaceship\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q21",
+        "answerable": true,
+        "tags": [
+          "en",
+          "obscure",
+          "plain"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m12221",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m12221",
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 6.2,
+        "searches": [
+          "{\"query\": \"lonely worker on a moon base finds another version of himself near the end of a three year contract\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"lonely worker on a moon base finds another version of himself near the end of a three year contract\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q22",
+        "answerable": true,
+        "tags": [
+          "en",
+          "obscure",
+          "plain"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m09158",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m09158",
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 6.2,
+        "searches": [
+          "{\"query\": \"two engineers in a garage accidentally invent a time machine and cause timeline confusion\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"two engineers in a garage accidentally invent a time machine and cause timeline confusion\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q23",
+        "answerable": true,
+        "tags": [
+          "th",
+          "obscure",
+          "plain"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m10869",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m15182",
+        "llm_only_ok": false,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 6.7,
+        "searches": [
+          "{\"query\": \"shy man brings a life-sized doll to introduce as his girlfriend and the whole town plays along\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"shy man brings a life-sized doll to introduce as his girlfriend and the whole town plays along\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q24",
+        "answerable": true,
+        "tags": [
+          "en",
+          "obscure",
+          "plain"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m08761",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "__not_in_corpus__",
+        "llm_only_ok": false,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 5.1,
+        "searches": [
+          "{\"query\": \"a quiet man who loves trains inherits an abandoned train depot in the countryside and makes two unlikely friends\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"a quiet man who loves trains inherits an abandoned train depot in the countryside and makes two unlikely friends\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q25",
+        "answerable": true,
+        "tags": [
+          "en",
+          "obscure",
+          "plain"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m17066",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "__not_in_corpus__",
+        "llm_only_ok": false,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 5.4,
+        "searches": [
+          "{\"query\": \"single people are sent to a hotel and must find a partner in 45 days or they get turned into an animal\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"single people are sent to a hotel and must find a partner in 45 days or they get turned into an animal\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q26",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "plain"
+        ],
+        "status": "not_sure",
+        "outcome": "not sure, correct on top",
+        "agent_top1": "m11691",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m11691",
+        "llm_only_ok": true,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 11.2,
+        "searches": [
+          "{\"query\": \"A former government spy searches for his teenage daughter who was kidnapped by a human trafficking gang while traveling in Europe\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"A former government spy searches for his teenage daughter who was kidnapped by a human trafficking gang while traveling in Europe\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q27",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "wrong_detail"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m04725",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m04725",
+        "llm_only_ok": true,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 6.4,
+        "searches": [
+          "{\"query\": \"a bomb is on a train and it will explode if it goes below 50 miles per hour, so a police officer must keep it moving\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"a bomb is on a train and it will explode if it goes below 50 miles per hour, so a police officer must keep it moving\"})",
+          "get_movie({\"movie_id\": \"m04725\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q28",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "plain"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m17072",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m17072",
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 5.3,
+        "searches": [
+          "{\"query\": \"astronaut stranded on Mars after friends think he is dead and must grow potatoes to survive\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"astronaut stranded on Mars after friends think he is dead and must grow potatoes to survive\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q29",
+        "answerable": true,
+        "tags": [
+          "en",
+          "obscure",
+          "partial"
+        ],
+        "status": "not_sure",
+        "outcome": "not sure, wrong on top",
+        "agent_top1": "m13549",
+        "agent_ok": false,
+        "gold_in_candidates": false,
+        "gold_retrieved": false,
+        "llm_only": "m13184",
+        "llm_only_ok": false,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 6.4,
+        "searches": [
+          "{\"query\": \"two college friends search for their missing genius classmate from engineering school\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"two college friends search for their missing genius classmate from engineering school\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q30",
+        "answerable": true,
+        "tags": [
+          "th",
+          "obscure",
+          "plain"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m11350",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": null,
+        "llm_only_ok": false,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 6.1,
+        "searches": [
+          "{\"query\": \"A cello player who loses his job returns to his hometown and gets a new job as a funeral preparer before the coffin, and his wife does not accept it\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"A cello player who loses his job returns to his hometown and gets a new job as a funeral preparer before the coffin, and his wife does not accept it\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q31",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "vague",
+          "confusable"
+        ],
+        "status": "not_sure",
+        "outcome": "not sure, wrong on top",
+        "agent_top1": "m04708",
+        "agent_ok": false,
+        "gold_in_candidates": false,
+        "gold_retrieved": false,
+        "llm_only": "m04124",
+        "llm_only_ok": true,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 9.8,
+        "searches": [
+          "{\"query\": \"a man repeatedly lives the same day over and over\", \"year_from\": 1980, \"year_to\": 1999}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"a man repeatedly lives the same day over and over\", \"year_from\": 1980, \"year_to\": 1999})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q38",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "vague"
+        ],
+        "status": "not_sure",
+        "outcome": "not sure, wrong on top",
+        "agent_top1": "m12039",
+        "agent_ok": false,
+        "gold_in_candidates": false,
+        "gold_retrieved": false,
+        "llm_only": null,
+        "llm_only_ok": false,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 10.8,
+        "searches": [
+          "{\"query\": \"a scary movie with a clown that tricks children\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"a scary movie with a clown that tricks children\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q39",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "metadata"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m07953",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m07953",
+        "llm_only_ok": true,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 7.6,
+        "searches": [
+          "{\"query\": \"young con man pretends to be a pilot and a doctor while an FBI agent chases him\", \"within_database_results\": true}"
+        ],
+        "calls": [
+          "query_movie_database({\"question\": \"Leonardo DiCaprio movie\"})",
+          "search_movies({\"query\": \"young con man pretends to be a pilot and a doctor while an FBI agent chases him\", \"within_database_results\": true})"
+        ],
+        "sql": [
+          "SELECT movie_id, title, year, director, actors FROM movies WHERE actors LIKE '%Leonardo DiCaprio%'"
+        ]
+      },
+      {
+        "id": "q40",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "metadata"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m04161",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m04161",
+        "llm_only_ok": true,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 8.7,
+        "searches": [
+          "{\"query\": \"scientists bring dinosaurs back to life on an island and they escape\", \"within_database_results\": true}"
+        ],
+        "calls": [
+          "query_movie_database({\"question\": \"Spielberg movies from the 90s\"})",
+          "search_movies({\"query\": \"scientists bring dinosaurs back to life on an island and they escape\", \"within_database_results\": true})"
+        ],
+        "sql": [
+          "SELECT movie_id, title, year, director, actors FROM movies WHERE director LIKE '%Spielberg%' AND year BETWEEN 1988 AND 2001"
+        ]
+      },
+      {
+        "id": "q41",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "metadata"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m16091",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": null,
+        "llm_only_ok": false,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 5.0,
+        "searches": [
+          "{\"query\": \"farmer dad leaves daughter and flies through a wormhole to find a new planet\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"farmer dad leaves daughter and flies through a wormhole to find a new planet\"})",
+          "get_movie({\"movie_id\": \"m16091\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q42",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "metadata"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m07760",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m07760",
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 4.6,
+        "searches": [
+          "{\"query\": \"anime by Miyazaki where a girl works in a bathhouse for spirits after her parents turn into pigs\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"anime by Miyazaki where a girl works in a bathhouse for spirits after her parents turn into pigs\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q43",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "metadata"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m06911",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m06911",
+        "llm_only_ok": true,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 7.6,
+        "searches": [
+          "{\"query\": \"man finds out the world is a computer simulation and learns kung fu\", \"within_database_results\": true}"
+        ],
+        "calls": [
+          "query_movie_database({\"question\": \"Keanu Reeves movie from the late 90s\"})",
+          "search_movies({\"query\": \"man finds out the world is a computer simulation and learns kung fu\", \"within_database_results\": true})"
+        ],
+        "sql": [
+          "SELECT movie_id, title, year, director, actors FROM movies WHERE actors LIKE '%Keanu Reeves%' AND year BETWEEN 1997 AND 2000"
+        ]
+      },
+      {
+        "id": "q44",
+        "answerable": true,
+        "tags": [
+          "th",
+          "famous",
+          "metadata"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m08976",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m08976",
+        "llm_only_ok": true,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 9.6,
+        "searches": [
+          "{\"query\": \"Jim Carrey and his ex-girlfriend hire a company to erase memories of each other\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"Jim Carrey and his ex-girlfriend hire a company to erase memories of each other\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q45",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "metadata",
+          "vague"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m17734",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m17734",
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 4.6,
+        "searches": [
+          "{\"query\": \"korean zombie movie set on a train\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"korean zombie movie set on a train\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q46",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "metadata"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m04534",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m04247",
+        "llm_only_ok": false,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 8.4,
+        "searches": [
+          "{\"query\": \"kind man travels across the country and is involved in famous American historical moments\", \"within_database_results\": true}"
+        ],
+        "calls": [
+          "query_movie_database({\"question\": \"Tom Hanks movies\"})",
+          "search_movies({\"query\": \"kind man travels across the country and is involved in famous American historical moments\", \"within_database_results\": true})"
+        ],
+        "sql": [
+          "SELECT movie_id, title, year, director, actors FROM movies WHERE actors LIKE '%Tom Hanks%'"
+        ]
+      },
+      {
+        "id": "q47",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "metadata"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m07082",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m07082",
+        "llm_only_ok": true,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 9.0,
+        "searches": [
+          "{\"query\": \"people fight while flying over bamboo trees and a legendary sword is stolen\", \"within_database_results\": true}"
+        ],
+        "calls": [
+          "query_movie_database({\"question\": \"Ang Lee martial arts film\"})",
+          "search_movies({\"query\": \"people fight while flying over bamboo trees and a legendary sword is stolen\", \"within_database_results\": true})"
+        ],
+        "sql": [
+          "SELECT movie_id, title, year, director, actors FROM movies WHERE director LIKE '%Ang Lee%'"
+        ]
+      },
+      {
+        "id": "q48",
+        "answerable": true,
+        "tags": [
+          "en",
+          "famous",
+          "metadata",
+          "wrong_detail"
+        ],
+        "status": "found",
+        "outcome": "found, correct",
+        "agent_top1": "m16852",
+        "agent_ok": true,
+        "gold_in_candidates": true,
+        "gold_retrieved": true,
+        "llm_only": "m16583",
+        "llm_only_ok": true,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 8.5,
+        "searches": [
+          "{\"query\": \"a woman drives a war rig across the desert to free the wives of a warlord\", \"within_database_results\": true}"
+        ],
+        "calls": [
+          "query_movie_database({\"question\": \"Mad Max with Mel Gibson\"})",
+          "search_movies({\"query\": \"a woman drives a war rig across the desert to free the wives of a warlord\", \"within_database_results\": true})"
+        ],
+        "sql": [
+          "SELECT movie_id, title, year, director, actors FROM movies WHERE actors LIKE '%Mel Gibson%'"
+        ]
+      },
+      {
+        "id": "q32",
+        "answerable": false,
+        "tags": [
+          "th",
+          "unanswerable"
+        ],
+        "status": "found",
+        "outcome": "found, WRONG",
+        "agent_top1": "m02606",
+        "agent_ok": false,
+        "gold_in_candidates": false,
+        "gold_retrieved": false,
+        "llm_only": "__not_in_corpus__",
+        "llm_only_ok": false,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 6.8,
+        "searches": [
+          "{\"query\": \"scientist creates the first atomic bomb in the New Mexico desert\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"scientist creates the first atomic bomb in the New Mexico desert\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q33",
+        "answerable": false,
+        "tags": [
+          "en",
+          "unanswerable"
+        ],
+        "status": "not_sure",
+        "outcome": "not sure",
+        "agent_top1": "m06388",
+        "agent_ok": false,
+        "gold_in_candidates": false,
+        "gold_retrieved": false,
+        "llm_only": "__not_in_corpus__",
+        "llm_only_ok": false,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 5.5,
+        "searches": [
+          "{\"query\": \"a tired laundromat owner jumps between parallel universes where she is a kung fu star and has hot dog fingers\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"a tired laundromat owner jumps between parallel universes where she is a kung fu star and has hot dog fingers\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q34",
+        "answerable": false,
+        "tags": [
+          "en",
+          "unanswerable"
+        ],
+        "status": "not_sure",
+        "outcome": "not sure",
+        "agent_top1": "m08143",
+        "agent_ok": false,
+        "gold_in_candidates": false,
+        "gold_retrieved": false,
+        "llm_only": "m12772",
+        "llm_only_ok": false,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 7.0,
+        "searches": [
+          "{\"query\": \"a poor family slowly gets hired one by one into a rich family's modern house by pretending to be strangers\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"a poor family slowly gets hired one by one into a rich family's modern house by pretending to be strangers\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q35",
+        "answerable": false,
+        "tags": [
+          "en",
+          "unanswerable"
+        ],
+        "status": "not_found",
+        "outcome": "said not found",
+        "agent_top1": null,
+        "agent_ok": true,
+        "gold_in_candidates": false,
+        "gold_retrieved": false,
+        "llm_only": null,
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 3.5,
+        "searches": [
+          "{\"query\": \"a penguin opens a bakery in Bangkok and accidentally becomes a K-pop idol\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"a penguin opens a bakery in Bangkok and accidentally becomes a K-pop idol\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q36",
+        "answerable": false,
+        "tags": [
+          "th",
+          "unanswerable"
+        ],
+        "status": "not_found",
+        "outcome": "said not found",
+        "agent_top1": null,
+        "agent_ok": true,
+        "gold_in_candidates": false,
+        "gold_retrieved": false,
+        "llm_only": null,
+        "llm_only_ok": true,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 4.1,
+        "searches": [
+          "{\"query\": \"an elephant becomes Thailand's first astronaut and repairs the space station with its trunk\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"an elephant becomes Thailand's first astronaut and repairs the space station with its trunk\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q37",
+        "answerable": false,
+        "tags": [
+          "en",
+          "unanswerable"
+        ],
+        "status": "not_sure",
+        "outcome": "not sure",
+        "agent_top1": "m10723",
+        "agent_ok": false,
+        "gold_in_candidates": false,
+        "gold_retrieved": false,
+        "llm_only": "m12001",
+        "llm_only_ok": false,
+        "steps": 2,
+        "stopped_by": "final_answer",
+        "seconds": 6.2,
+        "searches": [
+          "{\"query\": \"a perfect doll leaves her plastic world for the real world and has an existential crisis\"}"
+        ],
+        "calls": [
+          "search_movies({\"query\": \"a perfect doll leaves her plastic world for the real world and has an existential crisis\"})"
+        ],
+        "sql": []
+      },
+      {
+        "id": "q49",
+        "answerable": false,
+        "tags": [
+          "en",
+          "metadata",
+          "unanswerable"
+        ],
+        "status": "not_found",
+        "outcome": "said not found",
+        "agent_top1": null,
+        "agent_ok": true,
+        "gold_in_candidates": false,
+        "gold_retrieved": false,
+        "llm_only": "__not_in_corpus__",
+        "llm_only_ok": false,
+        "steps": 3,
+        "stopped_by": "final_answer",
+        "seconds": 5.8,
+        "searches": [
+          "{\"query\": \"Tom Hanks plays Elvis Presley's manager\", \"within_database_results\": true}"
+        ],
+        "calls": [
+          "query_movie_database({\"question\": \"Tom Hanks movie where he plays Elvis Presley's manager\"})",
+          "search_movies({\"query\": \"Tom Hanks plays Elvis Presley's manager\", \"within_database_results\": true})"
+        ],
+        "sql": [
+          "SELECT movie_id, title, year, director, actors FROM movies WHERE actors LIKE '%Tom Hanks%'"
+        ]
+      }
+    ]
+  }
 }
