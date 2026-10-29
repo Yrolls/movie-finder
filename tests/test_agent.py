@@ -211,6 +211,53 @@ def test_ui_hits_collapse_duplicate_corpus_rows():
     def hit(mid):
         return SearchHit(movie_id=mid, title="Mad Max: Fury Road", year=2015, score=0.84,
                          chunk_id=mid + "#1", snippet="war rig")
-    box = SimpleNamespace(last_hits=[], last_outside=[hit("m16583"), hit("m16852")], last_db_sample=[])
+    box = SimpleNamespace(last_hits=[], last_outside=[hit("m16583"), hit("m16852")], last_db_sample=[], last_missing=[])
     rows = _box_hits(box)
     assert len(rows) == 1 and rows[0]["outside"] is True
+
+
+# ---------------------------------------------------------------- check_title
+def test_check_title_returns_only_films_in_the_database():
+    box = ToolBox(make_retriever())
+    out = json.loads(box.run("check_title", json.dumps(
+        {"titles": ["the dream heist (2010)", "Totally Made Up Film"], "description": "thieves enter dreams"})))
+    found = [r for r in out["results"] if r["in_database"]]
+    missing = [r for r in out["results"] if not r["in_database"]]
+    assert [r["movie_id"] for r in found] == ["m00001"]           # normalised title + year
+    assert found[0]["chunk_id"].startswith("m00001#")            # real evidence passage
+    assert [r["title_asked"] for r in missing] == ["Totally Made Up Film"]
+    assert box.title_checked == {"m00001"} and box.searched == set()
+    assert "score" not in json.dumps(out)
+
+
+def test_check_title_validates_args():
+    box = ToolBox(make_retriever())
+    assert "invalid arguments" in box.run("check_title", json.dumps({"titles": [], "description": "x y z"}))
+    assert "invalid arguments" in box.run("check_title", json.dumps({"titles": ["a", "b", "c", "d"],
+                                                                     "description": "x y z"}))
+
+
+def test_answer_found_by_title_check_is_labelled(fake_client):
+    check = tool_call("check_title", json.dumps({"titles": ["Dream Heist"], "description": "dream thieves"}))
+    client = fake_client([check, final(movie_id="m00001", chunk="m00001#0")])
+    events = []
+    res = run_agent("creepy dream movie", make_retriever(), client=client, on_event=events.append)
+    assert res.answer.candidates[0].title == "Dream Heist"
+    assert res.evidence["m00001"]["via"] == "title_check"
+    assert events[1]["hits"][0]["title"] == "Dream Heist"
+
+
+def test_title_the_model_invents_cannot_be_the_answer(fake_client):
+    check = tool_call("check_title", json.dumps({"titles": ["Annabelle"], "description": "creepy doll"}))
+    client = fake_client([check, final(movie_id="m00042", chunk="m00042#0")])
+    events = []
+    res = run_agent("creepy doll", make_retriever(), client=client, on_event=events.append)
+    assert res.answer.status == "not_found" and res.answer.candidates == []
+    assert events[1]["hits"] == [{"rank": None, "movie_id": None, "title": "Annabelle", "year": None,
+                                  "score": None, "missing": True}]
+
+
+def test_found_by_search_is_labelled_search(fake_client):
+    client = fake_client([SEARCH, final()])
+    res = run_agent("same day again", make_retriever(), client=client)
+    assert res.evidence["m00000"]["via"] == "search"

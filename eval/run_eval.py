@@ -230,6 +230,10 @@ def eval_agent(retriever, gold: list[GoldQuery], movies, mode: str) -> dict:
                      "status": status, "outcome": outcome, "agent_top1": top, "agent_ok": agent_ok,
                      "gold_in_candidates": bool(set(cand_ids) & set(g.accepted)),
                      "gold_retrieved": bool(set(res.retrieved) & set(g.accepted)),
+                     # found only because the model named it (check_title), not by plot/metadata search
+                     "gold_only_by_title_check": bool(set(res.title_checked) & set(g.accepted)),
+                     "top_via": (res.evidence.get(top, {}).get("via") if top else None),
+                     "used_title_check": any(t.get("tool") == "check_title" for t in res.trace),
                      "llm_only": base, "llm_only_ok": base_ok,
                      "steps": res.steps, "stopped_by": res.stopped_by, "seconds": round(dt, 1),
                      "searches": [t["arguments"] for t in res.trace if t.get("tool") == "search_movies"],
@@ -259,6 +263,10 @@ def eval_agent(retriever, gold: list[GoldQuery], movies, mode: str) -> dict:
             "outcomes": {k: dict(v) for k, v in outcomes.items()},
             "stopped_by": dict(Counter(r["stopped_by"] for r in rows)),
             "used_sql": sum(bool(r["sql"]) for r in rows),
+            "used_title_check": sum(r.get("used_title_check", False) for r in rows),
+            "correct_via_title_check": sum(r["agent_ok"] and r["answerable"] and r.get("top_via") == "title_check"
+                                           for r in rows),
+            "gold_only_by_title_check_answerable": acc(ans, "gold_only_by_title_check"),
             "per_tag": {t: {"n": len(rs), "agent": acc(rs, "agent_ok"), "llm_only": acc(rs, "llm_only_ok")}
                         for t, rs in sorted(_by_tag(ans).items())},
             "agent_top1_answerable": acc(ans, "agent_ok"),
@@ -368,7 +376,7 @@ def write_report(res: dict) -> str:
         if "gold_retrieved_answerable" in s:
             L += ["", "### Where the agent loses answers (answerable queries)", "",
                   "| step | share of answerable queries |", "|---|---|",
-                  f"| correct movie appeared in any of the agent's searches | {pct(s['gold_retrieved_answerable'])} |",
+                  f"| correct movie appeared in any tool result (searches, SQL, check_title) | {pct(s['gold_retrieved_answerable'])} |",
                   f"| correct movie among the agent's ≤3 candidates | {pct(s['gold_in_candidates_answerable'])} |",
                   f"| correct movie ranked first by the agent | {pct(s['agent_top1_answerable'])} |",
                   "", "100% minus the first row is a retrieval error (the right movie was never retrieved); "
@@ -386,6 +394,11 @@ def write_report(res: dict) -> str:
             sb = ", ".join(f"{k}: {v}" for k, v in sorted(s["stopped_by"].items()))
             L += ["", f"How runs ended — {sb}. Queries where the agent used the metadata database "
                       f"(text-to-SQL): {s['used_sql']}."]
+            if "used_title_check" in s:
+                L += ["", f"`check_title` (the model names films it knows, the database verifies them): "
+                          f"used on {s['used_title_check']} queries; correct answers that came only from it: "
+                          f"{s['correct_via_title_check']}; right film reached only through it: "
+                          f"{pct(s['gold_only_by_title_check_answerable'])} of answerable queries."]
         if s.get("per_tag"):
             L += ["", "### Top-1 accuracy by query tag (answerable)", "",
                   "| tag | n | agent | LLM-only |", "|---|---|---|---|"]

@@ -175,6 +175,8 @@ function handle(raw) {
       what = `ค้นเรื่องย่อด้วย <code>“${esc(args.query)}”</code>${scope}${years}`;
     } else if (ev.name === "query_movie_database") {
       what = `ค้นข้อมูลหนัง (นักแสดง/ผู้กำกับ/ปี) ด้วย <code>“${esc(args.question)}”</code>`;
+    } else if (ev.name === "check_title") {
+      what = `โมเดลนึกชื่อได้ — ตรวจในฐานข้อมูล: <code>${esc((args.titles || []).join(", "))}</code>`;
     } else {
       what = `ดูรายละเอียดของ <code>${esc(args.movie_id)}</code>`;
     }
@@ -186,9 +188,9 @@ function handle(raw) {
     const hits = ev.hits || [];
     const sql = ev.sql ? `<pre class="sql">${esc(ev.sql)}</pre>` : "";
     if (!hits.length) { li.insertAdjacentHTML("beforeend", ` — ไม่เจอเรื่องที่ใกล้พอ${sql ? `<details><summary>SQL</summary>${sql}</details>` : ""}`); return; }
-    const label = ev.sql ? `ตรงเงื่อนไข ${ev.n_matches ?? hits.length} เรื่อง${(ev.n_matches ?? 0) > hits.length ? ` (แสดง ${hits.length})` : ""}` : `${hits.length} อันดับแรกที่ค้นเจอ`;
+    const label = ev.name === "check_title" ? `ผลการตรวจชื่อ` : ev.sql ? `ตรงเงื่อนไข ${ev.n_matches ?? hits.length} เรื่อง${(ev.n_matches ?? 0) > hits.length ? ` (แสดง ${hits.length})` : ""}` : `${hits.length} อันดับแรกที่ค้นเจอ`;
     li.insertAdjacentHTML("beforeend", `<details><summary>${label}</summary>${sql}<ol class="hits">${
-      hits.map((h) => `<li${h.outside ? ' class="outside"' : ""}>${esc(h.title)} (${h.year})${h.score != null ? ` <span class="sc">· ความคล้าย ${h.score.toFixed(2)}</span>` : ""}${h.outside ? ' <span class="sc">· นอกเงื่อนไขที่ค้นจากฐานข้อมูล</span>' : ""}</li>`).join("")
+      hits.map((h) => h.missing ? `<li class="outside">${esc(h.title)} <span class="sc">· ไม่มีในฐานข้อมูล</span></li>` : `<li${h.outside ? ' class="outside"' : ""}>${esc(h.title)} (${h.year})${h.score != null ? ` <span class="sc">· ความคล้าย ${h.score.toFixed(2)}</span>` : ""}${h.outside ? ' <span class="sc">· นอกเงื่อนไขที่ค้นจากฐานข้อมูล</span>' : ""}</li>`).join("")
     }</ol></details>`);
   } else if (ev.type === "final") {
     render(ev.answer, ev.evidence || {});
@@ -228,6 +230,7 @@ function render(ans, evidence) {
       <h2 class="title">${esc(top.title)} <span class="year">(${top.year})</span></h2>
       <p class="why">${esc(top.why)}</p>
       ${ev.snippet ? `<blockquote>${esc(ev.snippet)}…</blockquote>
+        ${ev.via === "title_check" ? `<p class="source">โมเดลนึกชื่อเรื่องนี้ได้จากความรู้ของตัวเอง แล้วระบบตรวจว่ามีในฐานข้อมูลและดึงเรื่องย่อมาเทียบ</p>` : ""}
         <p class="source">ที่มา: ${ev.source === "metadata" ? "ข้อมูลหนัง (นักแสดง ผู้กำกับ ปี) ของ" : "เรื่องย่อใน Wikipedia ของ"} ${ev.wiki_url
           ? `<a href="${esc(ev.wiki_url)}" target="_blank" rel="noopener"><cite>${esc(top.title)}</cite></a>`
           : `<cite>${esc(top.title)}</cite>`}${ev.passage ? ` ย่อหน้าที่ ${ev.passage}` : ""} <span class="year">(${esc(ev.chunk_id)})</span></p>` : ""}

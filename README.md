@@ -16,6 +16,7 @@ it asks you one follow-up question (e.g. "roughly what decade?") instead of gues
 | 3 | Retrieval evaluation (recall@k, MRR vs. BM25 baseline) | `eval/` |
 | 4 | Agent loop with allow-listed tools + stop conditions (final answer, no-progress guard, max steps) | `src/movie_finder/agent/` |
 | 5 | Advanced: guarded text-to-SQL over movie metadata (actor, director, year, country, genre) | `src/movie_finder/data/moviedb.py`, `src/movie_finder/agent/sql_tool.py` |
+| 5b | Generate-then-verify: the model names films it knows (`check_title`), the corpus confirms they exist and supplies the evidence passage — for memories about how a film *looked* that plot summaries never describe | `src/movie_finder/titles.py`, `src/movie_finder/agent/tools.py` |
 | 6 | Served interface (FastAPI + SSE) | `src/movie_finder/api/` |
 
 ## Project layout
@@ -107,6 +108,13 @@ optimistic. `eval/heldout.jsonl` was written after tuning and never used to tune
 
 ```bash
 python eval/run_eval.py --gold eval/heldout.jsonl --out eval/results_heldout --rewrite --agent
+```
+
+`eval/heldout2.jsonl` was written after `check_title` was added (held-out 1 showed famous films
+described by how they look were missed), by another agent that knew nothing about the system:
+
+```bash
+python eval/run_eval.py --gold eval/heldout2.jsonl --out eval/results_heldout2 --rewrite --agent
 ```
 
 Results are written to [`eval/results/report.md`](eval/results/report.md) (committed),

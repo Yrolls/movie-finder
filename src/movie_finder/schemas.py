@@ -74,6 +74,18 @@ class QueryDatabaseArgs(BaseModel):
     question: str = Field(min_length=5, max_length=300)
 
 
+class CheckTitleArgs(BaseModel):
+    """Films the model thinks it might be (from its own knowledge) + the description to verify them."""
+    titles: list[str] = Field(min_length=1, max_length=3)
+    description: str = Field(min_length=3, max_length=500)
+
+    @model_validator(mode="after")
+    def _titles(self) -> "CheckTitleArgs":
+        if any(not 1 <= len(t.strip()) <= 120 for t in self.titles):
+            raise ValueError("each title must be 1-120 characters")
+        return self
+
+
 class GetMovieArgs(BaseModel):
     movie_id: str = Field(pattern=r"^m\d{5}$")
 

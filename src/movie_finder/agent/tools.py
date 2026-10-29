@@ -1,7 +1,7 @@
 """The agent's tools: an explicit allow-list, argument validation, and untrusted-output handling.
 
 Tools: search_movies (plot search), query_movie_database (guarded text-to-SQL over metadata),
-get_movie (details). Only names in the toolbox's specs can run. Every call's arguments are parsed and validated with a
+check_title (verify films the model thinks of, from its own knowledge), get_movie (details). Only names in the toolbox's specs can run. Every call's arguments are parsed and validated with a
 Pydantic model BEFORE touching the retriever; bad calls come back to the model as an error
 message instead of raising. The toolbox also records which movies/chunks were actually
 returned, so the final answer can be checked against them (no invented citations).
@@ -16,7 +16,8 @@ from pydantic import ValidationError
 
 from ..data.moviedb import MovieDB
 from ..retrieval.retriever import Mode, Retriever
-from ..schemas import GetMovieArgs, QueryDatabaseArgs, SearchHit, SearchMoviesArgs
+from ..schemas import CheckTitleArgs, GetMovieArgs, QueryDatabaseArgs, SearchHit, SearchMoviesArgs
+from ..titles import TitleIndex, split_year
 from .sql_tool import answer_with_sql
 
 MAX_RESULT_CHARS = 4000          # cap what goes back into the model's context
@@ -30,7 +31,7 @@ TOOL_SPECS: list[dict[str, Any]] = [
             "description": (
                 "Search a database of movie plot summaries (films from 1980 to 2017) with a "
                 "description of what happens in the film. Returns up to k candidate movies, each "
-                "with a similarity score and the matching plot passage (chunk_id + snippet)."
+                "with its rank and the matching plot passage (chunk_id + snippet)."
             ),
             "parameters": {
                 "type": "object",
@@ -76,6 +77,31 @@ TOOL_SPECS: list[dict[str, Any]] = [
     {
         "type": "function",
         "function": {
+            "name": "check_title",
+            "description": (
+                "Check films YOU think it might be, from your own knowledge of movies. Use it when "
+                "the description is mostly about how something looked or felt (a creepy doll, a "
+                "costume, a famous image) or is too vague for a plot search, and you can think of "
+                "likely films. Returns, for each title, whether it is in the database and, if so, "
+                "the plot passage closest to the description, so you can confirm or reject it. "
+                "A film that is not in the database can never be the answer."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "titles": {"type": "array", "items": {"type": "string"},
+                               "description": "1-3 English film titles, optionally with the year, "
+                                              "e.g. [\"Annabelle (2014)\", \"Dead Silence\"]"},
+                    "description": {"type": "string",
+                                    "description": "The user's description in English."},
+                },
+                "required": ["titles", "description"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
             "name": "get_movie",
             "description": "Get details for one movie_id returned by search_movies: title, year, "
                            "genre, director, cast and the start of its plot.",
@@ -92,6 +118,14 @@ META = "#meta"                    # chunk-id suffix for a citation that is a met
 DB_SAMPLE = 15                    # SQL rows shown to the model (all matches are kept in db_ids)
 MAX_DETAIL_CALLS = 2              # get_movie budget per run: re-search instead of browsing
 OUTSIDE_K = 3                     # best plot matches outside the SQL set, shown next to it
+
+
+def get_title_index(retriever: Retriever) -> TitleIndex:
+    idx = getattr(retriever, "_title_index", None)
+    if idx is None:
+        idx = TitleIndex(retriever.movies.values())
+        retriever._title_index = idx
+    return idx
 
 
 def get_moviedb(retriever: Retriever) -> MovieDB:
@@ -120,6 +154,9 @@ class ToolBox:
     last_hits: list[SearchHit] = field(default_factory=list)            # for the UI / trace only
     last_outside: list[SearchHit] = field(default_factory=list)
     last_db_sample: list[str] = field(default_factory=list)
+    last_missing: list[str] = field(default_factory=list)                # titles check_title did not find
+    searched: set[str] = field(default_factory=set)                     # ids a plot/DB search returned
+    title_checked: set[str] = field(default_factory=set)                # ids found by check_title
     calls_seen: set[str] = field(default_factory=set)
     repeats: int = 0
     last_progress: bool = False
@@ -130,7 +167,7 @@ class ToolBox:
     def run(self, name: str, raw_args: str | dict | None) -> str:
         """Execute one tool call and return a JSON string for the model. Never raises."""
         self.last_progress = False
-        self.last_hits, self.last_outside, self.last_db_sample = [], [], []
+        self.last_hits, self.last_outside, self.last_db_sample, self.last_missing = [], [], [], []
         if name not in ALLOWED_TOOLS:
             return _error(f"unknown tool {name!r}; allowed: {sorted(ALLOWED_TOOLS)}")
         try:
@@ -161,6 +198,8 @@ class ToolBox:
                     out = self._search(a)
             elif name == "query_movie_database":
                 out = self._query_db(QueryDatabaseArgs.model_validate(args))
+            elif name == "check_title":
+                out = self._check_title(CheckTitleArgs.model_validate(args))
             else:
                 if self.detail_calls >= MAX_DETAIL_CALLS:
                     return _error(f"you already checked {MAX_DETAIL_CALLS} movies in detail. If one "
@@ -213,6 +252,11 @@ class ToolBox:
             a.all_queries, k=a.k, mode=self.mode, year_from=a.year_from, year_to=a.year_to,
             movie_ids=a.movie_ids,
         )
+        self.searched.update(h.movie_id for h in hits)
+        self._record(hits)
+        return hits
+
+    def _record(self, hits: list[SearchHit]) -> None:
         for h in hits:
             self.seen_chunks.add(h.chunk_id)
             self.chunk_text[h.chunk_id] = h.snippet
@@ -220,7 +264,6 @@ class ToolBox:
             best = self.seen_hits.get(h.movie_id)
             if best is None or h.score > best.score:
                 self.seen_hits[h.movie_id] = h
-        return hits
 
     def _query_db(self, a: QueryDatabaseArgs) -> str:
         res = answer_with_sql(a.question, get_moviedb(self.retriever), client=self.client)
@@ -251,6 +294,39 @@ class ToolBox:
         elif len(ids) > DB_SAMPLE:
             payload["note"] = (f"showing {DB_SAMPLE} of {len(ids)}; call search_movies with "
                                "within_database_results=true to search all of them by plot")
+        return _cap(json.dumps(payload, ensure_ascii=False))
+
+    def _check_title(self, a: CheckTitleArgs) -> str:
+        """Verify the model's own guesses against the corpus; cite the passage closest to the description.
+
+        Plot summaries rarely describe how things look, so "a creepy doll with blonde hair" finds
+        nothing by plot search even when the model knows the film. Here the model names films, and
+        only films that exist in the database come back -- with real evidence, never invented.
+        """
+        index = get_title_index(self.retriever)
+        found, results = [], []
+        for raw in dict.fromkeys(t.strip() for t in a.titles):
+            title, year = split_year(raw)
+            # the whole string first: "Blade Runner 2049" is a title, not "Blade Runner" + a year
+            movies = index.find(raw) or (index.find(title, year) if year else [])
+            if not movies:
+                self.last_missing.append(raw)
+                results.append({"title_asked": raw, "in_database": False})
+                continue
+            ids = [m.movie_id for m in movies[:2]]
+            hits = self.retriever.search(a.description, k=len(ids), mode="dense", movie_ids=ids,
+                                         min_score=0.0, rerank=False)
+            for h in hits:
+                found.append(h)
+                results.append({"title_asked": raw, "in_database": True, "movie_id": h.movie_id,
+                                "title": h.title, "year": h.year, "chunk_id": h.chunk_id,
+                                "snippet": h.snippet})
+        self._record(found)
+        self.title_checked.update(h.movie_id for h in found)
+        self.last_hits = found
+        payload = {"results": results,
+                   "note": "in_database=false means it cannot be the answer. For films in the "
+                           "database, check the passage against the description before answering."}
         return _cap(json.dumps(payload, ensure_ascii=False))
 
     def _get_movie(self, a: GetMovieArgs) -> str:

@@ -7,22 +7,13 @@ corpus -- the right behaviour there is to return nothing.
 from __future__ import annotations
 
 import json
-import re
-import unicodedata
 from collections import defaultdict
 from collections.abc import Iterable, Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
 
 from .schemas import Movie
-
-_NON_ALNUM = re.compile(r"[^a-z0-9]+")
-
-
-def norm_title(t: str) -> str:
-    t = unicodedata.normalize("NFKD", t).encode("ascii", "ignore").decode().lower()
-    t = _NON_ALNUM.sub(" ", t).strip()
-    return re.sub(r"^(the|a|an) ", "", t)
+from .titles import norm_title  # noqa: F401  (re-exported: the eval and tests import it from here)
 
 
 @dataclass

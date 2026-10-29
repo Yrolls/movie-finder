@@ -45,6 +45,14 @@ def test_retrieval_eval_and_report():
         "retrieval": [{"index": "data/index", "meta": {}, "modes": out}], "agent": agent})
     assert "Where the agent loses answers" in report and "| found, correct | 1 | 0 |" in report
 
+    agent["summary"] |= {"stopped_by": {"final_answer": 3}, "used_sql": 1, "used_title_check": 2,
+                         "correct_via_title_check": 1, "gold_only_by_title_check_answerable": .5}
+    report = run_eval.write_report({
+        "generated": "now", "n_answerable": 2, "n_unanswerable": 1,
+        "config": {"llm_model": "m", "embed_model": "e", "retrieval_mode": "hybrid"},
+        "retrieval": [{"index": "data/index", "meta": {}, "modes": out}], "agent": agent})
+    assert "`check_title`" in report and "used on 2 queries" in report and "50.0%" in report
+
 
 def test_per_query_file(tmp_path):
     r = make_retriever()
