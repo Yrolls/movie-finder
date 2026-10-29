@@ -344,8 +344,8 @@ def write_report(res: dict) -> str:
                   f"| correct movie appeared in any of the agent's searches | {pct(s['gold_retrieved_answerable'])} |",
                   f"| correct movie among the agent's ≤3 candidates | {pct(s['gold_in_candidates_answerable'])} |",
                   f"| correct movie ranked first by the agent | {pct(s['agent_top1_answerable'])} |",
-                  "", "The gap between the first two rows is a selection error (retrieved but not chosen); "
-                  "the rest is a retrieval error (never retrieved).", "",
+                  "", "100% minus the first row is a retrieval error (the right movie was never retrieved); "
+                  "the drop from the first row to the last is a selection error (retrieved, but not ranked first).", "",
                   f"Precision of \"found\": when the agent says it found the movie, it is right "
                   f"{pct(s['precision_of_found'])} of the time ({s['n_found']} \"found\" answers).", "",
                   "| outcome | answerable | unanswerable |", "|---|---|---|"]
