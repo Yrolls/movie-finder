@@ -75,13 +75,13 @@ def get_settings() -> Settings:
         openai_api_key=os.getenv("OPENAI_API_KEY") or None,
         openai_base_url=os.getenv("OPENAI_BASE_URL") or None,
         llm_model=os.getenv("LLM_MODEL", "gemma-4-E4B-it"),
-        embed_model=os.getenv("EMBED_MODEL", "intfloat/multilingual-e5-small"),
+        embed_model=os.getenv("EMBED_MODEL", "BAAI/bge-small-en-v1.5"),
         chunk_words=_int("CHUNK_WORDS", 200),
         chunk_overlap=_int("CHUNK_OVERLAP", 50),
         top_k=_int("TOP_K", 5),
-        min_score=_float("MIN_SCORE", 0.78),
+        min_score=_float("MIN_SCORE", 0.50),
         retrieval_mode=os.getenv("RETRIEVAL_MODE", "hybrid"),
-        rerank_model=os.getenv("RERANK_MODEL", "").strip(),
+        rerank_model=os.getenv("RERANK_MODEL", "cross-encoder/ms-marco-MiniLM-L-6-v2").strip(),
         agent_max_steps=_int("AGENT_MAX_STEPS", 5),
     )
     if s.chunk_overlap >= s.chunk_words:
