@@ -1,6 +1,6 @@
 # Evaluation report
 
-_Generated 2026-10-29 08:41 UTC — 42 answerable + 7 unanswerable queries from `eval/queries.jsonl`._
+_Generated 2026-10-29 09:05 UTC — 42 answerable + 7 unanswerable queries from `eval/queries.jsonl`._
 
 LLM: `gemma-4-E4B-it` · embeddings: `intfloat/multilingual-e5-small` (`data/index`) · reranker: `none` · temperature 0
 
@@ -39,46 +39,46 @@ Rows marked `+rewrite` search the LLM-rewritten query (`eval/results/rewrites.js
 | system | top-1 accuracy (answerable) | says not found (unanswerable) |
 |---|---|---|
 | LLM-only baseline | 71.4% | 28.6% |
-| Agent + retrieval | 78.6% | 57.1% |
+| Agent + retrieval | 83.3% | 42.9% |
 
-Average 2.7 model turns and 7.7s per query.
+Average 3.5 model turns and 10.1s per query.
 
 ### Where the agent loses answers (answerable queries)
 
 | step | share of answerable queries |
 |---|---|
-| correct movie appeared in any tool result (searches, SQL, check_title) | 81.0% |
-| correct movie among the agent's ≤3 candidates | 78.6% |
-| correct movie ranked first by the agent | 78.6% |
+| correct movie appeared in any tool result (searches, SQL, check_title) | 90.5% |
+| correct movie among the agent's ≤3 candidates | 88.1% |
+| correct movie ranked first by the agent | 83.3% |
 
 100% minus the first row is a retrieval error (the right movie was never retrieved); the drop from the first row to the last is a selection error (retrieved, but not ranked first).
 
-Precision of "found": when the agent says it found the movie, it is right 100.0% of the time (25 "found" answers).
+Precision of "found": when the agent says it found the movie, it is right 100.0% of the time (30 "found" answers).
 
 | outcome | answerable | unanswerable |
 |---|---|---|
-| found, correct | 25 | 0 |
-| not sure, correct on top | 8 | 0 |
-| not sure, wrong on top | 8 | 0 |
-| not sure | 0 | 3 |
-| said not found | 1 | 4 |
+| found, correct | 30 | 0 |
+| not sure, correct on top | 5 | 0 |
+| not sure, wrong on top | 6 | 0 |
+| not sure | 0 | 4 |
+| said not found | 1 | 3 |
 
-How runs ended — final_answer: 47, max_steps: 2. Queries where the agent used the metadata database (text-to-SQL): 6.
+How runs ended — final_answer: 38, max_steps: 11. Queries where the agent used the metadata database (text-to-SQL): 7.
 
-`check_title` (the model names films it knows, the database verifies them): used on 0 queries; correct answers that came only from it: 0; right film reached only through it: 0.0% of answerable queries.
+`check_title` (the model names films it knows, the database verifies them): used on 17 queries; correct answers that came only from it: 2; right film reached only through it: 7.1% of answerable queries.
 
 ### Top-1 accuracy by query tag (answerable)
 
 | tag | n | agent | LLM-only |
 |---|---|---|---|
 | confusable | 3 | 66.7% | 100.0% |
-| en | 27 | 85.2% | 74.1% |
-| famous | 34 | 85.3% | 79.4% |
+| en | 27 | 88.9% | 74.1% |
+| famous | 34 | 88.2% | 79.4% |
 | metadata | 10 | 100.0% | 80.0% |
-| obscure | 8 | 50.0% | 37.5% |
+| obscure | 8 | 62.5% | 37.5% |
 | partial | 2 | 50.0% | 50.0% |
-| plain | 24 | 75.0% | 66.7% |
-| th | 15 | 66.7% | 66.7% |
+| plain | 24 | 83.3% | 66.7% |
+| th | 15 | 73.3% | 66.7% |
 | vague | 3 | 33.3% | 66.7% |
 | wrong_detail | 3 | 100.0% | 100.0% |
 
