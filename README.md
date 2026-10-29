@@ -14,7 +14,8 @@ it asks you one follow-up question (e.g. "roughly what decade?") instead of gues
 | 1 | Structured output + schema validation | `src/movie_finder/schemas.py`, `src/movie_finder/llm.py` |
 | 2 | Retrieval / RAG with citations | `src/movie_finder/retrieval/` |
 | 3 | Retrieval evaluation (recall@k, MRR vs. BM25 baseline) | `eval/` |
-| 4 | Agent loop with allow-listed tools + stop condition | `src/movie_finder/agent/` |
+| 4 | Agent loop with allow-listed tools + stop conditions (final answer, no-progress guard, max steps) | `src/movie_finder/agent/` |
+| 5 | Advanced: guarded text-to-SQL over movie metadata (actor, director, year, country, genre) | `src/movie_finder/data/moviedb.py`, `src/movie_finder/agent/sql_tool.py` |
 | 6 | Served interface (FastAPI + SSE) | `src/movie_finder/api/` |
 
 ## Project layout

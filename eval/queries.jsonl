@@ -1,7 +1,7 @@
 // Gold set: one JSON object per line.  title/year = the movie the query describes (null = NOT in the corpus).
 // Queries are written from memory in our own words -- never copied from the Wikipedia plot.
 // "also": [{"title", "year"}] lists other accepted answers (e.g. a remake).
-// tags: language (en/th) · fame (famous/obscure) · kind (plain/partial/wrong_detail/vague/confusable) · unanswerable
+// tags: language (en/th) · fame (famous/obscure) · kind (plain/partial/wrong_detail/vague/confusable) · metadata (mentions an actor, director, decade or country) · unanswerable
 {"id": "q01", "query": "ผู้ชายคนหนึ่งตื่นขึ้นมาแล้วเจอวันเดิมซ้ำไปเรื่อย ๆ ในเมืองเล็ก ๆ ช่วงหน้าหนาว เขาเป็นคนพยากรณ์อากาศนิสัยไม่ดี", "title": "Groundhog Day", "year": 1993, "tags": ["th", "famous", "plain"]}
 {"id": "q02", "query": "a team of thieves breaks into a rich heir's mind while he sleeps to plant an idea instead of stealing one", "title": "Inception", "year": 2010, "tags": ["en", "famous", "plain"]}
 {"id": "q03", "query": "guy can't make new memories so he tattoos notes on his body and uses polaroid photos to hunt down his wife's killer", "title": "Memento", "year": 2000, "tags": ["en", "famous", "plain"]}
@@ -34,9 +34,20 @@
 {"id": "q30", "query": "นักเชลโลตกงานกลับไปบ้านเกิด แล้วได้งานใหม่เป็นคนจัดเตรียมศพก่อนใส่โลง ภรรยาไม่ยอมรับ", "title": "Departures", "year": 2008, "tags": ["th", "obscure", "plain"]}
 {"id": "q31", "query": "some movie from the 80s or 90s where a guy keeps living the same day over and over", "title": "Groundhog Day", "year": 1993, "tags": ["en", "famous", "vague", "confusable"]}
 {"id": "q38", "query": "หนังที่มีตัวตลก น่ากลัว หลอกเด็กๆ ชื่อเรื่องว่าอะไร", "title": "It", "year": 2017, "also": [{"title": "It", "year": 1990}], "tags": ["th", "famous", "vague"]}
+{"id": "q39", "query": "Leonardo DiCaprio plays a young con man who pretends to be a pilot and a doctor while an FBI agent chases him", "title": "Catch Me If You Can", "year": 2002, "tags": ["en", "famous", "metadata"]}
+{"id": "q40", "query": "หนังของ Spielberg ยุค 90 ที่นักวิทยาศาสตร์ชุบชีวิตไดโนเสาร์บนเกาะ แล้วไดโนเสาร์หลุดออกมา", "title": "Jurassic Park", "year": 1993, "tags": ["th", "famous", "metadata"]}
+{"id": "q41", "query": "the Christopher Nolan movie where a farmer dad leaves his daughter and flies through a wormhole to find a new planet", "title": "Interstellar", "year": 2014, "tags": ["en", "famous", "metadata"]}
+{"id": "q42", "query": "Miyazaki anime where a girl ends up working in a bathhouse for spirits after her parents turn into pigs", "title": "Spirited Away", "year": 2001, "tags": ["en", "famous", "metadata"]}
+{"id": "q43", "query": "late 90s Keanu Reeves movie, he finds out the world is a computer simulation and learns kung fu", "title": "The Matrix", "year": 1999, "tags": ["en", "famous", "metadata"]}
+{"id": "q44", "query": "หนังที่ Jim Carrey กับแฟนเก่าไปจ้างบริษัทลบความทรงจำเกี่ยวกับกันและกัน", "title": "Eternal Sunshine of the Spotless Mind", "year": 2004, "tags": ["th", "famous", "metadata"]}
+{"id": "q45", "query": "korean zombie movie on a train", "title": "Train to Busan", "year": 2016, "tags": ["en", "famous", "metadata", "vague"]}
+{"id": "q46", "query": "Tom Hanks plays a slow but kind man who keeps ending up in famous moments of American history and runs across the country", "title": "Forrest Gump", "year": 1994, "tags": ["en", "famous", "metadata"]}
+{"id": "q47", "query": "Ang Lee martial arts film, people fight while flying over bamboo trees and a legendary sword is stolen", "title": "Crouching Tiger, Hidden Dragon", "year": 2000, "tags": ["en", "famous", "metadata"]}
+{"id": "q48", "query": "the Mad Max with Mel Gibson where a woman drives a war rig across the desert to free the wives of a warlord", "title": "Mad Max: Fury Road", "year": 2015, "tags": ["en", "famous", "metadata", "wrong_detail"]}
 {"id": "q32", "query": "หนังเกี่ยวกับนักวิทยาศาสตร์ที่สร้างระเบิดปรมาณูลูกแรกในทะเลทรายนิวเม็กซิโก", "title": null, "year": null, "tags": ["th", "unanswerable"]}
 {"id": "q33", "query": "a tired laundromat owner jumps between parallel universes where she is a kung fu star and has hot dog fingers", "title": null, "year": null, "tags": ["en", "unanswerable"]}
 {"id": "q34", "query": "a poor family slowly gets hired one by one into a rich family's modern house by pretending to be strangers", "title": null, "year": null, "tags": ["en", "unanswerable"]}
 {"id": "q35", "query": "a penguin opens a bakery in bangkok and accidentally becomes a k-pop idol", "title": null, "year": null, "tags": ["en", "unanswerable"]}
 {"id": "q36", "query": "ช้างที่ได้เป็นนักบินอวกาศคนแรกของประเทศไทย ต้องซ่อมสถานีอวกาศด้วยงวง", "title": null, "year": null, "tags": ["th", "unanswerable"]}
 {"id": "q37", "query": "a perfect doll leaves her pink plastic world for the real world and has an existential crisis", "title": null, "year": null, "tags": ["en", "unanswerable"]}
+{"id": "q49", "query": "a Tom Hanks movie where he plays Elvis Presley's manager", "title": null, "year": null, "tags": ["en", "metadata", "unanswerable"]}

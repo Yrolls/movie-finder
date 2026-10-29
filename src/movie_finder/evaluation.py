@@ -64,31 +64,40 @@ def resolve_gold(gold: list[GoldQuery], movies: Sequence[Movie], year_tolerance:
     for m in movies:
         index[norm_title(m.title)].append(m)
 
-    def one(qid: str, title: str, year: int | None, problems: list[str]) -> str | None:
+    def one(qid: str, title: str, year: int | None, problems: list[str]) -> list[str]:
         cands = [m for m in index.get(norm_title(title), [])
                  if year is None or abs(m.year - year) <= year_tolerance]
         if len(cands) == 1:
-            return cands[0].movie_id
+            return [cands[0].movie_id]
         if not cands:
             problems.append(f"{qid}: '{title}' ({year}) not found in corpus")
-            return None
+            return []
         # loose matching ignores "The"/punctuation; break ties by exact title, then exact year
         same_title = [m for m in cands if m.title.casefold() == title.casefold()]
         for narrowed in (same_title, [m for m in same_title if m.year == year],
                          [m for m in cands if m.year == year]):
             if len(narrowed) == 1:
-                return narrowed[0].movie_id
+                return [narrowed[0].movie_id]
+        # the same film listed twice (e.g. once as American, once as British -- same title, year
+        # and director): accept every copy. Same title + year with different directors stays
+        # ambiguous: that is two different films.
+        exact = [m for m in same_title if m.year == year]
+        directors = {m.director.strip().lower() for m in exact}
+        if len(exact) > 1 and len(directors) == 1 and "" not in directors:
+            return [m.movie_id for m in exact]
         found = ", ".join(f"{m.movie_id} {m.title} ({m.year}, {m.origin})" for m in cands)
         problems.append(f"{qid}: '{title}' is ambiguous: {found}")
-        return None
+        return []
 
     problems: list[str] = []
     for g in gold:
         if not g.answerable:
             continue
-        g.movie_id = one(g.qid, g.title, g.year, problems)
-        extra = [one(g.qid, a["title"], a.get("year"), problems) for a in g.also]
-        g.movie_ids = [i for i in [g.movie_id, *extra] if i]
+        ids = one(g.qid, g.title, g.year, problems)
+        for a in g.also:
+            ids += one(g.qid, a["title"], a.get("year"), problems)
+        g.movie_ids = list(dict.fromkeys(ids))
+        g.movie_id = g.movie_ids[0] if g.movie_ids else None
     return problems
 
 

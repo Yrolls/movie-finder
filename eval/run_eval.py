@@ -22,7 +22,7 @@ import argparse
 import json
 import sys
 import time
-from collections import defaultdict
+from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -229,7 +229,9 @@ def eval_agent(retriever, gold: list[GoldQuery], movies, mode: str) -> dict:
                      "gold_retrieved": bool(set(res.retrieved) & set(g.accepted)),
                      "llm_only": base, "llm_only_ok": base_ok,
                      "steps": res.steps, "stopped_by": res.stopped_by, "seconds": round(dt, 1),
-                     "searches": [t["arguments"] for t in res.trace if t.get("tool") == "search_movies"]})
+                     "searches": [t["arguments"] for t in res.trace if t.get("tool") == "search_movies"],
+                     "calls": [f"{t['tool']}({t['arguments']})" for t in res.trace if t.get("tool")],
+                     "sql": [t["sql"] for t in res.trace if t.get("sql")]})
         print(f"  {g.qid}: agent={'OK ' if agent_ok else 'MISS'} llm-only={'OK ' if base_ok else 'MISS'} "
               f"({res.steps} steps, {dt:.1f}s)")
 
@@ -252,6 +254,10 @@ def eval_agent(retriever, gold: list[GoldQuery], movies, mode: str) -> dict:
                                    if found else float("nan")),
             "n_found": len(found),
             "outcomes": {k: dict(v) for k, v in outcomes.items()},
+            "stopped_by": dict(Counter(r["stopped_by"] for r in rows)),
+            "used_sql": sum(bool(r["sql"]) for r in rows),
+            "per_tag": {t: {"n": len(rs), "agent": acc(rs, "agent_ok"), "llm_only": acc(rs, "llm_only_ok")}
+                        for t, rs in sorted(_by_tag(ans).items())},
             "agent_top1_answerable": acc(ans, "agent_ok"),
             "llm_only_top1_answerable": acc(ans, "llm_only_ok"),
             "agent_abstain_unanswerable": acc(una, "agent_ok"),
@@ -261,6 +267,14 @@ def eval_agent(retriever, gold: list[GoldQuery], movies, mode: str) -> dict:
         },
         "rows": rows,
     }
+
+
+def _by_tag(rows: list[dict]) -> dict[str, list[dict]]:
+    out: dict[str, list[dict]] = defaultdict(list)
+    for r in rows:
+        for t in r["tags"]:
+            out[t].append(r)
+    return out
 
 
 # ---------------------------------------------------------------- report
@@ -355,6 +369,15 @@ def write_report(res: dict) -> str:
                 a, u = oc["answerable"].get(name, 0), oc["unanswerable"].get(name, 0)
                 if a or u:
                     L.append(f"| {name} | {a} | {u} |")
+        if "stopped_by" in s:
+            sb = ", ".join(f"{k}: {v}" for k, v in sorted(s["stopped_by"].items()))
+            L += ["", f"How runs ended — {sb}. Queries where the agent used the metadata database "
+                      f"(text-to-SQL): {s['used_sql']}."]
+        if s.get("per_tag"):
+            L += ["", "### Top-1 accuracy by query tag (answerable)", "",
+                  "| tag | n | agent | LLM-only |", "|---|---|---|---|"]
+            for t, v in s["per_tag"].items():
+                L.append(f"| {t} | {v['n']} | {pct(v['agent'])} | {pct(v['llm_only'])} |")
 
     for idx in res["retrieval"][:1]:
         if "dense" in idx["modes"]:

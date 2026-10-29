@@ -92,3 +92,13 @@ def test_rank_metrics():
     assert median_rank([1, 2, None]) == 2 and median_rank([1, None]) == 6
     lo, hi = bootstrap_ci([1.0] * 10 + [0.0] * 10)
     assert lo < 0.5 < hi and bootstrap_ci([1.0, 0.0]) == bootstrap_ci([1.0, 0.0])   # seeded
+
+
+def test_same_film_listed_twice_accepts_both(tmp_path):
+    movies = MOVIES + [
+        Movie(movie_id="m00020", title="Fury Road", year=2015, plot=P, origin="American", director="G. Miller"),
+        Movie(movie_id="m00021", title="Fury Road", year=2015, plot=P, origin="Australian", director="G. Miller"),
+    ]
+    gold = gold_file(tmp_path, [{"query": "a", "title": "Fury Road", "year": 2015}])
+    assert resolve_gold(gold, movies) == []
+    assert gold[0].accepted == ["m00020", "m00021"]

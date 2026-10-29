@@ -8,6 +8,8 @@
 """
 from __future__ import annotations
 
+import re
+
 from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
@@ -49,6 +51,7 @@ class SearchMoviesArgs(BaseModel):
     year_from: int | None = Field(default=None, ge=1890, le=2030)
     year_to: int | None = Field(default=None, ge=1890, le=2030)
     k: int = Field(default=5, ge=1, le=10)
+    movie_ids: list[str] | None = Field(default=None, min_length=1, max_length=2000)  # pre-filter
 
     @model_validator(mode="after")
     def _year_range(self) -> "SearchMoviesArgs":
@@ -58,11 +61,17 @@ class SearchMoviesArgs(BaseModel):
             raise ValueError("give `query` or `queries`")
         if self.queries and any(not 3 <= len(q) <= 500 for q in self.queries):
             raise ValueError("each query must be 3-500 characters")
+        if self.movie_ids and any(not re.fullmatch(r"m\d{5}", m) for m in self.movie_ids):
+            raise ValueError("movie_ids must look like m01234")
         return self
 
     @property
     def all_queries(self) -> list[str]:
         return ([self.query] if self.query else []) + list(self.queries or [])
+
+
+class QueryDatabaseArgs(BaseModel):
+    question: str = Field(min_length=5, max_length=300)
 
 
 class GetMovieArgs(BaseModel):

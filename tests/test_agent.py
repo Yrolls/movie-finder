@@ -98,3 +98,72 @@ def test_search_tool_accepts_several_phrasings():
     assert out["results"][0]["movie_id"] == "m00000"
     bad = json.loads(box.run("search_movies", json.dumps({"queries": ["x"]})))
     assert "invalid arguments" in bad["error"]
+
+
+# ---------------------------------------------------------------- SQL tool + guards
+DB_SQL = json.dumps({"sql": "SELECT movie_id, title, year, director, actors FROM movies "
+                            "WHERE actors LIKE '%DiCaprio%'"})
+QUERY_DB = tool_call("query_movie_database", json.dumps({"question": "movies with Leonardo DiCaprio"}))
+
+
+def test_query_database_then_restricted_plot_search(fake_client):
+    client = fake_client([DB_SQL])                    # consumed by the SQL generator inside the tool
+    box = ToolBox(make_retriever(), client=client)
+    out = json.loads(box.run("query_movie_database", {"question": "movies with Leonardo DiCaprio"}))
+    assert {r["movie_id"] for r in out["results"]} == {"m00001", "m00002"} and out["n_matches"] == 2
+    assert box.seen_meta and box.last_progress
+    res = json.loads(box.run("search_movies", {"query": "ship strikes an iceberg",
+                                               "within_database_results": True}))
+    assert {r["movie_id"] for r in res["results"]} <= {"m00001", "m00002"}   # pre-filtered
+    assert res["results"][0]["movie_id"] == "m00002"
+
+
+def test_within_database_needs_a_query_first():
+    box = ToolBox(make_retriever())
+    out = json.loads(box.run("search_movies", {"query": "ship ice", "within_database_results": True}))
+    assert "query_movie_database first" in out["error"]
+
+
+def test_bad_movie_ids_rejected():
+    box = ToolBox(make_retriever())
+    out = json.loads(box.run("search_movies", {"query": "ship ice", "movie_ids": ["DROP"]}))
+    assert "invalid arguments" in out["error"]
+
+
+def test_identical_call_is_refused():
+    box = ToolBox(make_retriever())
+    box.run("search_movies", {"query": "same winter day"})
+    out = json.loads(box.run("search_movies", {"query": "  Same Winter DAY "}))
+    assert "already made exactly this call" in out["error"] and box.repeats == 1
+    assert not box.last_progress
+
+
+def test_no_progress_stops_the_loop(fake_client):
+    client = fake_client([SEARCH, SEARCH, SEARCH, final()])   # 2 repeated searches in a row
+    res = run_agent("same day again", make_retriever(), client=client, max_steps=5)
+    assert res.stopped_by == "no_progress" and res.steps == 3
+    assert "tools" not in client.calls[-1]                    # forced, tool-free final turn
+    assert res.answer.status == "found"
+
+
+def test_metadata_only_answer_is_not_called_found(fake_client):
+    # the agent answers from the DB row alone, never checking the story -> downgraded
+    client = fake_client([QUERY_DB, DB_SQL, final(movie_id="m00002", chunk="m00002#meta")])
+    events = []
+    res = run_agent("a DiCaprio film", make_retriever(), client=client, on_event=events.append)
+    top = res.answer.candidates[0]
+    assert top.movie_id == "m00002" and top.evidence_chunk_id == "m00002#meta"
+    assert res.answer.status == "not_sure" and res.answer.follow_up_question
+    assert res.evidence["m00002"]["source"] == "metadata"
+    assert "sql" in next(e for e in events if e["type"] == "tool_result")
+
+
+def test_large_sql_result_is_sampled_but_fully_searchable(fake_client, monkeypatch):
+    from movie_finder.agent import tools
+    monkeypatch.setattr(tools, "DB_SAMPLE", 1)
+    box = ToolBox(make_retriever(), client=fake_client([DB_SQL]))
+    out = json.loads(box.run("query_movie_database", {"question": "DiCaprio films"}))
+    assert out["n_matches"] == 2 and len(out["results"]) == 1 and "showing 1 of 2" in out["note"]
+    res = json.loads(box.run("search_movies", {"query": "ship strikes an iceberg",
+                                               "within_database_results": True}))
+    assert res["results"][0]["movie_id"] == "m00002"      # found although it wasn't in the sample
