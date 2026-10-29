@@ -1,6 +1,6 @@
 # Evaluation report
 
-_Generated 2026-10-29 04:27 UTC — 42 answerable + 7 unanswerable queries from `eval/queries.jsonl`._
+_Generated 2026-10-29 04:37 UTC — 42 answerable + 7 unanswerable queries from `eval/queries.jsonl`._
 
 LLM: `gemma-4-E4B-it` · embeddings: `intfloat/multilingual-e5-small` · temperature 0
 
@@ -59,29 +59,28 @@ Each pair: recall@5 kept on answerable queries / share of unanswerable queries t
 
 | system | top-1 accuracy (answerable) | says not found (unanswerable) |
 |---|---|---|
-| LLM-only baseline | 69.0% | 28.6% |
-| Agent + retrieval | 73.8% | 42.9% |
+| LLM-only baseline | 71.4% | 28.6% |
+| Agent + retrieval | 85.7% | 42.9% |
 
-Average 2.4 model turns and 4.3s per query.
+Average 2.3 model turns and 3.8s per query.
 
 ### Where the agent loses answers (answerable queries)
 
 | step | share of answerable queries |
 |---|---|
-| correct movie appeared in any of the agent's searches | 85.7% |
-| correct movie among the agent's ≤3 candidates | 85.7% |
-| correct movie ranked first by the agent | 73.8% |
+| correct movie appeared in any of the agent's searches | 88.1% |
+| correct movie among the agent's ≤3 candidates | 88.1% |
+| correct movie ranked first by the agent | 85.7% |
 
 100% minus the first row is a retrieval error (the right movie was never retrieved); the drop from the first row to the last is a selection error (retrieved, but not ranked first).
 
-Precision of "found": when the agent says it found the movie, it is right 92.0% of the time (25 "found" answers).
+Precision of "found": when the agent says it found the movie, it is right 100.0% of the time (32 "found" answers).
 
 | outcome | answerable | unanswerable |
 |---|---|---|
-| found, correct | 23 | 0 |
-| not sure, correct on top | 8 | 0 |
-| not sure, wrong on top | 9 | 0 |
-| found, WRONG | 2 | 0 |
+| found, correct | 32 | 0 |
+| not sure, correct on top | 4 | 0 |
+| not sure, wrong on top | 6 | 0 |
 | not sure | 0 | 4 |
 | said not found | 0 | 3 |
 
@@ -93,14 +92,14 @@ How runs ended — final_answer: 49. Queries where the agent used the metadata d
 |---|---|---|---|
 | confusable | 3 | 100.0% | 100.0% |
 | en | 27 | 92.6% | 74.1% |
-| famous | 34 | 76.5% | 76.5% |
+| famous | 34 | 88.2% | 79.4% |
 | metadata | 10 | 100.0% | 80.0% |
-| obscure | 8 | 62.5% | 37.5% |
+| obscure | 8 | 75.0% | 37.5% |
 | partial | 2 | 50.0% | 50.0% |
-| plain | 24 | 66.7% | 62.5% |
-| th | 15 | 40.0% | 60.0% |
+| plain | 24 | 83.3% | 66.7% |
+| th | 15 | 73.3% | 66.7% |
 | vague | 3 | 66.7% | 66.7% |
-| wrong_detail | 3 | 66.7% | 100.0% |
+| wrong_detail | 3 | 100.0% | 100.0% |
 
 ## Dense misses (rank ≠ 1) — for error analysis
 
